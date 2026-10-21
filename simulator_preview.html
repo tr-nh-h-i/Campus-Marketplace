@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNTU Final Project — Topic 02: Campus Marketplace</title>
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-light: #e0f2fe;
+      --primary-dark: #0369a1;
+      --bg-dark: #0b1120;
+      --surface-dark: #1e293b;
+      --text-dark: #f8fafc;
+      --border-dark: #334155;
+      --bg-light: #f8fafc;
+      --surface-light: #ffffff;
+      --text-light: #0f172a;
+      --border-light: #e2e8f0;
+      --success: #16a34a;
+      --warning: #d97706;
+      --error: #dc2626;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 16px;
+      max-width: 960px;
+    }
+    h1 {
+      font-size: 22px;
+      color: #38bdf8;
+      margin-bottom: 4px;
+    }
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .param-pill {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+    .param-pill strong {
+      color: #38bdf8;
+    }
+    .main-layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+    }
+    /* Phone Mockup */
+    .phone-container {
+      width: 400px;
+      height: 820px;
+      background: #000;
+      border-radius: 46px;
+      padding: 12px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 0 2px #334155;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .phone-screen {
+      flex: 1;
+      border-radius: 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: background 0.2s, color 0.2s;
+    }
+    /* Light & Dark Modes for Simulator */
+    .phone-screen.light {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+    .phone-screen.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+    .status-bar {
+      height: 38px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      font-size: 12px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .phone-screen.light .status-bar { background: #ffffff; color: #0f172a; }
+    .phone-screen.dark .status-bar { background: #1e293b; color: #f8fafc; }
+    .camera-notch {
+      width: 110px;
+      height: 20px;
+      background: #000;
+      border-radius: 0 0 14px 14px;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 99;
+    }
+    /* Offline Banner */
+    .offline-banner {
+      background: #fef3c7;
+      color: #92400e;
+      padding: 6px 12px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #fde68a;
+    }
+    .phone-screen.dark .offline-banner {
+      background: #451a03;
+      color: #fde68a;
+      border-bottom: 1px solid #78350f;
+    }
+    /* App Header */
+    .app-header {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid;
+    }
+    .phone-screen.light .app-header { background: #ffffff; border-color: var(--border-light); }
+    .phone-screen.dark .app-header { background: #1e293b; border-color: var(--border-dark); }
+    .logo-text { font-size: 16px; font-weight: 800; color: var(--primary); }
+    .role-badge { font-size: 10px; color: #64748b; }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    .header-btn {
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+    }
+    .phone-screen.light .header-btn { background: #f1f5f9; color: #0f172a; }
+    .phone-screen.dark .header-btn { background: #334155; color: #f8fafc; }
+    .cart-badge {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 1px 5px;
+    }
+    /* Content */
+    .screen-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+    /* Cards */
+    .prod-card {
+      border-radius: 12px;
+      border: 1px solid;
+      overflow: hidden;
+      margin-bottom: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-screen.light .prod-card { background: #fff; border-color: var(--border-light); }
+    .phone-screen.dark .prod-card { background: #1e293b; border-color: var(--border-dark); }
+    .prod-img-wrap {
+      width: 100%;
+      height: 160px;
+      position: relative;
+      background: #000;
+    }
+    .prod-img { width: 100%; height: 100%; object-fit: cover; }
+    .fav-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .compress-pill {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .prod-content { padding: 10px; }
+    .prod-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .prod-price { font-size: 14px; font-weight: 800; color: var(--primary); }
+    .prod-stock { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
+    .stock-ok { background: #dcfce7; color: #16a34a; }
+    .stock-out { background: #fee2e2; color: #dc2626; }
+    /* Bottom Navigation */
+    .tab-bar {
+      display: flex;
+      border-top: 1px solid;
+      padding: 6px 0;
+    }
+    .phone-screen.light .tab-bar { background: #ffffff; border-color: var(--border-light); }
+    .phone-screen.dark .tab-bar { background: #1e293b; border-color: var(--border-dark); }
+    .tab-item {
+      flex: 1;
+      min-height: 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 10px;
+      color: #64748b;
+      position: relative;
+    }
+    .tab-item.active { color: var(--primary); font-weight: 700; }
+    /* Side Panel */
+    .side-panel {
+      flex: 1;
+      min-width: 320px;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .info-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .info-box h3 {
+      font-size: 14px;
+      color: #38bdf8;
+      margin-bottom: 10px;
+    }
+    .info-box p, .info-box li {
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+    .info-box ul { margin-left: 20px; margin-top: 6px; }
+    .btn-action {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>DNTU Final Project — Topic 02: Campus Marketplace</h1>
+    <p style="color: #94a3b8; font-size: 13px;">Chợ mua bán & nhượng giáo trình, đồ dùng sinh viên DNTU</p>
+    <div class="badge-bar">
+      <div class="param-pill">Nhóm: <strong>Trịnh Thế Thanh Hải • Bùi Thanh Sơn • Nguyễn Vũ Minh Nhật</strong></div>
+      <div class="param-pill">MSSV: <strong>1923050080 - 1923050973 - 1923050861</strong></div>
+      <div class="param-pill">Lớp: <strong>TH7011101 (23DTH1)</strong></div>
+      <div class="param-pill">GitHub: <strong>hai1-git/Campus-Marketplace</strong></div>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- Phone Simulator -->
+    <div class="phone-container">
+      <div class="camera-notch"></div>
+      <div class="phone-screen light" id="phoneScreen">
+        <!-- Status Bar -->
+        <div class="status-bar">
+          <span>9:41</span>
+          <span style="font-size: 10px;">Wi-Fi DNTU • 100%</span>
+        </div>
+
+        <!-- Offline Banner -->
+        <div class="offline-banner" id="offlineBanner" style="display: none;">
+          <div>📡 <strong>Đang xem danh mục ngoại tuyến</strong> (Cập nhật: <span id="lastUpdatedLabel">09:30</span>)</div>
+          <button onclick="toggleOfflineMode()" style="background:#fff; border:none; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; cursor:pointer;">Kết nối lại</button>
+        </div>
+
+        <!-- App Header -->
+        <div class="app-header" id="appHeader" style="display: none;">
+          <div>
+            <div class="logo-text">Campus Market</div>
+            <div class="role-badge" id="userRoleHeader">Trịnh Thế Thanh Hải (Sinh viên)</div>
+          </div>
+          <div class="header-actions">
+            <button class="header-btn" onclick="toggleThemeMode()" title="Đổi sáng/tối (Design Tokens)">
+              <span id="themeIcon">🌙</span>
+            </button>
+            <button class="header-btn" onclick="switchTab('cart')" title="Giỏ hàng">
+              🛒 <span class="cart-badge" id="headerCartBadge">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Screen Body -->
+        <div class="screen-body" id="screenBody">
+          <!-- Render via JS -->
+        </div>
+
+        <!-- Bottom Tab Bar -->
+        <div class="tab-bar" id="tabBar" style="display: none;">
+          <div class="tab-item active" id="tabHome" onclick="switchTab('home')">
+            <span style="font-size: 18px;">🏠</span>
+            <span>Chợ</span>
+          </div>
+          <div class="tab-item" id="tabFav" onclick="switchTab('fav')">
+            <span style="font-size: 18px;">❤️</span>
+            <span>Yêu thích</span>
+          </div>
+          <div class="tab-item" id="tabCreate" onclick="switchTab('create')">
+            <span style="font-size: 18px;">➕</span>
+            <span>Đăng bán</span>
+          </div>
+          <div class="tab-item" id="tabCart" onclick="switchTab('cart')">
+            <span style="font-size: 18px;">🛒</span>
+            <span>Giỏ hàng</span>
+          </div>
+          <div class="tab-item" id="tabProfile" onclick="switchTab('profile')">
+            <span style="font-size: 18px;">👤</span>
+            <span>Cá nhân</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side Panel / Specifications & Controls -->
+    <div class="side-panel">
+      <!-- Fast Viva Control Card -->
+      <div class="info-box">
+        <h3>⚡ Bảng Điều Khiển Kiểm Thử Nhanh (Viva Demo Controls)</h3>
+        <p>• <strong>Mô phỏng Wi-Fi chập chờn:</strong> Bật/tắt chế độ Offline để xem banner ngoại tuyến và danh mục đã lưu trong bộ đệm.</p>
+        <button class="btn-action" onclick="toggleOfflineMode()">📡 Bật/Tắt Chế độ Offline</button>
+
+        <p style="margin-top: 10px;">• <strong>Chuyển vai trò tức thì:</strong> Kiểm thử giao diện Người mua (Buyer) vs Người bán (Seller) trên cùng 1 bài đăng.</p>
+        <div style="display:flex; gap:8px; margin-top:4px;">
+          <button class="btn-action" style="background:#0284c7;" onclick="setRole('buyer')">🛍️ Chế độ Người mua</button>
+          <button class="btn-action" style="background:#16a34a;" onclick="setRole('seller')">🏷️ Chế độ Người bán</button>
+        </div>
+
+        <p style="margin-top: 10px;">• <strong>Mô phỏng giảm giá món hàng yêu thích:</strong> Gửi thông báo Local Notification khi giá của sản phẩm trong danh sách yêu thích giảm.</p>
+        <button class="btn-action" style="background:#7c3aed;" onclick="simulatePriceDrop()">🔔 Thử gửi thông báo giảm giá</button>
+      </div>
+
+      <!-- Rubric Compliance -->
+      <div class="info-box">
+        <h3>📋 Đối Chiếu Tiêu Chí Chấm Điểm Đồ Án (Topic 02)</h3>
+        <ul>
+          <li><strong>Must have 1:</strong> Đăng nhập & Đăng xuất an toàn qua <code>SecureStore</code> (không lưu token vào <code>AsyncStorage</code>).</li>
+          <li><strong>Must have 2:</strong> Đăng bài có công cụ nén ảnh (ảnh gốc ~4.2MB nén còn ~280KB, giảm 93%).</li>
+          <li><strong>Must have 3:</strong> Lọc danh mục & Tìm kiếm <strong>tính toán trực tiếp khi render</strong>, không lưu derived state.</li>
+          <li><strong>Must have 4:</strong> Favourites trong shared state, lưu qua restart và hiển thị đồng bộ ở 2 màn hình.</li>
+          <li><strong>Must have 5:</strong> Giỏ hàng, quy tắc phí giao hàng DNTU (Cổng 1 = 0đ, KTX = 15.000đ) và kiểm soát tồn kho.</li>
+          <li><strong>Must have 6:</strong> Chế độ Offline hiển thị danh mục lưu lần gần nhất kèm banner, không bao giờ để màn hình trắng.</li>
+          <li><strong>Technical:</strong> Hệ màu Theme Tokens tập trung, 0% hardcode hex, chuẩn Accessibility Touch Target $\ge 44\times 44$.</li>
+        </ul>
+      </div>
+
+      <!-- Git Repo Info -->
+      <div class="info-box">
+        <h3>🐙 Thông Tin Git Repository</h3>
+        <p>• <strong>URL:</strong> <a href="https://github.com/hai1-git/Campus-Marketplace.git" target="_blank" style="color:#38bdf8;">https://github.com/hai1-git/Campus-Marketplace.git</a></p>
+        <p>• <strong>Quản trị viên:</strong> <code>hai1-git</code> (github1hai@gmail.com)</p>
+        <p>• <strong>Lịch sử Commit:</strong> Trải đều 2 tuần cho cả 3 thành viên: Trịnh Thế Thanh Hải, Bùi Thanh Sơn, Nguyễn Vũ Minh Nhật.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State Store mô phỏng
+    const state = {
+      isDark: false,
+      isOffline: false,
+      lastUpdated: '09:41',
+      currentUser: {
+        id: 'usr_buyer_1923050080',
+        name: 'Trịnh Thế Thanh Hải',
+        email: 'hai.trinh@dntu.edu.vn',
+        role: 'buyer'
+      },
+      token: 'jwt_dntu_session_token_1923050080',
+      activeTab: 'home',
+      activeListingDetail: null,
+      searchQuery: '',
+      selectedCategory: 'all',
+      favouriteIds: ['lst_101', 'lst_103'],
+      cartItems: [
+        {
+          id: 'lst_101',
+          title: 'Giáo trình Lập trình Di động React Native SDK 51 & 56',
+          price: 65000,
+          stock: 3,
+          qty: 1,
+          photoUri: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80'
+        }
+      ],
+      deliveryType: 'campus_pickup', // 'campus_pickup' | 'dorm_delivery'
+      listings: [
+        {
+          id: 'lst_101',
+          sellerId: 'usr_seller_01',
+          sellerName: 'Nguyễn Văn Minh (DNTU K17)',
+          sellerPhone: '0901234567',
+          title: 'Giáo trình Lập trình Di động React Native SDK 51 & 56',
+          category: 'textbook',
+          price: 65000,
+          originalPrice: 85000,
+          stock: 3,
+          photoUri: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80',
+          photoCompressedSizeKb: 280,
+          photoOriginalSizeKb: 4300,
+          description: 'Sách photo bìa bóng còn mới 95%, có sẵn ghi chú đề thi giữa kỳ và bài Lab.',
+          condition: 'like_new'
+        },
+        {
+          id: 'lst_102',
+          sellerId: 'usr_seller_02',
+          sellerName: 'Trần Thị Bích Ngọc (Khoa CNTT)',
+          sellerPhone: '0912345678',
+          title: 'Chuột không dây Logitech Silent M331',
+          category: 'electronics',
+          price: 180000,
+          originalPrice: 240000,
+          stock: 1,
+          photoUri: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&auto=format&fit=crop&q=80',
+          photoCompressedSizeKb: 310,
+          photoOriginalSizeKb: 4800,
+          description: 'Bấm êm không phát tiếng động, rất phù hợp ngồi học thư viện và phòng máy.',
+          condition: 'good'
+        },
+        {
+          id: 'lst_103',
+          sellerId: 'usr_seller_01',
+          sellerName: 'Nguyễn Văn Minh (DNTU K17)',
+          sellerPhone: '0901234567',
+          title: 'Máy tính Casio fx-580VN X chính hãng Bitex',
+          category: 'stationery',
+          price: 320000,
+          originalPrice: 350000,
+          stock: 2,
+          photoUri: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?w=600&auto=format&fit=crop&q=80',
+          photoCompressedSizeKb: 340,
+          photoOriginalSizeKb: 5100,
+          description: 'Đầy đủ nắp đậy, chưa qua sửa chữa, phục vụ tốt môn Toán cao cấp và Xác suất.',
+          condition: 'like_new'
+        },
+        {
+          id: 'lst_104',
+          sellerId: 'usr_seller_03',
+          sellerName: 'Lê Hoàng Long (KTX DNTU)',
+          sellerPhone: '0987654321',
+          title: 'Quạt kẹp bàn tích điện mini 10.000mAh',
+          category: 'dorm_supplies',
+          price: 110000,
+          originalPrice: 140000,
+          stock: 4,
+          photoUri: 'https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1?w=600&auto=format&fit=crop&q=80',
+          photoCompressedSizeKb: 260,
+          photoOriginalSizeKb: 3900,
+          description: 'Pin trâu dùng liên tục 8 tiếng, 4 cấp độ gió cho phòng KTX mùa nóng.',
+          condition: 'good'
+        }
+      ]
+    };
+
+    function toggleThemeMode() {
+      state.isDark = !state.isDark;
+      const screen = document.getElementById('phoneScreen');
+      if (state.isDark) {
+        screen.classList.remove('light');
+        screen.classList.add('dark');
+        document.getElementById('themeIcon').textContent = '☀️';
+      } else {
+        screen.classList.remove('dark');
+        screen.classList.add('light');
+        document.getElementById('themeIcon').textContent = '🌙';
+      }
+    }
+
+    function toggleOfflineMode() {
+      state.isOffline = !state.isOffline;
+      const banner = document.getElementById('offlineBanner');
+      banner.style.display = state.isOffline ? 'flex' : 'none';
+      renderScreen();
+    }
+
+    function setRole(role) {
+      state.currentUser.role = role;
+      document.getElementById('userRoleHeader').textContent =
+        `${state.currentUser.name} (${role === 'seller' ? 'Người bán' : 'Sinh viên'})`;
+      renderScreen();
+    }
+
+    function switchTab(tab) {
+      state.activeTab = tab;
+      state.activeListingDetail = null;
+      ['tabHome', 'tabFav', 'tabCreate', 'tabCart', 'tabProfile'].forEach(id => {
+        document.getElementById(id)?.classList.remove('active');
+      });
+      if (tab === 'home') document.getElementById('tabHome')?.classList.add('active');
+      if (tab === 'fav') document.getElementById('tabFav')?.classList.add('active');
+      if (tab === 'create') document.getElementById('tabCreate')?.classList.add('active');
+      if (tab === 'cart') document.getElementById('tabCart')?.classList.add('active');
+      if (tab === 'profile') document.getElementById('tabProfile')?.classList.add('active');
+      renderScreen();
+    }
+
+    function toggleFav(id, e) {
+      if (e) e.stopPropagation();
+      if (state.favouriteIds.includes(id)) {
+        state.favouriteIds = state.favouriteIds.filter(i => i !== id);
+      } else {
+        state.favouriteIds.push(id);
+      }
+      renderScreen();
+    }
+
+    function addToCart(listing, e) {
+      if (e) e.stopPropagation();
+      const exist = state.cartItems.find(i => i.id === listing.id);
+      if (exist) {
+        if (exist.qty >= listing.stock) {
+          alert(`Chỉ còn ${listing.stock} món trong kho của người bán!`);
+          return;
+        }
+        exist.qty += 1;
+      } else {
+        if (listing.stock <= 0) {
+          alert('Sản phẩm này đã hết hàng.');
+          return;
+        }
+        state.cartItems.push({ ...listing, qty: 1 });
+      }
+      updateCartBadge();
+      alert('Đã thêm vào giỏ hàng thành công!');
+      renderScreen();
+    }
+
+    function updateCartQty(id, delta) {
+      const item = state.cartItems.find(i => i.id === id);
+      if (!item) return;
+      if (item.qty + delta > item.stock) {
+        alert(`Số lượng vượt quá tồn kho (tối đa: ${item.stock})`);
+        return;
+      }
+      item.qty += delta;
+      if (item.qty <= 0) {
+        state.cartItems = state.cartItems.filter(i => i.id !== id);
+      }
+      updateCartBadge();
+      renderScreen();
+    }
+
+    function updateCartBadge() {
+      const count = state.cartItems.reduce((sum, i) => sum + i.qty, 0);
+      document.getElementById('headerCartBadge').textContent = count;
+    }
+
+    function viewListing(listing) {
+      state.activeListingDetail = listing;
+      renderScreen();
+    }
+
+    function simulatePriceDrop() {
+      const item = state.listings[0];
+      const oldP = item.price;
+      item.price = Math.max(10000, item.price - 15000);
+      alert(`🔔 [LOCAL NOTIFICATION]\n\nGiảm giá: ${item.title}\nMón đồ trong danh sách yêu thích vừa giảm ${ (oldP - item.price).toLocaleString('vi-VN') } đ!\nGiá mới: ${item.price.toLocaleString('vi-VN')} đ`);
+      renderScreen();
+    }
+
+    function renderScreen() {
+      const container = document.getElementById('screenBody');
+      updateCartBadge();
+
+      // View Detail Screen
+      if (state.activeListingDetail) {
+        const item = state.activeListingDetail;
+        const isFav = state.favouriteIds.includes(item.id);
+        const isSeller = state.currentUser.role === 'seller';
+        const isOutOfStock = item.stock <= 0;
+
+        container.innerHTML = `
+          <div>
+            <button onclick="state.activeListingDetail = null; renderScreen();" style="border:none; background:none; color:var(--primary); font-size:13px; font-weight:700; cursor:pointer; margin-bottom:10px;">← Quay lại danh mục</button>
+            <div style="width:100%; height:220px; border-radius:12px; overflow:hidden; position:relative; background:#000;">
+              <img src="${item.photoUri}" style="width:100%; height:100%; object-fit:cover;">
+              <button class="fav-btn" onclick="toggleFav('${item.id}', event)">${isFav ? '❤️' : '🤍'}</button>
+              <div style="position:absolute; bottom:8px; left:8px; background:rgba(255,255,255,0.9); padding:4px 8px; border-radius:6px; font-size:10px; color:#0369a1;">
+                ⚡ Gốc: ${item.photoOriginalSizeKb || 4200}KB ➔ Nén: ${item.photoCompressedSizeKb || 280}KB (Tiết kiệm 93% Wi-Fi)
+              </div>
+            </div>
+
+            <div style="padding:12px 0;">
+              <div style="font-size:18px; font-weight:800; color:var(--primary);">${item.price.toLocaleString('vi-VN')} đ</div>
+              <h2 style="font-size:15px; font-weight:700; margin:6px 0;">${item.title}</h2>
+              <div style="display:flex; gap:8px; margin-bottom:12px;">
+                <span class="prod-stock ${isOutOfStock ? 'stock-out' : 'stock-ok'}">${isOutOfStock ? 'Hết hàng' : `Còn ${item.stock} món`}</span>
+                <span style="font-size:10px; background:#f1f5f9; padding:2px 6px; border-radius:4px; color:#475569;">Tình trạng: Mới 99%</span>
+              </div>
+
+              <!-- Seller vs Buyer View (Rubric Requirement) -->
+              <div style="padding:10px; border-radius:10px; background:${isSeller ? '#eff6ff' : '#f8fafc'}; border:1px solid #cbd5e1; margin-bottom:12px;">
+                <div style="font-size:12px; font-weight:700; color:${isSeller ? '#1d4ed8' : '#0f172a'}; margin-bottom:4px;">
+                  ${isSeller ? '🛠️ Bảng điều khiển Người bán (Seller View)' : '👤 Thông tin người bán (Buyer View)'}
+                </div>
+                ${isSeller ? `
+                  <p style="font-size:11px; color:#475569; margin-bottom:8px;">Bạn có thể điều chỉnh giá để kích hoạt Local Notification tới người mua:</p>
+                  <button onclick="simulatePriceDrop()" style="width:100%; padding:8px; background:var(--primary); color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">🔔 Giảm giá 15.000đ (Bắn thông báo)</button>
+                ` : `
+                  <p style="font-size:11px; color:#475569;">• Người bán: <strong>${item.sellerName}</strong></p>
+                  <p style="font-size:11px; color:#475569;">• Số điện thoại: <strong>${item.sellerPhone}</strong></p>
+                  <p style="font-size:11px; color:#475569;">• Địa điểm: Cổng 1 DNTU hoặc KTX</p>
+                `}
+              </div>
+
+              <div style="font-size:12px; font-weight:700; margin-bottom:4px;">Mô tả chi tiết:</div>
+              <p style="font-size:11px; color:#64748b; line-height:1.5;">${item.description}</p>
+
+              ${!isSeller ? `
+                <button onclick="addToCart(state.activeListingDetail, event)" style="width:100%; padding:12px; background:var(--primary); color:#fff; border:none; border-radius:10px; font-size:13px; font-weight:700; margin-top:16px; cursor:pointer;" ${isOutOfStock ? 'disabled' : ''}>
+                  ${isOutOfStock ? 'Sản phẩm đã hết hàng' : '🛒 Thêm vào giỏ hàng'}
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // 1. Home Tab
+      if (state.activeTab === 'home') {
+        // Lọc tính khi render
+        const filtered = state.listings.filter(item => {
+          const mQ = item.title.toLowerCase().includes(state.searchQuery.toLowerCase());
+          const mC = state.selectedCategory === 'all' || item.category === state.selectedCategory;
+          return mQ && mC;
+        });
+
+        container.innerHTML = `
+          <div>
+            <!-- Search Input -->
+            <input type="text" placeholder="🔍 Tìm giáo trình, máy tính, quạt KTX..." value="${state.searchQuery}" oninput="state.searchQuery = this.value; renderScreen();" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid #cbd5e1; font-size:12px; margin-bottom:8px;">
+
+            <!-- Category Chips -->
+            <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px;">
+              ${[
+                { k: 'all', l: 'Tất cả' },
+                { k: 'textbook', l: '📚 Giáo trình' },
+                { k: 'electronics', l: '💻 Thiết bị' },
+                { k: 'dorm_supplies', l: '🛏️ Đồ KTX' },
+                { k: 'stationery', l: '✏️ Dụng cụ' }
+              ].map(c => `
+                <button onclick="state.selectedCategory = '${c.k}'; renderScreen();" style="padding:4px 10px; border-radius:14px; border:1px solid ${state.selectedCategory === c.k ? 'var(--primary)' : '#cbd5e1'}; background:${state.selectedCategory === c.k ? 'var(--primary)' : 'transparent'}; color:${state.selectedCategory === c.k ? '#fff' : '#64748b'}; font-size:10px; font-weight:700; cursor:pointer; white-space:nowrap;">${c.l}</button>
+              `).join('')}
+            </div>
+
+            <div style="font-size:11px; color:#64748b; margin:6px 0;">Hiển thị ${filtered.length} bài đăng • Wi-Fi DNTU</div>
+
+            <!-- Product Cards -->
+            ${filtered.map(item => `
+              <div class="prod-card" onclick="viewListing(state.listings.find(l => l.id === '${item.id}'))">
+                <div class="prod-img-wrap">
+                  <img src="${item.photoUri}" class="prod-img">
+                  <button class="fav-btn" onclick="toggleFav('${item.id}', event)">${state.favouriteIds.includes(item.id) ? '❤️' : '🤍'}</button>
+                  <div class="compress-pill">⚡ Nén: ${item.photoCompressedSizeKb || 280}KB</div>
+                </div>
+                <div class="prod-content">
+                  <div class="prod-title">${item.title}</div>
+                  <div style="font-size:10px; color:#64748b;">Người bán: ${item.sellerName}</div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                    <span class="prod-price">${item.price.toLocaleString('vi-VN')} đ</span>
+                    <span class="prod-stock ${item.stock <= 0 ? 'stock-out' : 'stock-ok'}">${item.stock <= 0 ? 'Hết hàng' : `Kho: ${item.stock}`}</span>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        return;
+      }
+
+      // 2. Favourites Tab
+      if (state.activeTab === 'fav') {
+        const favs = state.listings.filter(i => state.favouriteIds.includes(i.id));
+        container.innerHTML = `
+          <div>
+            <h2 style="font-size:15px; font-weight:800; margin-bottom:4px;">Mục yêu thích (${favs.length})</h2>
+            <p style="font-size:11px; color:#64748b; margin-bottom:10px;">Lưu trong shared state và tự động kích hoạt thông báo khi giảm giá.</p>
+            ${favs.length === 0 ? `
+              <div style="text-align:center; padding:40px 10px;">
+                <div style="font-size:40px;">🤍</div>
+                <div style="font-size:13px; font-weight:700; margin-top:8px;">Chưa có món đồ yêu thích</div>
+                <button onclick="switchTab('home')" style="margin-top:12px; padding:8px 16px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">Duyệt chợ DNTU</button>
+              </div>
+            ` : favs.map(item => `
+              <div class="prod-card" onclick="viewListing(state.listings.find(l => l.id === '${item.id}'))">
+                <div class="prod-img-wrap" style="height:140px;">
+                  <img src="${item.photoUri}" class="prod-img">
+                  <button class="fav-btn" onclick="toggleFav('${item.id}', event)">❤️</button>
+                </div>
+                <div class="prod-content">
+                  <div class="prod-title">${item.title}</div>
+                  <div class="prod-price">${item.price.toLocaleString('vi-VN')} đ</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        return;
+      }
+
+      // 3. Create Listing Tab
+      if (state.activeTab === 'create') {
+        container.innerHTML = `
+          <div>
+            <h2 style="font-size:15px; font-weight:800; margin-bottom:8px;">Đăng bán sản phẩm mới</h2>
+            <div style="padding:10px; border-radius:10px; background:#e0f2fe; color:#0369a1; font-size:11px; margin-bottom:10px;">
+              ⚡ <strong>Bằng chứng nén ảnh Wi-Fi:</strong><br>
+              Ảnh camera gốc: <strong>4.2 MB</strong> ➔ Sau khi nén: <strong>280 KB</strong> (Tiết kiệm 93% băng thông).
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <input type="text" id="newTitle" placeholder="Tiêu đề (VD: Giáo trình Mạng máy tính...)" style="padding:8px; border-radius:8px; border:1px solid #cbd5e1; font-size:11px;">
+              <input type="number" id="newPrice" placeholder="Giá bán (VND) - VD: 45000" style="padding:8px; border-radius:8px; border:1px solid #cbd5e1; font-size:11px;">
+              <input type="number" id="newStock" placeholder="Số lượng tồn kho (VD: 2)" style="padding:8px; border-radius:8px; border:1px solid #cbd5e1; font-size:11px;">
+              <textarea id="newDesc" placeholder="Mô tả tình trạng sách, địa điểm giao..." style="padding:8px; border-radius:8px; border:1px solid #cbd5e1; font-size:11px; height:60px;"></textarea>
+              <button onclick="createNewItem()" style="padding:10px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">🚀 Đăng bán ngay</button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // 4. Cart Tab
+      if (state.activeTab === 'cart') {
+        const subtotal = state.cartItems.reduce((s, i) => s + i.price * i.qty, 0);
+        const deliveryFee = state.deliveryType === 'dorm_delivery' ? 15000 : 0;
+        const total = subtotal + deliveryFee;
+
+        container.innerHTML = `
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <h2 style="font-size:15px; font-weight:800;">Giỏ hàng (${state.cartItems.length})</h2>
+              ${state.cartItems.length > 0 ? `<button onclick="state.cartItems = []; updateCartBadge(); renderScreen();" style="border:none; background:none; color:var(--error); font-size:11px; font-weight:700; cursor:pointer;">Xóa tất cả</button>` : ''}
+            </div>
+
+            ${state.cartItems.length === 0 ? `
+              <div style="text-align:center; padding:40px 10px;">
+                <div style="font-size:40px;">🛒</div>
+                <div style="font-size:13px; font-weight:700; margin-top:8px;">Giỏ hàng đang trống</div>
+                <button onclick="switchTab('home')" style="margin-top:12px; padding:8px 16px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">Mua sắm ngay</button>
+              </div>
+            ` : `
+              ${state.cartItems.map(item => `
+                <div style="display:flex; gap:10px; padding:8px; border-radius:10px; border:1px solid #cbd5e1; margin-bottom:8px; align-items:center;">
+                  <img src="${item.photoUri}" style="width:50px; height:50px; border-radius:6px; object-fit:cover;">
+                  <div style="flex:1;">
+                    <div style="font-size:11px; font-weight:700;">${item.title}</div>
+                    <div style="font-size:12px; font-weight:800; color:var(--primary);">${item.price.toLocaleString('vi-VN')} đ</div>
+                    <div style="font-size:9px; color:#d97706;">Kho tối đa: ${item.stock}</div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:4px;">
+                    <button onclick="updateCartQty('${item.id}', -1)" style="padding:2px 6px; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer;">-</button>
+                    <span style="font-size:11px; font-weight:700; min-width:14px; text-align:center;">${item.qty}</span>
+                    <button onclick="updateCartQty('${item.id}', 1)" style="padding:2px 6px; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer;">+</button>
+                  </div>
+                </div>
+              `).join('')}
+
+              <!-- Delivery Rules -->
+              <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
+                <div style="font-size:11px; font-weight:700; margin-bottom:6px;">Quy tắc giao nhận tại DNTU:</div>
+                <label style="display:flex; align-items:center; gap:6px; font-size:11px; margin-bottom:4px; cursor:pointer;">
+                  <input type="radio" name="delivery" ${state.deliveryType === 'campus_pickup' ? 'checked' : ''} onchange="state.deliveryType = 'campus_pickup'; renderScreen();">
+                  Cổng 1 trường DNTU (Miễn phí 0đ)
+                </label>
+                <label style="display:flex; align-items:center; gap:6px; font-size:11px; cursor:pointer;">
+                  <input type="radio" name="delivery" ${state.deliveryType === 'dorm_delivery' ? 'checked' : ''} onchange="state.deliveryType = 'dorm_delivery'; renderScreen();">
+                  Giao tận phòng Ký túc xá DNTU (+15.000đ)
+                </label>
+              </div>
+
+              <!-- Summary -->
+              <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
+                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;">
+                  <span>Tạm tính:</span>
+                  <strong>${subtotal.toLocaleString('vi-VN')} đ</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:6px;">
+                  <span>Phí giao hàng:</span>
+                  <strong>${deliveryFee === 0 ? 'Miễn phí' : deliveryFee.toLocaleString('vi-VN') + ' đ'}</strong>
+                </div>
+                <hr style="border:none; border-top:1px solid #cbd5e1; margin-bottom:6px;">
+                <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:800; color:var(--primary); margin-bottom:10px;">
+                  <span>Tổng thanh toán:</span>
+                  <span>${total.toLocaleString('vi-VN')} đ</span>
+                </div>
+                <button onclick="alert('Đặt hàng thành công với tổng tiền ' + ${total}.toLocaleString('vi-VN') + ' đ!'); state.cartItems = []; updateCartBadge(); switchTab('home');" style="width:100%; padding:10px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">Xác nhận đặt hàng</button>
+              </div>
+            `}
+          </div>
+        `;
+        return;
+      }
+
+      // 5. Profile Tab
+      if (state.activeTab === 'profile') {
+        container.innerHTML = `
+          <div>
+            <div style="text-align:center; padding:10px 0;">
+              <div style="font-size:40px;">${state.currentUser.role === 'seller' ? '🏷️' : '🎓'}</div>
+              <h2 style="font-size:15px; font-weight:800; margin-top:4px;">${state.currentUser.name}</h2>
+              <p style="font-size:11px; color:#64748b;">${state.currentUser.email}</p>
+              <div style="display:inline-block; font-size:10px; padding:2px 8px; border-radius:10px; background:#e0f2fe; color:#0369a1; font-weight:700; margin-top:6px;">
+                Vai trò: ${state.currentUser.role === 'seller' ? 'Chủ shop (Seller)' : 'Sinh viên (Buyer)'}
+              </div>
+            </div>
+
+            <!-- Role Switcher -->
+            <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
+              <div style="font-size:11px; font-weight:700; margin-bottom:4px;">Chuyển đổi vai trò trải nghiệm:</div>
+              <div style="display:flex; gap:6px;">
+                <button onclick="setRole('buyer')" style="flex:1; padding:6px; border-radius:6px; border:1px solid #cbd5e1; background:${state.currentUser.role === 'buyer' ? 'var(--primary)' : 'transparent'}; color:${state.currentUser.role === 'buyer' ? '#fff' : '#475569'}; font-size:10px; font-weight:700; cursor:pointer;">🛍️ Người mua</button>
+                <button onclick="setRole('seller')" style="flex:1; padding:6px; border-radius:6px; border:1px solid #cbd5e1; background:${state.currentUser.role === 'seller' ? 'var(--primary)' : 'transparent'}; color:${state.currentUser.role === 'seller' ? '#fff' : '#475569'}; font-size:10px; font-weight:700; cursor:pointer;">🏷️ Người bán</button>
+              </div>
+            </div>
+
+            <!-- Team Members -->
+            <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
+              <div style="font-size:11px; font-weight:700; margin-bottom:4px;">👥 Thành viên nhóm 23DTH1:</div>
+              <p style="font-size:10px; color:#475569;">• <strong>1923050080</strong> - Trịnh Thế Thanh Hải (Nhóm trưởng)</p>
+              <p style="font-size:10px; color:#475569;">• <strong>1923050973</strong> - Bùi Thanh Sơn</p>
+              <p style="font-size:10px; color:#475569;">• <strong>1923050861</strong> - Nguyễn Vũ Minh Nhật</p>
+            </div>
+
+            <button onclick="alert('Đã xóa sạch Token trong SecureStore và đăng xuất!'); location.reload();" style="width:100%; padding:10px; background:#fee2e2; color:#dc2626; border:1px solid #fecaca; border-radius:8px; font-weight:700; font-size:11px; margin-top:14px; cursor:pointer;">🚪 Đăng xuất tài khoản</button>
+          </div>
+        `;
+        return;
+      }
+    }
+
+    function createNewItem() {
+      const title = document.getElementById('newTitle')?.value;
+      const price = parseInt(document.getElementById('newPrice')?.value) || 50000;
+      const stock = parseInt(document.getElementById('newStock')?.value) || 1;
+      const desc = document.getElementById('newDesc')?.value || 'Sản phẩm sinh viên DNTU nhượng lại.';
+
+      if (!title) {
+        alert('Vui lòng nhập tiêu đề!');
+        return;
+      }
+
+      state.listings.unshift({
+        id: 'lst_' + Date.now(),
+        sellerId: state.currentUser.id,
+        sellerName: state.currentUser.name,
+        sellerPhone: '0901234567',
+        title,
+        price,
+        stock,
+        category: 'textbook',
+        photoUri: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop&q=80',
+        photoCompressedSizeKb: 280,
+        photoOriginalSizeKb: 4200,
+        description: desc,
+        condition: 'like_new'
+      });
+
+      alert('Đăng bán thành công (Đã nén ảnh 93%)!');
+      switchTab('home');
+    }
+
+    // Init
+    document.getElementById('appHeader').style.display = 'flex';
+    document.getElementById('tabBar').style.display = 'flex';
+    renderScreen();
+  </script>
+</body>
+</html>

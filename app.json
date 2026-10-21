@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Campus Marketplace DNTU",
+    "slug": "campus-marketplace",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "campus-marketplace",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0F172A"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Ứng dụng cần quyền camera để chụp ảnh sản phẩm đăng bán trên sàn.",
+        "NSPhotoLibraryUsageDescription": "Ứng dụng cần quyền thư viện để chọn ảnh đồ dùng đăng bán."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0F172A"
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ]
+  }
+}
