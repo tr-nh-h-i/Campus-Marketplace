@@ -36,5 +36,11 @@
     "jest": "^29.7.0",
     "typescript": "~5.3.3"
   },
-  "private": true
+  "private": true,
+  "author": "Bui Thanh Son (Sonbui12345) & Team",
+  "contributors": [
+    "Trinh The Thanh Hai (hai1-git)",
+    "Bui Thanh Son (Sonbui12345)",
+    "Nguyen Vu Minh Nhat"
+  ]
 }

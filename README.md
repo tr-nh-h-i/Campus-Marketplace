@@ -12,8 +12,8 @@
 
 | STT | Họ và tên sinh viên | Mã số sinh viên (MSSV) | Vai trò & Trách nhiệm chính trong đồ án |
 | :---: | :--- | :---: | :--- |
-| **01** | **Trịnh Thế Thanh Hải** | **1923050080** | **Nhóm trưởng:** Thiết kế Kiến trúc State Store Zustand (4 slices), Bảo mật phiên đăng nhập qua `SecureStore`, Xây dựng luồng Xác thực & Điều hướng Expo Router. |
-| **02** | **Bùi Thanh Sơn** | **1923050973** | **Thành viên:** Thiết kế hệ thống Design Tokens tập trung (`constants/theme.ts`), Chuẩn hóa tiêu chuẩn WCAG Accessibility (Touch Target $\ge 44\times 44$), Xây dựng giao diện Danh mục & Chi tiết sản phẩm. |
+| **01** | **Trịnh Thế Thanh Hải** | **1923050080** | [@hai1-git](https://github.com/hai1-git) | **Nhóm trưởng:** Thiết kế Kiến trúc State Store Zustand (4 slices), Bảo mật phiên đăng nhập qua `SecureStore`, Xây dựng luồng Xác thực & Điều hướng Expo Router. |
+| **02** | **Bùi Thanh Sơn** | **1923050973** | [@Sonbui12345](https://github.com/Sonbui12345) | **Thành viên:** Thiết kế hệ thống Design Tokens tập trung (`constants/theme.ts`), Chuẩn hóa tiêu chuẩn WCAG Accessibility (Touch Target $\ge 44\times 44$), Xây dựng giao diện Danh mục & Chi tiết sản phẩm. |
 | **03** | **Nguyễn Vũ Minh Nhật** | **1923050861** | **Thành viên:** Xây dựng cơ chế bộ đệm ngoại tuyến (Offline Cache), Tiện ích nén ảnh tối ưu Wi-Fi trường (`imageCompressor.ts`), Viết bộ kiểm thử tự động (Unit & Critical Path Tests). |
 
 - **Địa chỉ Git Repository:** [https://github.com/tr-nh-h-i/Campus-Marketplace.git](https://github.com/tr-nh-h-i/Campus-Marketplace.git)  
