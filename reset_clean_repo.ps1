@@ -34,9 +34,10 @@ git add .
 git commit -m "feat: initial commit for Campus Marketplace DNTU"
 
 # 5. Ket noi lai remote GitHub
-$remoteUrl = "https://github.com/hai1-git/Campus-Marketplace.git"
+$remoteUrl = "https://github.com/tr-nh-h-i/Campus-Marketplace.git"
 Write-Host "[4/5] Ket noi remote: $remoteUrl ..." -ForegroundColor Green
-git remote add origin $remoteUrl
+git remote add origin $remoteUrl 2>$null
+git remote set-url origin $remoteUrl
 
 # 6. Force push len GitHub de de sach toan bo commit ao cu
 Write-Host "[5/5] Day commit moi len GitHub (ghi de sach commit ao)..." -ForegroundColor Green
@@ -47,5 +48,5 @@ git push origin --delete v1.0.0 2>$null
 
 Write-Host "==========================================================" -ForegroundColor Cyan
 Write-Host " DA XOA SACH COMMIT AO! REPO GIO DAY CHUAN 100%." -ForegroundColor Yellow
-Write-Host " Kiem tra tai: https://github.com/hai1-git/Campus-Marketplace" -ForegroundColor Cyan
+Write-Host " Kiem tra tai: https://github.com/tr-nh-h-i/Campus-Marketplace" -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan

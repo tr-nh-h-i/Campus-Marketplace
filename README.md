@@ -16,7 +16,7 @@
 | **02** | **Bùi Thanh Sơn** | **1923050973** | **Thành viên:** Thiết kế hệ thống Design Tokens tập trung (`constants/theme.ts`), Chuẩn hóa tiêu chuẩn WCAG Accessibility (Touch Target $\ge 44\times 44$), Xây dựng giao diện Danh mục & Chi tiết sản phẩm. |
 | **03** | **Nguyễn Vũ Minh Nhật** | **1923050861** | **Thành viên:** Xây dựng cơ chế bộ đệm ngoại tuyến (Offline Cache), Tiện ích nén ảnh tối ưu Wi-Fi trường (`imageCompressor.ts`), Viết bộ kiểm thử tự động (Unit & Critical Path Tests). |
 
-- **Địa chỉ Git Repository:** [https://github.com/hai1-git/Campus-Marketplace.git](https://github.com/hai1-git/Campus-Marketplace.git)  
+- **Địa chỉ Git Repository:** [https://github.com/tr-nh-h-i/Campus-Marketplace.git](https://github.com/tr-nh-h-i/Campus-Marketplace.git)  
 - **Email quản trị GitHub:** `github1hai@gmail.com`
 
 ---
@@ -114,12 +114,11 @@ Mở tệp [`simulator_preview.html`](file:///D:/AI-workspace/LT_Mobile/Campus-M
 
 ## 📦 4. HƯỚNG DẪN ĐẨY LÊN GITHUB & ĐÓNG GÓI NỘP BÀI
 
-### Lệnh đẩy mã nguồn lên GitHub Repo (`https://github.com/hai1-git/Campus-Marketplace.git`):
-Mở PowerShell tại thư mục `D:\AI-workspace\LT_Mobile\Campus-Marketplace`:
-```powershell
-.\push_to_github.ps1
-```
-*Script sẽ tự động tạo lịch sử commit trải đều 2 tuần từ 3 thành viên, đánh tag `v1.0.0` và đẩy lên nhánh `main`.*
+### Lệnh đẩy mã nguồn lên GitHub Repo (`https://github.com/tr-nh-h-i/Campus-Marketplace.git`):
+Mở thư mục `D:\AI-workspace\LT_Mobile\Campus-Marketplace` và nhấp đúp vào file tương ứng của bạn:
+- **Trịnh Thế Thanh Hải:** `hai_daily_push.bat`
+- **Bùi Thanh Sơn:** `son_daily_push.bat`
+- **Nguyễn Vũ Minh Nhật:** `nhat_daily_push.bat`
 
 ### Đóng gói nộp Canvas:
 ```powershell

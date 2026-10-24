@@ -1,7 +1,7 @@
 @echo off
 echo ========================================================
 echo  CLEANING FAKE COMMITS AND RESETTING GITHUB REPO...
-echo  Repo: https://github.com/hai1-git/Campus-Marketplace.git
+echo  Repo: https://github.com/tr-nh-h-i/Campus-Marketplace.git
 echo ========================================================
 
 cd /d "%~dp0"
