@@ -1,3 +1,8 @@
+/**
+ * MARKETPLACE HOME SCREEN (CATALOG & SEARCH)
+ * Module Author: Bùi Thanh Sơn (MSSV: 1923050973)
+ * Task: Thiết kế bộ lọc danh mục & thanh tìm kiếm tính toán trực tiếp trong render (useMemo)
+ */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   View,
