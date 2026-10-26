@@ -1,3 +1,8 @@
+/**
+ * STATE VIEW COMPONENT (4 MANDATORY SCREEN STATES)
+ * Module Author: Bùi Thanh Sơn (MSSV: 1923050973)
+ * Task: Xử lý 4 trạng thái Loading, Empty, Error kèm Working Retry, và Content
+ */
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
@@ -65,6 +70,7 @@ export const StateView: React.FC<StateViewProps> = ({
             onPress={onRetry}
             accessibilityRole="button"
             accessibilityLabel="Thử tải lại dữ liệu"
+          accessibilityHint="Nhấn để thử kết nối lại máy chủ DNTU và tải lại dữ liệu"
           >
             <Text style={[styles.retryText, { color: colors.textOnPrimary }]}>
               🔄 Thử lại

@@ -1,3 +1,8 @@
+/**
+ * LISTING CARD COMPONENT
+ * Module Author: Bùi Thanh Sơn (MSSV: 1923050973)
+ * Task: Chuẩn hóa vùng cảm ứng Touch Target >= 44x44 dp & Nhãn trợ năng WCAG 2.1 AA
+ */
 import React from 'react';
 import {
   View,
@@ -76,6 +81,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
           onPress={handleFavoritePress}
           accessibilityRole="button"
           accessibilityLabel={isFav ? 'Bỏ thích sản phẩm này' : 'Thêm vào danh sách yêu thích'}
+          accessibilityHint="Nhấn đúp để chuyển đổi trạng thái yêu thích sản phẩm"
         >
           <Text style={{ fontSize: 18 }}>{isFav ? '❤️' : '🤍'}</Text>
         </TouchableOpacity>
