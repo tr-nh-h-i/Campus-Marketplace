@@ -37,6 +37,19 @@ export interface User {
   role: 'buyer' | 'seller' | 'student';
   avatarUrl?: string;
   phone?: string;
+  studentId?: string;
+  createdAt?: string;
+}
+
+export interface StoredAccount {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: 'buyer' | 'seller';
+  studentId?: string;
+  phone?: string;
+  createdAt: string;
 }
 
 export interface CheckoutSummary {

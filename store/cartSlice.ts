@@ -1,5 +1,7 @@
 import { StateCreator } from 'zustand';
 import { CartItem, Listing } from '../types/marketplace';
+import { saveUserCart } from '../services/authStorage';
+import { RootStore } from './index';
 
 export interface CartSlice {
   cartItems: CartItem[];
@@ -11,12 +13,12 @@ export interface CartSlice {
   clearCart: () => void;
 }
 
-export const createCartSlice: StateCreator<CartSlice, [], [], CartSlice> = (set, get) => ({
+export const createCartSlice: StateCreator<RootStore, [], [], CartSlice> = (set, get) => ({
   cartItems: [],
   deliveryType: 'campus_pickup',
 
   addToCart: (listing: Listing) => {
-    const { cartItems } = get();
+    const { cartItems, user } = get();
     const existing = cartItems.find((item) => item.listingId === listing.id);
 
     if (existing) {
@@ -26,13 +28,13 @@ export const createCartSlice: StateCreator<CartSlice, [], [], CartSlice> = (set,
           message: `Rất tiếc! Người bán chỉ còn ${listing.stock} sản phẩm trong kho.`,
         };
       }
-      set({
-        cartItems: cartItems.map((item) =>
-          item.listingId === listing.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        ),
-      });
+      const updated = cartItems.map((item) =>
+        item.listingId === listing.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+      set({ cartItems: updated });
+      if (user) saveUserCart(user.id, updated);
       return { success: true, message: 'Đã tăng số lượng trong giỏ hàng!' };
     }
 
@@ -43,27 +45,28 @@ export const createCartSlice: StateCreator<CartSlice, [], [], CartSlice> = (set,
       };
     }
 
-    set({
-      cartItems: [...cartItems, { listingId: listing.id, listing, quantity: 1 }],
-    });
+    const updated = [...cartItems, { listingId: listing.id, listing, quantity: 1 }];
+    set({ cartItems: updated });
+    if (user) saveUserCart(user.id, updated);
     return { success: true, message: 'Đã thêm sản phẩm vào giỏ hàng!' };
   },
 
   removeFromCart: (listingId: string) => {
-    set((state) => ({
-      cartItems: state.cartItems.filter((i) => i.listingId !== listingId),
-    }));
+    const { cartItems, user } = get();
+    const updated = cartItems.filter((i) => i.listingId !== listingId);
+    set({ cartItems: updated });
+    if (user) saveUserCart(user.id, updated);
   },
 
   updateQuantity: (listingId: string, quantity: number) => {
-    const { cartItems } = get();
+    const { cartItems, user } = get();
     const item = cartItems.find((i) => i.listingId === listingId);
     if (!item) return { success: false, message: 'Không tìm thấy sản phẩm' };
 
     if (quantity <= 0) {
-      set({
-        cartItems: cartItems.filter((i) => i.listingId !== listingId),
-      });
+      const updated = cartItems.filter((i) => i.listingId !== listingId);
+      set({ cartItems: updated });
+      if (user) saveUserCart(user.id, updated);
       return { success: true, message: 'Đã xóa sản phẩm khỏi giỏ' };
     }
 
@@ -74,11 +77,11 @@ export const createCartSlice: StateCreator<CartSlice, [], [], CartSlice> = (set,
       };
     }
 
-    set({
-      cartItems: cartItems.map((i) =>
-        i.listingId === listingId ? { ...i, quantity } : i
-      ),
-    });
+    const updated = cartItems.map((i) =>
+      i.listingId === listingId ? { ...i, quantity } : i
+    );
+    set({ cartItems: updated });
+    if (user) saveUserCart(user.id, updated);
     return { success: true, message: 'Đã cập nhật số lượng' };
   },
 
@@ -87,6 +90,8 @@ export const createCartSlice: StateCreator<CartSlice, [], [], CartSlice> = (set,
   },
 
   clearCart: () => {
+    const { user } = get();
     set({ cartItems: [] });
+    if (user) saveUserCart(user.id, []);
   },
 });

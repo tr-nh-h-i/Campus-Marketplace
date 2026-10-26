@@ -1,4 +1,6 @@
 import { StateCreator } from 'zustand';
+import { saveUserFavourites } from '../services/authStorage';
+import { RootStore } from './index';
 
 export interface FavouritesSlice {
   favouriteIds: string[];
@@ -7,7 +9,7 @@ export interface FavouritesSlice {
 }
 
 export const createFavouritesSlice: StateCreator<
-  FavouritesSlice,
+  RootStore,
   [],
   [],
   FavouritesSlice
@@ -15,18 +17,31 @@ export const createFavouritesSlice: StateCreator<
   favouriteIds: [],
 
   toggleFavourite: (listingId: string) => {
-    const { favouriteIds } = get();
+    const { favouriteIds, user } = get();
     const exists = favouriteIds.includes(listingId);
+    let updated: string[];
+    let isFav = false;
+
     if (exists) {
-      set({ favouriteIds: favouriteIds.filter((id) => id !== listingId) });
-      return false; // Đã bỏ thích
+      updated = favouriteIds.filter((id) => id !== listingId);
+      isFav = false;
     } else {
-      set({ favouriteIds: [...favouriteIds, listingId] });
-      return true; // Đã thích
+      updated = [...favouriteIds, listingId];
+      isFav = true;
     }
+
+    set({ favouriteIds: updated });
+    if (user) {
+      saveUserFavourites(user.id, updated);
+    }
+    return isFav;
   },
 
   clearFavourites: () => {
+    const { user } = get();
     set({ favouriteIds: [] });
+    if (user) {
+      saveUserFavourites(user.id, []);
+    }
   },
 });

@@ -18,8 +18,10 @@
       --text-light: #0f172a;
       --border-light: #e2e8f0;
       --success: #16a34a;
+      --success-light: #dcfce7;
       --warning: #d97706;
       --error: #dc2626;
+      --error-light: #fee2e2;
     }
     * {
       box-sizing: border-box;
@@ -75,7 +77,7 @@
     /* Phone Mockup */
     .phone-container {
       width: 400px;
-      height: 820px;
+      height: 840px;
       background: #000;
       border-radius: 46px;
       padding: 12px;
@@ -293,6 +295,70 @@
       cursor: pointer;
       margin-top: 6px;
     }
+    /* Auth Form Styles inside Phone */
+    .auth-tab-row {
+      display: flex;
+      background: rgba(0,0,0,0.05);
+      border-radius: 8px;
+      padding: 3px;
+      margin-bottom: 12px;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      background: transparent;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #64748b;
+    }
+    .auth-tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: inherit;
+    }
+    .form-input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      font-size: 12px;
+      background: #fff;
+      color: #0f172a;
+    }
+    .phone-screen.dark .form-input {
+      background: #334155;
+      border-color: #475569;
+      color: #f8fafc;
+    }
+    .alert-banner {
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .alert-banner.error {
+      background: var(--error-light);
+      color: var(--error);
+      border: 1px solid var(--error);
+    }
+    .alert-banner.success {
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
   </style>
 </head>
 <body>
@@ -325,11 +391,11 @@
           <button onclick="toggleOfflineMode()" style="background:#fff; border:none; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700; cursor:pointer;">Kết nối lại</button>
         </div>
 
-        <!-- App Header -->
+        <!-- App Header (chỉ hiện khi đã đăng nhập) -->
         <div class="app-header" id="appHeader" style="display: none;">
           <div>
             <div class="logo-text">Campus Market</div>
-            <div class="role-badge" id="userRoleHeader">Trịnh Thế Thanh Hải (Sinh viên)</div>
+            <div class="role-badge" id="userRoleHeader">Sinh viên DNTU</div>
           </div>
           <div class="header-actions">
             <button class="header-btn" onclick="toggleThemeMode()" title="Đổi sáng/tối (Design Tokens)">
@@ -346,7 +412,7 @@
           <!-- Render via JS -->
         </div>
 
-        <!-- Bottom Tab Bar -->
+        <!-- Bottom Tab Bar (chỉ hiện khi đã đăng nhập) -->
         <div class="tab-bar" id="tabBar" style="display: none;">
           <div class="tab-item active" id="tabHome" onclick="switchTab('home')">
             <span style="font-size: 18px;">🏠</span>
@@ -374,9 +440,21 @@
 
     <!-- Side Panel / Specifications & Controls -->
     <div class="side-panel">
+      <!-- Viva Multi-User Control Box -->
+      <div class="info-box">
+        <h3>👥 Kiểm Thử Đa Tài Khoản & Cô Lập Dữ Liệu (Multi-User Isolation)</h3>
+        <p>• <strong>Bằng chứng dữ liệu riêng biệt:</strong> Giỏ hàng và Mục yêu thích được lưu riêng theo từng tài khoản. Nhấp nút dưới để chuyển nhanh giữa các tài khoản và quan sát dữ liệu tự động đổi theo:</p>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:8px;">
+          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')">🎓 Hải (Buyer - 1923050080)</button>
+          <button class="btn-action" style="background:#16a34a;" onclick="quickLoginSeed('minh.seller@dntu.edu.vn')">🏷️ Minh (Seller - Chủ shop)</button>
+          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('son.bui@dntu.edu.vn')">🎓 Sơn (Buyer - 1923050973)</button>
+          <button class="btn-action" style="background:#16a34a;" onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')">🏷️ Nhật (Seller - 1923050861)</button>
+        </div>
+      </div>
+
       <!-- Fast Viva Control Card -->
       <div class="info-box">
-        <h3>⚡ Bảng Điều Khiển Kiểm Thử Nhanh (Viva Demo Controls)</h3>
+        <h3>⚡ Bảng Điều Khiển Kiểm Thử Chức Năng (Viva Demo Controls)</h3>
         <p>• <strong>Mô phỏng Wi-Fi chập chờn:</strong> Bật/tắt chế độ Offline để xem banner ngoại tuyến và danh mục đã lưu trong bộ đệm.</p>
         <button class="btn-action" onclick="toggleOfflineMode()">📡 Bật/Tắt Chế độ Offline</button>
 
@@ -394,13 +472,13 @@
       <div class="info-box">
         <h3>📋 Đối Chiếu Tiêu Chí Chấm Điểm Đồ Án (Topic 02)</h3>
         <ul>
-          <li><strong>Must have 1:</strong> Đăng nhập & Đăng xuất an toàn qua <code>SecureStore</code> (không lưu token vào <code>AsyncStorage</code>).</li>
+          <li><strong>Must have 1:</strong> Đăng nhập & Đăng ký & Đổi mật khẩu an toàn qua <code>SecureStore</code> (không lưu token vào <code>AsyncStorage</code>).</li>
+          <li><strong>Multi-User:</strong> Mỗi tài khoản có giỏ hàng, danh sách yêu thích và quyền riêng biệt 100%.</li>
           <li><strong>Must have 2:</strong> Đăng bài có công cụ nén ảnh (ảnh gốc ~4.2MB nén còn ~280KB, giảm 93%).</li>
           <li><strong>Must have 3:</strong> Lọc danh mục & Tìm kiếm <strong>tính toán trực tiếp khi render</strong>, không lưu derived state.</li>
           <li><strong>Must have 4:</strong> Favourites trong shared state, lưu qua restart và hiển thị đồng bộ ở 2 màn hình.</li>
           <li><strong>Must have 5:</strong> Giỏ hàng, quy tắc phí giao hàng DNTU (Cổng 1 = 0đ, KTX = 15.000đ) và kiểm soát tồn kho.</li>
           <li><strong>Must have 6:</strong> Chế độ Offline hiển thị danh mục lưu lần gần nhất kèm banner, không bao giờ để màn hình trắng.</li>
-          <li><strong>Technical:</strong> Hệ màu Theme Tokens tập trung, 0% hardcode hex, chuẩn Accessibility Touch Target $\ge 44\times 44$.</li>
         </ul>
       </div>
 
@@ -408,31 +486,101 @@
       <div class="info-box">
         <h3>🐙 Thông Tin Git Repository</h3>
         <p>• <strong>URL:</strong> <a href="https://github.com/tr-nh-h-i/Campus-Marketplace" target="_blank" style="color:#38bdf8;">https://github.com/tr-nh-h-i/Campus-Marketplace</a></p>
-        <p>• <strong>Tổ chức / Nhóm:</strong> <code>tr-nh-h-i</code></p>
-        <p>• <strong>Lịch sử Commit:</strong> Phân công đều cho cả 3 thành viên: Trịnh Thế Thanh Hải, Bùi Thanh Sơn, Nguyễn Vũ Minh Nhật.</p>
+        <p>• <strong>Tổ chức / Nhóm:</strong> <code>tr-nh-h-i</code> (23DTH1 - DNTU)</p>
       </div>
     </div>
   </div>
 
   <script>
-    // State Store mô phỏng
-    const state = {
-      isDark: false,
-      isOffline: false,
-      lastUpdated: '09:41',
-      currentUser: {
+    // ==========================================
+    // KHỞI TẠO CƠ SỞ DỮ LIỆU TÀI KHOẢN (ACCOUNTS DB)
+    // ==========================================
+    const DEFAULT_ACCOUNTS = [
+      {
         id: 'usr_buyer_1923050080',
         name: 'Trịnh Thế Thanh Hải',
         email: 'hai.trinh@dntu.edu.vn',
-        role: 'buyer'
+        password: 'password123',
+        role: 'buyer',
+        studentId: '1923050080',
+        phone: '0901234567',
+        createdAt: '2026-10-21'
       },
-      token: 'jwt_dntu_session_token_1923050080',
-      activeTab: 'home',
-      activeListingDetail: null,
-      searchQuery: '',
-      selectedCategory: 'all',
-      favouriteIds: ['lst_101', 'lst_103'],
-      cartItems: [
+      {
+        id: 'usr_seller_01',
+        name: 'Nguyễn Văn Minh (Chủ Shop Sách)',
+        email: 'minh.seller@dntu.edu.vn',
+        password: 'password123',
+        role: 'seller',
+        studentId: '1923050001',
+        phone: '0909876543',
+        createdAt: '2026-10-21'
+      },
+      {
+        id: 'usr_buyer_1923050973',
+        name: 'Bùi Thanh Sơn',
+        email: 'son.bui@dntu.edu.vn',
+        password: 'password123',
+        role: 'buyer',
+        studentId: '1923050973',
+        phone: '0912345678',
+        createdAt: '2026-10-22'
+      },
+      {
+        id: 'usr_seller_1923050861',
+        name: 'Nguyễn Vũ Minh Nhật',
+        email: 'nhat.nguyen@dntu.edu.vn',
+        password: 'password123',
+        role: 'seller',
+        studentId: '1923050861',
+        phone: '0987654321',
+        createdAt: '2026-10-23'
+      }
+    ];
+
+    function getStoredAccounts() {
+      const raw = localStorage.getItem('campus_accounts');
+      if (!raw) {
+        localStorage.setItem('campus_accounts', JSON.stringify(DEFAULT_ACCOUNTS));
+        return DEFAULT_ACCOUNTS;
+      }
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return DEFAULT_ACCOUNTS;
+      }
+    }
+
+    function saveStoredAccounts(accs) {
+      localStorage.setItem('campus_accounts', JSON.stringify(accs));
+    }
+
+    // MULTI-USER ISOLATION: Giỏ hàng & Yêu thích riêng theo từng User ID
+    function getUserCartFromStorage(userId) {
+      if (!userId) return [];
+      const raw = localStorage.getItem('campus_cart_' + userId);
+      try { return raw ? JSON.parse(raw) : []; } catch { return []; }
+    }
+
+    function saveUserCartToStorage(userId, cart) {
+      if (!userId) return;
+      localStorage.setItem('campus_cart_' + userId, JSON.stringify(cart));
+    }
+
+    function getUserFavsFromStorage(userId) {
+      if (!userId) return [];
+      const raw = localStorage.getItem('campus_favs_' + userId);
+      try { return raw ? JSON.parse(raw) : []; } catch { return []; }
+    }
+
+    function saveUserFavsToStorage(userId, favs) {
+      if (!userId) return;
+      localStorage.setItem('campus_favs_' + userId, JSON.stringify(favs));
+    }
+
+    // Seed giỏ hàng ban đầu cho Hải để trải nghiệm ngay
+    if (!localStorage.getItem('campus_cart_usr_buyer_1923050080')) {
+      saveUserCartToStorage('usr_buyer_1923050080', [
         {
           id: 'lst_101',
           title: 'Giáo trình Lập trình Di động React Native SDK 51 & 56',
@@ -441,14 +589,35 @@
           qty: 1,
           photoUri: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80'
         }
-      ],
+      ]);
+      saveUserFavsToStorage('usr_buyer_1923050080', ['lst_101', 'lst_103']);
+    }
+
+    // Khởi tạo State
+    const state = {
+      isDark: false,
+      isOffline: false,
+      lastUpdated: '09:41',
+      currentUser: DEFAULT_ACCOUNTS[0], // Mặc định đăng nhập tài khoản Hải
+      activeTab: 'home',
+      activeListingDetail: null,
+      authViewMode: 'sign_in', // 'sign_in' | 'sign_up'
+      searchQuery: '',
+      selectedCategory: 'all',
+      favouriteIds: getUserFavsFromStorage(DEFAULT_ACCOUNTS[0].id),
+      cartItems: getUserCartFromStorage(DEFAULT_ACCOUNTS[0].id),
       deliveryType: 'campus_pickup', // 'campus_pickup' | 'dorm_delivery'
+      showChangePasswordForm: false,
+      authError: '',
+      authSuccess: '',
+      passError: '',
+      passSuccess: '',
       listings: [
         {
           id: 'lst_101',
           sellerId: 'usr_seller_01',
           sellerName: 'Nguyễn Văn Minh (DNTU K17)',
-          sellerPhone: '0901234567',
+          sellerPhone: '0909876543',
           title: 'Giáo trình Lập trình Di động React Native SDK 51 & 56',
           category: 'textbook',
           price: 65000,
@@ -462,9 +631,9 @@
         },
         {
           id: 'lst_102',
-          sellerId: 'usr_seller_02',
-          sellerName: 'Trần Thị Bích Ngọc (Khoa CNTT)',
-          sellerPhone: '0912345678',
+          sellerId: 'usr_seller_1923050861',
+          sellerName: 'Nguyễn Vũ Minh Nhật (CNTT)',
+          sellerPhone: '0987654321',
           title: 'Chuột không dây Logitech Silent M331',
           category: 'electronics',
           price: 180000,
@@ -480,7 +649,7 @@
           id: 'lst_103',
           sellerId: 'usr_seller_01',
           sellerName: 'Nguyễn Văn Minh (DNTU K17)',
-          sellerPhone: '0901234567',
+          sellerPhone: '0909876543',
           title: 'Máy tính Casio fx-580VN X chính hãng Bitex',
           category: 'stationery',
           price: 320000,
@@ -494,9 +663,9 @@
         },
         {
           id: 'lst_104',
-          sellerId: 'usr_seller_03',
-          sellerName: 'Lê Hoàng Long (KTX DNTU)',
-          sellerPhone: '0987654321',
+          sellerId: 'usr_seller_01',
+          sellerName: 'Nguyễn Văn Minh (DNTU K17)',
+          sellerPhone: '0909876543',
           title: 'Quạt kẹp bàn tích điện mini 10.000mAh',
           category: 'dorm_supplies',
           price: 110000,
@@ -510,6 +679,144 @@
         }
       ]
     };
+
+    // ==========================================
+    // LOGIC XÁC THỰC, ĐĂNG NHẬP, ĐĂNG KÝ, ĐỔI MẬT KHẨU
+    // ==========================================
+
+    function performSignIn(email, password) {
+      state.authError = '';
+      state.authSuccess = '';
+      const accounts = getStoredAccounts();
+      const acc = accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase());
+      if (!acc) {
+        state.authError = 'Không tìm thấy tài khoản với email này. Vui lòng đăng ký!';
+        renderScreen();
+        return;
+      }
+      if (acc.password !== password) {
+        state.authError = 'Mật khẩu không chính xác. Mật khẩu mẫu: password123';
+        renderScreen();
+        return;
+      }
+
+      // Đăng nhập thành công -> Nạp giỏ hàng & yêu thích riêng biệt của tài khoản này!
+      state.currentUser = acc;
+      state.cartItems = getUserCartFromStorage(acc.id);
+      state.favouriteIds = getUserFavsFromStorage(acc.id);
+      state.activeTab = 'home';
+      updateHeader();
+      renderScreen();
+    }
+
+    function performSignUp(data) {
+      state.authError = '';
+      state.authSuccess = '';
+      if (!data.name || !data.email || !data.password) {
+        state.authError = 'Vui lòng điền đầy đủ Họ tên, Email và Mật khẩu.';
+        renderScreen();
+        return;
+      }
+      if (data.password.length < 6) {
+        state.authError = 'Mật khẩu phải từ 6 ký tự trở lên.';
+        renderScreen();
+        return;
+      }
+      if (data.password !== data.confirmPassword) {
+        state.authError = 'Mật khẩu xác nhận không khớp.';
+        renderScreen();
+        return;
+      }
+
+      const accounts = getStoredAccounts();
+      if (accounts.some(a => a.email.toLowerCase() === data.email.trim().toLowerCase())) {
+        state.authError = 'Email này đã được đăng ký!';
+        renderScreen();
+        return;
+      }
+
+      const newAcc = {
+        id: 'usr_' + data.role + '_' + Date.now(),
+        name: data.name.trim(),
+        email: data.email.trim().toLowerCase(),
+        password: data.password,
+        role: data.role,
+        studentId: data.studentId.trim() || '192305' + Math.floor(1000 + Math.random() * 9000),
+        phone: data.phone.trim() || '0901234567',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      accounts.push(newAcc);
+      saveStoredAccounts(accounts);
+
+      // Đăng nhập ngay vào tài khoản mới
+      state.currentUser = newAcc;
+      state.cartItems = [];
+      state.favouriteIds = [];
+      saveUserCartToStorage(newAcc.id, []);
+      saveUserFavsToStorage(newAcc.id, []);
+      state.activeTab = 'home';
+      updateHeader();
+      renderScreen();
+    }
+
+    function performChangePassword(oldPass, newPass, confirmPass) {
+      state.passError = '';
+      state.passSuccess = '';
+      if (!oldPass) {
+        state.passError = 'Vui lòng nhập mật khẩu cũ.';
+        renderScreen();
+        return;
+      }
+      if (newPass.length < 6) {
+        state.passError = 'Mật khẩu mới phải từ 6 ký tự.';
+        renderScreen();
+        return;
+      }
+      if (newPass !== confirmPass) {
+        state.passError = 'Xác nhận mật khẩu mới không khớp.';
+        renderScreen();
+        return;
+      }
+
+      const accounts = getStoredAccounts();
+      const acc = accounts.find(a => a.id === state.currentUser.id);
+      if (!acc || acc.password !== oldPass) {
+        state.passError = 'Mật khẩu cũ không chính xác!';
+        renderScreen();
+        return;
+      }
+
+      acc.password = newPass;
+      saveStoredAccounts(accounts);
+      state.currentUser.password = newPass;
+      state.passSuccess = 'Đổi mật khẩu thành công! Mật khẩu mới đã được cập nhật an toàn.';
+      renderScreen();
+    }
+
+    function performSignOut() {
+      if (state.currentUser) {
+        saveUserCartToStorage(state.currentUser.id, state.cartItems);
+        saveUserFavsToStorage(state.currentUser.id, state.favouriteIds);
+      }
+      state.currentUser = null;
+      state.cartItems = [];
+      state.favouriteIds = [];
+      updateHeader();
+      renderScreen();
+    }
+
+    function quickLoginSeed(email) {
+      const accounts = getStoredAccounts();
+      const acc = accounts.find(a => a.email === email);
+      if (acc) {
+        performSignIn(acc.email, acc.password);
+      }
+    }
+
+    // ==========================================
+    // UI CONTROL FUNCTIONS
+    // ==========================================
 
     function toggleThemeMode() {
       state.isDark = !state.isDark;
@@ -533,10 +840,32 @@
     }
 
     function setRole(role) {
-      state.currentUser.role = role;
-      document.getElementById('userRoleHeader').textContent =
-        `${state.currentUser.name} (${role === 'seller' ? 'Người bán' : 'Sinh viên'})`;
+      if (state.currentUser) {
+        state.currentUser.role = role;
+        const accounts = getStoredAccounts();
+        const acc = accounts.find(a => a.id === state.currentUser.id);
+        if (acc) {
+          acc.role = role;
+          saveStoredAccounts(accounts);
+        }
+      }
+      updateHeader();
       renderScreen();
+    }
+
+    function updateHeader() {
+      const header = document.getElementById('appHeader');
+      const tabBar = document.getElementById('tabBar');
+      if (!state.currentUser) {
+        header.style.display = 'none';
+        tabBar.style.display = 'none';
+      } else {
+        header.style.display = 'flex';
+        tabBar.style.display = 'flex';
+        document.getElementById('userRoleHeader').textContent =
+          `${state.currentUser.name} (${state.currentUser.role === 'seller' ? 'Chủ Shop' : 'Sinh viên'})`;
+        updateCartBadge();
+      }
     }
 
     function switchTab(tab) {
@@ -560,6 +889,9 @@
       } else {
         state.favouriteIds.push(id);
       }
+      if (state.currentUser) {
+        saveUserFavsToStorage(state.currentUser.id, state.favouriteIds);
+      }
       renderScreen();
     }
 
@@ -579,8 +911,11 @@
         }
         state.cartItems.push({ ...listing, qty: 1 });
       }
+      if (state.currentUser) {
+        saveUserCartToStorage(state.currentUser.id, state.cartItems);
+      }
       updateCartBadge();
-      alert('Đã thêm vào giỏ hàng thành công!');
+      alert('Đã thêm vào giỏ hàng riêng của ' + (state.currentUser?.name || '') + '!');
       renderScreen();
     }
 
@@ -594,6 +929,9 @@
       item.qty += delta;
       if (item.qty <= 0) {
         state.cartItems = state.cartItems.filter(i => i.id !== id);
+      }
+      if (state.currentUser) {
+        saveUserCartToStorage(state.currentUser.id, state.cartItems);
       }
       updateCartBadge();
       renderScreen();
@@ -617,9 +955,116 @@
       renderScreen();
     }
 
+    // ==========================================
+    // RENDER BODY SCREEN
+    // ==========================================
     function renderScreen() {
       const container = document.getElementById('screenBody');
-      updateCartBadge();
+
+      // 0. NẾU CHƯA ĐĂNG NHẬP -> HIỂN THỊ MÀN HÌNH AUTHENTICATION
+      if (!state.currentUser) {
+        container.innerHTML = `
+          <div style="padding: 10px 0;">
+            <div style="text-align: center; margin-bottom: 16px;">
+              <div style="font-size: 36px; margin-bottom: 4px;">🎓</div>
+              <h2 style="font-size: 18px; font-weight: 800; color: var(--primary);">Campus Marketplace</h2>
+              <p style="font-size: 11px; color: #64748b;">Đại học Công nghệ Đồng Nai (DNTU)</p>
+            </div>
+
+            <!-- Tab switcher -->
+            <div class="auth-tab-row">
+              <button class="auth-tab-btn ${state.authViewMode === 'sign_in' ? 'active' : ''}" onclick="state.authViewMode = 'sign_in'; state.authError = ''; renderScreen();">🔐 Đăng Nhập</button>
+              <button class="auth-tab-btn ${state.authViewMode === 'sign_up' ? 'active' : ''}" onclick="state.authViewMode = 'sign_up'; state.authError = ''; renderScreen();">📝 Đăng Ký Mới</button>
+            </div>
+
+            ${state.authError ? `<div class="alert-banner error">⚠️ ${state.authError}</div>` : ''}
+            ${state.authSuccess ? `<div class="alert-banner success">✅ ${state.authSuccess}</div>` : ''}
+
+            ${state.authViewMode === 'sign_in' ? `
+              <!-- Form Đăng Nhập -->
+              <div>
+                <div class="form-group">
+                  <label>Email sinh viên trường (@dntu.edu.vn)</label>
+                  <input type="email" id="authEmail" class="form-input" placeholder="hai.trinh@dntu.edu.vn" value="hai.trinh@dntu.edu.vn">
+                </div>
+                <div class="form-group">
+                  <label>Mật khẩu</label>
+                  <input type="password" id="authPass" class="form-input" placeholder="••••••••" value="password123">
+                </div>
+                <button onclick="performSignIn(document.getElementById('authEmail').value, document.getElementById('authPass').value)" style="width: 100%; padding: 12px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 6px;">🚀 Đăng Nhập</button>
+
+                <div style="text-align: center; margin: 16px 0 10px; font-size: 11px; color: #64748b; border-bottom: 1px solid #cbd5e1; line-height: 0.1em;">
+                  <span style="background: inherit; padding: 0 8px;">Đăng nhập nhanh 1-chạm</span>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <button onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    🎓 <strong>Trịnh Thế Thanh Hải</strong> (Buyer) • 1923050080
+                  </button>
+                  <button onclick="quickLoginSeed('minh.seller@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    🏷️ <strong>Nguyễn Văn Minh</strong> (Seller - Chủ shop) • K17
+                  </button>
+                  <button onclick="quickLoginSeed('son.bui@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    🎓 <strong>Bùi Thanh Sơn</strong> (Buyer) • 1923050973
+                  </button>
+                  <button onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    🏷️ <strong>Nguyễn Vũ Minh Nhật</strong> (Seller) • 1923050861
+                  </button>
+                </div>
+              </div>
+            ` : `
+              <!-- Form Đăng Ký Mới -->
+              <div>
+                <div class="form-group">
+                  <label>Họ và tên sinh viên *</label>
+                  <input type="text" id="regName" class="form-input" placeholder="Ví dụ: Lê Hoàng Nam">
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <div class="form-group" style="flex:1;">
+                    <label>MSSV</label>
+                    <input type="text" id="regStudentId" class="form-input" placeholder="192305xxxx">
+                  </div>
+                  <div class="form-group" style="flex:1;">
+                    <label>Số điện thoại</label>
+                    <input type="tel" id="regPhone" class="form-input" placeholder="09xxxxxxxx">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Email trường DNTU *</label>
+                  <input type="email" id="regEmail" class="form-input" placeholder="nam.le@dntu.edu.vn">
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <div class="form-group" style="flex:1;">
+                    <label>Mật khẩu (≥6 ký tự) *</label>
+                    <input type="password" id="regPass" class="form-input" placeholder="••••••">
+                  </div>
+                  <div class="form-group" style="flex:1;">
+                    <label>Xác nhận lại *</label>
+                    <input type="password" id="regConfirmPass" class="form-input" placeholder="••••••">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Vai trò chính:</label>
+                  <select id="regRole" class="form-input">
+                    <option value="buyer">🛍️ Người mua (Buyer - Sinh viên mua đồ)</option>
+                    <option value="seller">🏷️ Người bán (Seller - Đăng bài nhượng đồ)</option>
+                  </select>
+                </div>
+                <button onclick="performSignUp({
+                  name: document.getElementById('regName').value,
+                  studentId: document.getElementById('regStudentId').value,
+                  phone: document.getElementById('regPhone').value,
+                  email: document.getElementById('regEmail').value,
+                  password: document.getElementById('regPass').value,
+                  confirmPassword: document.getElementById('regConfirmPass').value,
+                  role: document.getElementById('regRole').value
+                })" style="width: 100%; padding: 12px; background: var(--success); color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 6px;">✨ Tạo Tài Khoản & Vào App</button>
+              </div>
+            `}
+          </div>
+        `;
+        return;
+      }
 
       // View Detail Screen
       if (state.activeListingDetail) {
@@ -648,7 +1093,7 @@
               </div>
 
               <!-- Seller vs Buyer View (Rubric Requirement) -->
-              <div style="padding:10px; border-radius:10px; background:${isSeller ? '#eff6ff' : '#f8fafc'}; border:1px solid #cbd5e1; margin-bottom:12px;">
+              <div style="padding:10px; border-radius:10px; background:${isSeller ? '#eff6ff' : '#f8fafc'}; border:1px solid #cbd5e1; margin-bottom:12px; color:#0f172a;">
                 <div style="font-size:12px; font-weight:700; color:${isSeller ? '#1d4ed8' : '#0f172a'}; margin-bottom:4px;">
                   ${isSeller ? '🛠️ Bảng điều khiển Người bán (Seller View)' : '👤 Thông tin người bán (Buyer View)'}
                 </div>
@@ -678,7 +1123,6 @@
 
       // 1. Home Tab
       if (state.activeTab === 'home') {
-        // Lọc tính khi render
         const filtered = state.listings.filter(item => {
           const mQ = item.title.toLowerCase().includes(state.searchQuery.toLowerCase());
           const mC = state.selectedCategory === 'all' || item.category === state.selectedCategory;
@@ -688,7 +1132,7 @@
         container.innerHTML = `
           <div>
             <!-- Search Input -->
-            <input type="text" placeholder="🔍 Tìm giáo trình, máy tính, quạt KTX..." value="${state.searchQuery}" oninput="state.searchQuery = this.value; renderScreen();" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid #cbd5e1; font-size:12px; margin-bottom:8px;">
+            <input type="text" placeholder="🔍 Tìm giáo trình, máy tính, quạt KTX..." value="${state.searchQuery}" oninput="state.searchQuery = this.value; renderScreen();" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid #cbd5e1; font-size:12px; margin-bottom:8px; background:inherit; color:inherit;">
 
             <!-- Category Chips -->
             <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px;">
@@ -703,7 +1147,7 @@
               `).join('')}
             </div>
 
-            <div style="font-size:11px; color:#64748b; margin:6px 0;">Hiển thị ${filtered.length} bài đăng • Wi-Fi DNTU</div>
+            <div style="font-size:11px; color:#64748b; margin:6px 0;">Hiển thị ${filtered.length} bài đăng • DNTU Wi-Fi</div>
 
             <!-- Product Cards -->
             ${filtered.map(item => `
@@ -728,13 +1172,13 @@
         return;
       }
 
-      // 2. Favourites Tab
+      // 2. Favourites Tab (Cô lập theo user)
       if (state.activeTab === 'fav') {
         const favs = state.listings.filter(i => state.favouriteIds.includes(i.id));
         container.innerHTML = `
           <div>
-            <h2 style="font-size:15px; font-weight:800; margin-bottom:4px;">Mục yêu thích (${favs.length})</h2>
-            <p style="font-size:11px; color:#64748b; margin-bottom:10px;">Lưu trong shared state và tự động kích hoạt thông báo khi giảm giá.</p>
+            <h2 style="font-size:15px; font-weight:800; margin-bottom:4px;">Mục yêu thích của ${state.currentUser.name} (${favs.length})</h2>
+            <p style="font-size:11px; color:#64748b; margin-bottom:10px;">Lưu độc lập cho tài khoản này và kích hoạt thông báo khi giảm giá.</p>
             ${favs.length === 0 ? `
               <div style="text-align:center; padding:40px 10px;">
                 <div style="font-size:40px;">🤍</div>
@@ -768,10 +1212,10 @@
               Ảnh camera gốc: <strong>4.2 MB</strong> ➔ Sau khi nén: <strong>280 KB</strong> (Tiết kiệm 93% băng thông).
             </div>
             <div style="display:flex; flex-direction:column; gap:8px;">
-              <input type="text" id="newTitle" placeholder="Tiêu đề (VD: Giáo trình Mạng máy tính...)" style="padding:8px; border-radius:8px; border:1px solid #cbd5e1; font-size:11px;">
-              <input type="number" id="newPrice" placeholder="Giá bán (VND) - VD: 45000" style="padding:8px; border-radius:8px; border:1px solid #cbd5e1; font-size:11px;">
-              <input type="number" id="newStock" placeholder="Số lượng tồn kho (VD: 2)" style="padding:8px; border-radius:8px; border:1px solid #cbd5e1; font-size:11px;">
-              <textarea id="newDesc" placeholder="Mô tả tình trạng sách, địa điểm giao..." style="padding:8px; border-radius:8px; border:1px solid #cbd5e1; font-size:11px; height:60px;"></textarea>
+              <input type="text" id="newTitle" placeholder="Tiêu đề (VD: Giáo trình Mạng máy tính...)" class="form-input">
+              <input type="number" id="newPrice" placeholder="Giá bán (VND) - VD: 45000" class="form-input">
+              <input type="number" id="newStock" placeholder="Số lượng tồn kho (VD: 2)" class="form-input">
+              <textarea id="newDesc" placeholder="Mô tả tình trạng sách, địa điểm giao..." class="form-input" style="height:60px;"></textarea>
               <button onclick="createNewItem()" style="padding:10px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">🚀 Đăng bán ngay</button>
             </div>
           </div>
@@ -779,7 +1223,7 @@
         return;
       }
 
-      // 4. Cart Tab
+      // 4. Cart Tab (Cô lập theo user)
       if (state.activeTab === 'cart') {
         const subtotal = state.cartItems.reduce((s, i) => s + i.price * i.qty, 0);
         const deliveryFee = state.deliveryType === 'dorm_delivery' ? 15000 : 0;
@@ -788,14 +1232,15 @@
         container.innerHTML = `
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-              <h2 style="font-size:15px; font-weight:800;">Giỏ hàng (${state.cartItems.length})</h2>
-              ${state.cartItems.length > 0 ? `<button onclick="state.cartItems = []; updateCartBadge(); renderScreen();" style="border:none; background:none; color:var(--error); font-size:11px; font-weight:700; cursor:pointer;">Xóa tất cả</button>` : ''}
+              <h2 style="font-size:15px; font-weight:800;">Giỏ hàng của ${state.currentUser.name} (${state.cartItems.length})</h2>
+              ${state.cartItems.length > 0 ? `<button onclick="state.cartItems = []; saveUserCartToStorage(state.currentUser.id, []); updateCartBadge(); renderScreen();" style="border:none; background:none; color:var(--error); font-size:11px; font-weight:700; cursor:pointer;">Xóa tất cả</button>` : ''}
             </div>
 
             ${state.cartItems.length === 0 ? `
               <div style="text-align:center; padding:40px 10px;">
                 <div style="font-size:40px;">🛒</div>
-                <div style="font-size:13px; font-weight:700; margin-top:8px;">Giỏ hàng đang trống</div>
+                <div style="font-size:13px; font-weight:700; margin-top:8px;">Giỏ hàng của bạn đang trống</div>
+                <p style="font-size:11px; color:#64748b; margin-top:4px;">Khi bạn thêm sản phẩm, giỏ hàng sẽ được lưu riêng cho tài khoản ${state.currentUser.email}.</p>
                 <button onclick="switchTab('home')" style="margin-top:12px; padding:8px 16px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">Mua sắm ngay</button>
               </div>
             ` : `
@@ -843,7 +1288,7 @@
                   <span>Tổng thanh toán:</span>
                   <span>${total.toLocaleString('vi-VN')} đ</span>
                 </div>
-                <button onclick="alert('Đặt hàng thành công với tổng tiền ' + ${total}.toLocaleString('vi-VN') + ' đ!'); state.cartItems = []; updateCartBadge(); switchTab('home');" style="width:100%; padding:10px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">Xác nhận đặt hàng</button>
+                <button onclick="alert('Đặt hàng thành công với tổng tiền ' + ${total}.toLocaleString('vi-VN') + ' đ!'); state.cartItems = []; saveUserCartToStorage(state.currentUser.id, []); updateCartBadge(); switchTab('home');" style="width:100%; padding:10px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">Xác nhận đặt hàng</button>
               </div>
             `}
           </div>
@@ -851,7 +1296,7 @@
         return;
       }
 
-      // 5. Profile Tab
+      // 5. Profile Tab (Bao gồm Đổi mật khẩu & Cô lập dữ liệu)
       if (state.activeTab === 'profile') {
         container.innerHTML = `
           <div>
@@ -862,6 +1307,69 @@
               <div style="display:inline-block; font-size:10px; padding:2px 8px; border-radius:10px; background:#e0f2fe; color:#0369a1; font-weight:700; margin-top:6px;">
                 Vai trò: ${state.currentUser.role === 'seller' ? 'Chủ shop (Seller)' : 'Sinh viên (Buyer)'}
               </div>
+            </div>
+
+            <!-- User Metadata Grid -->
+            <div style="display:flex; border:1px solid #cbd5e1; border-radius:8px; padding:8px; margin-top:8px; text-align:center;">
+              <div style="flex:1;">
+                <div style="font-size:10px; color:#64748b;">MSSV</div>
+                <div style="font-size:12px; font-weight:700;">${state.currentUser.studentId || '1923050080'}</div>
+              </div>
+              <div style="width:1px; background:#cbd5e1;"></div>
+              <div style="flex:1;">
+                <div style="font-size:10px; color:#64748b;">Số điện thoại</div>
+                <div style="font-size:12px; font-weight:700;">${state.currentUser.phone || '0901234567'}</div>
+              </div>
+            </div>
+
+            <!-- Isolation Proof Box -->
+            <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
+              <div style="font-size:11px; font-weight:700; margin-bottom:4px;">🗂️ Không gian lưu trữ độc lập (Isolation):</div>
+              <div style="display:flex; gap:6px; margin-top:6px;">
+                <div style="flex:1; padding:6px; border-radius:6px; background:rgba(0,0,0,0.03); border:1px solid #cbd5e1; text-align:center;">
+                  <div style="font-size:14px; font-weight:800; color:var(--primary);">${state.cartItems.length}</div>
+                  <div style="font-size:9px; color:#64748b;">Món trong giỏ</div>
+                </div>
+                <div style="flex:1; padding:6px; border-radius:6px; background:rgba(0,0,0,0.03); border:1px solid #cbd5e1; text-align:center;">
+                  <div style="font-size:14px; font-weight:800; color:var(--error);">${state.favouriteIds.length}</div>
+                  <div style="font-size:9px; color:#64748b;">Món yêu thích</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password Change Section -->
+            <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:11px; font-weight:700;">🔒 Bảo mật & Đổi mật khẩu</div>
+                <button onclick="state.showChangePasswordForm = !state.showChangePasswordForm; state.passError = ''; state.passSuccess = ''; renderScreen();" style="padding:4px 8px; border-radius:6px; border:1px solid var(--primary); background:var(--primary-light); color:var(--primary-dark); font-size:10px; font-weight:700; cursor:pointer;">
+                  ${state.showChangePasswordForm ? 'Đóng' : 'Đổi mật khẩu'}
+                </button>
+              </div>
+
+              ${state.showChangePasswordForm ? `
+                <div style="margin-top:10px;">
+                  ${state.passError ? `<div class="alert-banner error">⚠️ ${state.passError}</div>` : ''}
+                  ${state.passSuccess ? `<div class="alert-banner success">✅ ${state.passSuccess}</div>` : ''}
+
+                  <div class="form-group">
+                    <label>Mật khẩu cũ (Mặc định: password123)</label>
+                    <input type="password" id="oldPassInput" class="form-input" placeholder="••••••••">
+                  </div>
+                  <div class="form-group">
+                    <label>Mật khẩu mới (≥6 ký tự)</label>
+                    <input type="password" id="newPassInput" class="form-input" placeholder="Mật khẩu mới">
+                  </div>
+                  <div class="form-group">
+                    <label>Xác nhận mật khẩu mới</label>
+                    <input type="password" id="confirmPassInput" class="form-input" placeholder="Nhập lại mật khẩu mới">
+                  </div>
+                  <button onclick="performChangePassword(
+                    document.getElementById('oldPassInput').value,
+                    document.getElementById('newPassInput').value,
+                    document.getElementById('confirmPassInput').value
+                  )" style="width:100%; padding:8px; background:var(--primary); color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">💾 Lưu mật khẩu mới</button>
+                </div>
+              ` : ''}
             </div>
 
             <!-- Role Switcher -->
@@ -881,7 +1389,7 @@
               <p style="font-size:10px; color:#475569;">• <strong>1923050861</strong> - Nguyễn Vũ Minh Nhật</p>
             </div>
 
-            <button onclick="alert('Đã xóa sạch Token trong SecureStore và đăng xuất!'); location.reload();" style="width:100%; padding:10px; background:#fee2e2; color:#dc2626; border:1px solid #fecaca; border-radius:8px; font-weight:700; font-size:11px; margin-top:14px; cursor:pointer;">🚪 Đăng xuất tài khoản</button>
+            <button onclick="performSignOut()" style="width:100%; padding:10px; background:#fee2e2; color:#dc2626; border:1px solid #fecaca; border-radius:8px; font-weight:700; font-size:11px; margin-top:14px; cursor:pointer;">🚪 Đăng xuất (Lưu dữ liệu riêng & về trang đăng nhập)</button>
           </div>
         `;
         return;
@@ -903,7 +1411,7 @@
         id: 'lst_' + Date.now(),
         sellerId: state.currentUser.id,
         sellerName: state.currentUser.name,
-        sellerPhone: '0901234567',
+        sellerPhone: state.currentUser.phone || '0901234567',
         title,
         price,
         stock,
@@ -920,8 +1428,7 @@
     }
 
     // Init
-    document.getElementById('appHeader').style.display = 'flex';
-    document.getElementById('tabBar').style.display = 'flex';
+    updateHeader();
     renderScreen();
   </script>
 </body>

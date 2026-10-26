@@ -22,10 +22,10 @@ export const useAppStore = create<RootStore>()(
     {
       name: PERSIST_STORAGE_KEY,
       storage: createJSONStorage(() => AsyncStorage),
-      // BẢO MẬT BẮT BUỘC: Chỉ lưu favourites và themeMode vào AsyncStorage.
-      // Token & Session chỉ lưu trong SecureStore!
+      // BẢO MẬT BẮT BUỘC: Chỉ lưu themeMode vào global persisted state.
+      // Giỏ hàng và Mục yêu thích được cô lập và lưu theo từng userId riêng biệt!
+      // Token & Session được bảo mật bằng SecureStore!
       partialize: (state) => ({
-        favouriteIds: state.favouriteIds,
         themeMode: state.themeMode,
       }),
     }
