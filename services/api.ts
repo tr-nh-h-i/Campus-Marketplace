@@ -190,4 +190,29 @@ export const api = {
     await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(inMemoryListings));
     return true;
   },
+
+  async deleteListing(id: string): Promise<boolean> {
+    inMemoryListings = inMemoryListings.filter((l) => l.id !== id);
+    await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(inMemoryListings));
+    return true;
+  },
+
+  async updateListing(updated: Listing): Promise<boolean> {
+    const idx = inMemoryListings.findIndex((l) => l.id === updated.id);
+    if (idx === -1) return false;
+    inMemoryListings[idx] = updated;
+    await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(inMemoryListings));
+    return true;
+  },
+
+  async deductStockForOrder(items: { listingId: string; quantity: number }[]): Promise<boolean> {
+    items.forEach((item) => {
+      const listing = inMemoryListings.find((l) => l.id === item.listingId);
+      if (listing) {
+        listing.stock = Math.max(0, listing.stock - item.quantity);
+      }
+    });
+    await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(inMemoryListings));
+    return true;
+  },
 };

@@ -92,6 +92,7 @@ export default function ProfileScreen() {
     }
   };
 
+  const isAdmin = currentUser?.role === 'admin' || currentUser?.isAdmin || (currentUser?.studentId && ['1923050080', '1923050973', '1923050861'].includes(currentUser.studentId));
   const isSeller = currentUser?.role === 'seller';
 
   return (
@@ -110,10 +111,10 @@ export default function ProfileScreen() {
         <View
           style={[
             styles.avatarCircle,
-            { backgroundColor: colors.primaryLight },
+            { backgroundColor: isAdmin ? colors.primaryLight : isSeller ? colors.successLight : colors.primaryLight },
           ]}
         >
-          <Text style={{ fontSize: 32 }}>{isSeller ? '🏷️' : '🎓'}</Text>
+          <Text style={{ fontSize: 32 }}>{isAdmin ? '👑' : isSeller ? '🏷️' : '🎓'}</Text>
         </View>
 
         <Text style={[styles.userName, { color: colors.textPrimary }]}>
@@ -127,7 +128,9 @@ export default function ProfileScreen() {
           style={[
             styles.roleBadge,
             {
-              backgroundColor: isSeller
+              backgroundColor: isAdmin
+                ? colors.primaryLight
+                : isSeller
                 ? colors.successLight
                 : colors.primaryLight,
             },
@@ -136,10 +139,10 @@ export default function ProfileScreen() {
           <Text
             style={[
               styles.roleText,
-              { color: isSeller ? colors.success : colors.primaryDark },
+              { color: isAdmin ? colors.primaryDark : isSeller ? colors.success : colors.primaryDark },
             ]}
           >
-            Vai trò: {isSeller ? 'Chủ shop (Seller)' : 'Sinh viên (Buyer)'}
+            Vai trò: {isAdmin ? '👑 Ban Quản Trị CSDL (Admin)' : isSeller ? 'Chủ shop (Seller)' : 'Sinh viên (Buyer)'}
           </Text>
         </View>
 

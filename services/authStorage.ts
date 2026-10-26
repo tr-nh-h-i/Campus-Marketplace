@@ -14,14 +14,37 @@ const USER_FAVS_KEY_PREFIX = 'campus_marketplace_favs_user_';
 // ==========================================
 export const SEED_ACCOUNTS: StoredAccount[] = [
   {
-    id: 'usr_buyer_1923050080',
+    id: 'usr_admin_1923050080',
     name: 'Trịnh Thế Thanh Hải',
     email: 'hai.trinh@dntu.edu.vn',
     password: 'password123',
-    role: 'buyer',
+    role: 'admin',
+    isAdmin: true,
     studentId: '1923050080',
     phone: '0901234567',
     createdAt: '2026-10-21T08:00:00.000Z',
+  },
+  {
+    id: 'usr_admin_1923050973',
+    name: 'Bùi Thanh Sơn',
+    email: 'son.bui@dntu.edu.vn',
+    password: 'password123',
+    role: 'admin',
+    isAdmin: true,
+    studentId: '1923050973',
+    phone: '0912345678',
+    createdAt: '2026-10-22T10:15:00.000Z',
+  },
+  {
+    id: 'usr_admin_1923050861',
+    name: 'Nguyễn Vũ Minh Nhật',
+    email: 'nhat.nguyen@dntu.edu.vn',
+    password: 'password123',
+    role: 'admin',
+    isAdmin: true,
+    studentId: '1923050861',
+    phone: '0987654321',
+    createdAt: '2026-10-23T14:20:00.000Z',
   },
   {
     id: 'usr_seller_01',
@@ -29,29 +52,21 @@ export const SEED_ACCOUNTS: StoredAccount[] = [
     email: 'minh.seller@dntu.edu.vn',
     password: 'password123',
     role: 'seller',
+    isAdmin: false,
     studentId: '1923050001',
     phone: '0909876543',
     createdAt: '2026-10-21T09:30:00.000Z',
   },
   {
-    id: 'usr_buyer_1923050973',
-    name: 'Bùi Thanh Sơn',
-    email: 'son.bui@dntu.edu.vn',
+    id: 'usr_buyer_demo',
+    name: 'Lê Hoàng Nam (Sinh viên mua sách)',
+    email: 'nam.le@dntu.edu.vn',
     password: 'password123',
     role: 'buyer',
-    studentId: '1923050973',
-    phone: '0912345678',
-    createdAt: '2026-10-22T10:15:00.000Z',
-  },
-  {
-    id: 'usr_seller_1923050861',
-    name: 'Nguyễn Vũ Minh Nhật',
-    email: 'nhat.nguyen@dntu.edu.vn',
-    password: 'password123',
-    role: 'seller',
-    studentId: '1923050861',
-    phone: '0987654321',
-    createdAt: '2026-10-23T14:20:00.000Z',
+    isAdmin: false,
+    studentId: '1923051111',
+    phone: '0933112233',
+    createdAt: '2026-10-24T08:00:00.000Z',
   },
 ];
 
@@ -364,5 +379,57 @@ export async function saveUserFavourites(userId: string, ids: string[]): Promise
     await AsyncStorage.setItem(key, json);
   } catch (err) {
     console.warn('[UserFavs] Lỗi lưu yêu thích user:', err);
+  }
+}
+
+// ==========================================
+// QUẢN TRỊ VIÊN & LỊCH SỬ ĐƠN HÀNG (ORDERS & ADMIN)
+// ==========================================
+const ADMIN_STUDENT_IDS = ['1923050080', '1923050973', '1923050861'];
+const ADMIN_EMAILS = ['hai.trinh@dntu.edu.vn', 'son.bui@dntu.edu.vn', 'nhat.nguyen@dntu.edu.vn'];
+const USER_ORDERS_KEY_PREFIX = 'campus_marketplace_orders_user_';
+
+export function isUserAdmin(user: User | StoredAccount | null | undefined): boolean {
+  if (!user) return false;
+  return (
+    user.role === 'admin' ||
+    user.isAdmin === true ||
+    (user.studentId ? ADMIN_STUDENT_IDS.includes(user.studentId) : false) ||
+    (user.email ? ADMIN_EMAILS.includes(user.email) : false)
+  );
+}
+
+export async function getUserOrders(userId: string): Promise<any[]> {
+  try {
+    const key = `${USER_ORDERS_KEY_PREFIX}${userId}`;
+    let raw: string | null = null;
+    if (Platform.OS === 'web') {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        raw = window.localStorage.getItem(key);
+      }
+    } else {
+      raw = await AsyncStorage.getItem(key);
+    }
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function saveUserOrder(userId: string, order: any): Promise<void> {
+  try {
+    const existing = await getUserOrders(userId);
+    const updated = [order, ...existing];
+    const key = `${USER_ORDERS_KEY_PREFIX}${userId}`;
+    const json = JSON.stringify(updated);
+    if (Platform.OS === 'web') {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(key, json);
+      }
+      return;
+    }
+    await AsyncStorage.setItem(key, json);
+  } catch (err) {
+    console.warn('[UserOrders] Lỗi lưu đơn hàng user:', err);
   }
 }

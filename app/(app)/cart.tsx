@@ -13,17 +13,21 @@ import { useRouter } from 'expo-router';
 import { useTheme } from '../../hooks/useTheme';
 import {
   useAppStore,
+  selectCurrentUser,
   selectCartTotalCount,
   selectCartSubtotal,
   selectCartDeliveryFee,
   selectCartFinalTotal,
 } from '../../store';
+import { api } from '../../services/api';
+import { saveUserOrder } from '../../services/authStorage';
 import { layout, typography } from '../../constants/theme';
 
 export default function CartScreen() {
   const router = useRouter();
   const { colors } = useTheme();
 
+  const currentUser = useAppStore(selectCurrentUser);
   const cartItems = useAppStore((state) => state.cartItems);
   const deliveryType = useAppStore((state) => state.deliveryType);
   const setDeliveryType = useAppStore((state) => state.setDeliveryType);
@@ -45,22 +49,52 @@ export default function CartScreen() {
     }
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (cartItems.length === 0) return;
 
     const deliveryNote =
       deliveryType === 'campus_pickup'
-        ? 'Nhận trực tiếp tại Cổng 1 DNTU'
-        : 'Giao tận phòng Ký túc xá DNTU';
+        ? 'Nhận trực tiếp tại Cổng 1 DNTU (Miễn phí)'
+        : 'Giao tận phòng Ký túc xá DNTU (+15.000đ)';
 
-    const msg = `Đặt hàng thành công!\n\n• Số món: ${totalCount}\n• Hình thức: ${deliveryNote}\n• Tổng thanh toán: ${finalTotal.toLocaleString(
+    const orderId = `DNTU-ORD-${Math.floor(100000 + Math.random() * 900000)}`;
+
+    // 1. Trừ số lượng tồn kho thực tế trong CSDL
+    await api.deductStockForOrder(
+      cartItems.map((item) => ({
+        listingId: item.listingId,
+        quantity: item.quantity,
+      }))
+    );
+
+    // 2. Lưu đơn hàng vào CSDL riêng của User
+    if (currentUser?.id) {
+      const orderRecord = {
+        id: orderId,
+        userId: currentUser.id,
+        userName: currentUser.name,
+        userPhone: currentUser.phone || '0901234567',
+        studentId: currentUser.studentId || '1923050080',
+        items: [...cartItems],
+        subtotal,
+        deliveryFee,
+        deliveryType,
+        deliveryNote,
+        total: finalTotal,
+        status: 'Đã xác nhận (Đang chuẩn bị sách)',
+        createdAt: new Date().toLocaleString('vi-VN'),
+      };
+      await saveUserOrder(currentUser.id, orderRecord);
+    }
+
+    const msg = `Đặt hàng thành công! 🎉\n\n• Mã đơn: #${orderId}\n• Số món: ${totalCount} cuốn\n• Hình thức: ${deliveryNote}\n• Tổng thanh toán: ${finalTotal.toLocaleString(
       'vi-VN'
-    )} đ\n\nNgười bán sẽ liên hệ qua SĐT để bàn giao.`;
+    )} đ\n\nNgười bán sẽ liên hệ qua SĐT ${currentUser?.phone || ''} để bàn giao sách!`;
 
     if (Platform.OS === 'web') {
       window.alert(msg);
     } else {
-      Alert.alert('Thanh toán thành công 🎉', msg);
+      Alert.alert('Đặt hàng thành công 🎉', msg);
     }
     clearCart();
     router.push('/(app)');

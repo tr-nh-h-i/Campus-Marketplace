@@ -20,8 +20,11 @@
       --success: #16a34a;
       --success-light: #dcfce7;
       --warning: #d97706;
+      --warning-light: #fef3c7;
       --error: #dc2626;
       --error-light: #fee2e2;
+      --admin-badge: #7c3aed;
+      --admin-light: #ede9fe;
     }
     * {
       box-sizing: border-box;
@@ -37,6 +40,18 @@
       flex-direction: column;
       align-items: center;
       padding: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: #334155 #0b1120;
+    }
+    body::-webkit-scrollbar {
+      width: 8px;
+    }
+    body::-webkit-scrollbar-track {
+      background: #0b1120;
+    }
+    body::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
     }
     header {
       text-align: center;
@@ -154,7 +169,7 @@
     .phone-screen.light .app-header { background: #ffffff; border-color: var(--border-light); }
     .phone-screen.dark .app-header { background: #1e293b; border-color: var(--border-dark); }
     .logo-text { font-size: 16px; font-weight: 800; color: var(--primary); }
-    .role-badge { font-size: 10px; color: #64748b; }
+    .role-badge { font-size: 10px; color: #64748b; font-weight: 600; }
     .header-actions { display: flex; gap: 8px; align-items: center; }
     .header-btn {
       min-width: 44px;
@@ -180,21 +195,51 @@
       border-radius: 10px;
       padding: 1px 5px;
     }
-    /* Content */
+
+    /* Content & Scrollbar Styling (Fix triệt để thanh cuộn khi bật chế độ tối) */
     .screen-body {
       flex: 1;
       overflow-y: auto;
       padding: 12px;
+      scrollbar-width: thin;
     }
+    .phone-screen.light .screen-body {
+      scrollbar-color: #cbd5e1 transparent;
+    }
+    .phone-screen.dark .screen-body {
+      scrollbar-color: #334155 transparent;
+    }
+    .screen-body::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .screen-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .phone-screen.light .screen-body::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+    .phone-screen.light .screen-body::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .phone-screen.dark .screen-body::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 999px;
+    }
+    .phone-screen.dark .screen-body::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
     /* Cards */
     .prod-card {
       border-radius: 12px;
       border: 1px solid;
       overflow: hidden;
       margin-bottom: 12px;
-      cursor: pointer;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
     .phone-screen.light .prod-card { background: #fff; border-color: var(--border-light); }
     .phone-screen.dark .prod-card { background: #1e293b; border-color: var(--border-dark); }
@@ -203,6 +248,7 @@
       height: 160px;
       position: relative;
       background: #000;
+      cursor: pointer;
     }
     .prod-img { width: 100%; height: 100%; object-fit: cover; }
     .fav-btn {
@@ -219,6 +265,7 @@
       align-items: center;
       font-size: 18px;
       cursor: pointer;
+      z-index: 2;
     }
     .compress-pill {
       position: absolute;
@@ -232,11 +279,44 @@
       font-weight: 700;
     }
     .prod-content { padding: 10px; }
-    .prod-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .prod-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; cursor: pointer; }
     .prod-price { font-size: 14px; font-weight: 800; color: var(--primary); }
     .prod-stock { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 700; }
     .stock-ok { background: #dcfce7; color: #16a34a; }
     .stock-out { background: #fee2e2; color: #dc2626; }
+
+    /* Admin Action Toolbar on Product Card */
+    .admin-card-actions {
+      display: flex;
+      gap: 4px;
+      background: rgba(124, 58, 237, 0.08);
+      border-top: 1px dashed #7c3aed;
+      padding: 6px 8px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    .admin-tag {
+      font-size: 9px;
+      font-weight: 800;
+      color: #7c3aed;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .admin-btns {
+      display: flex;
+      gap: 4px;
+    }
+    .btn-admin-mini {
+      padding: 4px 6px;
+      border-radius: 4px;
+      border: none;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
     /* Bottom Navigation */
     .tab-bar {
       display: flex;
@@ -258,6 +338,7 @@
       position: relative;
     }
     .tab-item.active { color: var(--primary); font-weight: 700; }
+
     /* Side Panel */
     .side-panel {
       flex: 1;
@@ -295,6 +376,7 @@
       cursor: pointer;
       margin-top: 6px;
     }
+
     /* Auth Form Styles inside Phone */
     .auth-tab-row {
       display: flex;
@@ -358,6 +440,39 @@
       background: var(--success-light);
       color: var(--success);
       border: 1px solid var(--success);
+    }
+
+    /* Modal dialog */
+    .modal-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 14px;
+    }
+    .modal-box {
+      width: 100%;
+      max-height: 90%;
+      overflow-y: auto;
+      border-radius: 14px;
+      padding: 16px;
+      border: 1px solid;
+    }
+    .phone-screen.light .modal-box {
+      background: #ffffff;
+      border-color: var(--border-light);
+      color: #0f172a;
+    }
+    .phone-screen.dark .modal-box {
+      background: #1e293b;
+      border-color: var(--border-dark);
+      color: #f8fafc;
     }
   </style>
 </head>
@@ -423,8 +538,8 @@
             <span>Yêu thích</span>
           </div>
           <div class="tab-item" id="tabCreate" onclick="switchTab('create')">
-            <span style="font-size: 18px;">➕</span>
-            <span>Đăng bán</span>
+            <span style="font-size: 18px;" id="createTabIcon">➕</span>
+            <span id="createTabLabel">Đăng bán</span>
           </div>
           <div class="tab-item" id="tabCart" onclick="switchTab('cart')">
             <span style="font-size: 18px;">🛒</span>
@@ -435,37 +550,54 @@
             <span>Cá nhân</span>
           </div>
         </div>
+
+        <!-- Modal Overlay Container -->
+        <div id="phoneModalContainer" style="display: none;"></div>
       </div>
     </div>
 
     <!-- Side Panel / Specifications & Controls -->
     <div class="side-panel">
+      <!-- 3 Admin Accounts Highlight Box -->
+      <div class="info-box" style="border: 1px solid #7c3aed; background: #13192f;">
+        <h3 style="color: #a78bfa;">👑 Dành Riêng 3 Tài Khoản Quản Trị (Admin Kho Sách)</h3>
+        <p>• <strong>Phân quyền quản trị:</strong> Chỉ 3 thành viên nhóm mới có quyền <strong>Thêm, Sửa, Xoá và Thêm số lượng kho sách</strong>. Mọi thay đổi được lưu vĩnh viễn vào CSDL (Persistent Storage).</p>
+        <p style="margin-top: 4px;">• Tài khoản sinh viên thường chỉ có quyền mua, thêm vào giỏ và đặt hàng.</p>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:8px;">
+          <button class="btn-action" style="background:#7c3aed;" onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')">👑 Hải (Admin - 1923050080)</button>
+          <button class="btn-action" style="background:#7c3aed;" onclick="quickLoginSeed('son.bui@dntu.edu.vn')">👑 Sơn (Admin - 1923050973)</button>
+          <button class="btn-action" style="background:#7c3aed;" onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')">👑 Nhật (Admin - 1923050861)</button>
+          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('nam.le@dntu.edu.vn')">🎓 Nam (Buyer - SV Thường)</button>
+        </div>
+      </div>
+
       <!-- Viva Multi-User Control Box -->
       <div class="info-box">
         <h3>👥 Kiểm Thử Đa Tài Khoản & Cô Lập Dữ Liệu (Multi-User Isolation)</h3>
-        <p>• <strong>Bằng chứng dữ liệu riêng biệt:</strong> Giỏ hàng và Mục yêu thích được lưu riêng theo từng tài khoản. Nhấp nút dưới để chuyển nhanh giữa các tài khoản và quan sát dữ liệu tự động đổi theo:</p>
+        <p>• Giỏ hàng và Mục yêu thích được lưu riêng biệt theo từng tài khoản trong CSDL. Khi chuyển đổi tài khoản, giỏ hàng tự động chuyển theo không hề lẫn lộn:</p>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:8px;">
-          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')">🎓 Hải (Buyer - 1923050080)</button>
-          <button class="btn-action" style="background:#16a34a;" onclick="quickLoginSeed('minh.seller@dntu.edu.vn')">🏷️ Minh (Seller - Chủ shop)</button>
-          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('son.bui@dntu.edu.vn')">🎓 Sơn (Buyer - 1923050973)</button>
-          <button class="btn-action" style="background:#16a34a;" onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')">🏷️ Nhật (Seller - 1923050861)</button>
+          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')">🎓 Hải (1923050080)</button>
+          <button class="btn-action" style="background:#16a34a;" onclick="quickLoginSeed('minh.seller@dntu.edu.vn')">🏷️ Minh (Chủ Shop Sách)</button>
+          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('son.bui@dntu.edu.vn')">🎓 Sơn (1923050973)</button>
+          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')">🎓 Nhật (1923050861)</button>
         </div>
       </div>
 
       <!-- Fast Viva Control Card -->
       <div class="info-box">
         <h3>⚡ Bảng Điều Khiển Kiểm Thử Chức Năng (Viva Demo Controls)</h3>
-        <p>• <strong>Mô phỏng Wi-Fi chập chờn:</strong> Bật/tắt chế độ Offline để xem banner ngoại tuyến và danh mục đã lưu trong bộ đệm.</p>
-        <button class="btn-action" onclick="toggleOfflineMode()">📡 Bật/Tắt Chế độ Offline</button>
-
-        <p style="margin-top: 10px;">• <strong>Chuyển vai trò tức thì:</strong> Kiểm thử giao diện Người mua (Buyer) vs Người bán (Seller) trên cùng 1 bài đăng.</p>
-        <div style="display:flex; gap:8px; margin-top:4px;">
-          <button class="btn-action" style="background:#0284c7;" onclick="setRole('buyer')">🛍️ Chế độ Người mua</button>
-          <button class="btn-action" style="background:#16a34a;" onclick="setRole('seller')">🏷️ Chế độ Người bán</button>
+        <p>• <strong>Chức năng Đặt hàng:</strong> Đã kích hoạt 100%! Bấm "Xác nhận đặt hàng" trong Giỏ sẽ trừ tồn kho trong CSDL, tạo mã đơn #DNTU-ORD-..., hiển thị Modal Xác nhận và lưu vào Lịch sử đơn hàng.</p>
+        <div style="display:flex; gap:8px; margin-top:6px;">
+          <button class="btn-action" style="background:#0284c7;" onclick="switchTab('cart')">🛒 Đi tới Giỏ hàng & Đặt thử</button>
+          <button class="btn-action" style="background:#7c3aed;" onclick="simulatePriceDrop()">🔔 Thử gửi thông báo giảm giá</button>
         </div>
 
-        <p style="margin-top: 10px;">• <strong>Mô phỏng giảm giá món hàng yêu thích:</strong> Gửi thông báo Local Notification khi giá của sản phẩm trong danh sách yêu thích giảm.</p>
-        <button class="btn-action" style="background:#7c3aed;" onclick="simulatePriceDrop()">🔔 Thử gửi thông báo giảm giá</button>
+        <p style="margin-top: 10px;">• <strong>Mô phỏng Wi-Fi chập chờn:</strong> Bật/tắt chế độ Offline để xem banner ngoại tuyến và danh mục đã lưu trong bộ đệm.</p>
+        <button class="btn-action" onclick="toggleOfflineMode()">📡 Bật/Tắt Chế độ Offline</button>
+
+        <p style="margin-top: 10px;">• <strong>Quản lý CSDL Sách:</strong> Khôi phục dữ liệu sách mặc định nếu muốn kiểm thử lại từ đầu:</p>
+        <button class="btn-action" style="background:#475569;" onclick="resetListingsDatabase()">🔄 Khôi phục kho sách mặc định</button>
       </div>
 
       <!-- Rubric Compliance -->
@@ -473,12 +605,12 @@
         <h3>📋 Đối Chiếu Tiêu Chí Chấm Điểm Đồ Án (Topic 02)</h3>
         <ul>
           <li><strong>Must have 1:</strong> Đăng nhập & Đăng ký & Đổi mật khẩu an toàn qua <code>SecureStore</code> (không lưu token vào <code>AsyncStorage</code>).</li>
-          <li><strong>Multi-User:</strong> Mỗi tài khoản có giỏ hàng, danh sách yêu thích và quyền riêng biệt 100%.</li>
+          <li><strong>Admin Quyền Hạn:</strong> 3 tài khoản quản trị (Hải, Sơn, Nhật) độc quyền Thêm/Sửa/Xóa/Thêm số lượng sách lưu vĩnh viễn ở CSDL.</li>
+          <li><strong>Đặt Hàng 100%:</strong> Xử lý trừ kho tự động, tạo mã đơn, quy tắc phí DNTU (0đ cổng trường / 15.000đ KTX), lưu lịch sử đơn hàng.</li>
+          <li><strong>Giao Diện Dark Mode:</strong> Xử lý thanh cuộn mượt mà trên nền tối, không vỡ layout chuẩn Mobile.</li>
+          <li><strong>Multi-User:</strong> Mỗi tài khoản có giỏ hàng, danh sách yêu thích và đơn hàng riêng biệt 100%.</li>
           <li><strong>Must have 2:</strong> Đăng bài có công cụ nén ảnh (ảnh gốc ~4.2MB nén còn ~280KB, giảm 93%).</li>
           <li><strong>Must have 3:</strong> Lọc danh mục & Tìm kiếm <strong>tính toán trực tiếp khi render</strong>, không lưu derived state.</li>
-          <li><strong>Must have 4:</strong> Favourites trong shared state, lưu qua restart và hiển thị đồng bộ ở 2 màn hình.</li>
-          <li><strong>Must have 5:</strong> Giỏ hàng, quy tắc phí giao hàng DNTU (Cổng 1 = 0đ, KTX = 15.000đ) và kiểm soát tồn kho.</li>
-          <li><strong>Must have 6:</strong> Chế độ Offline hiển thị danh mục lưu lần gần nhất kèm banner, không bao giờ để màn hình trắng.</li>
         </ul>
       </div>
 
@@ -493,18 +625,51 @@
 
   <script>
     // ==========================================
+    // 3 TÀI KHOẢN QUẢN TRỊ VIÊN DNTU (ADMINS)
+    // ==========================================
+    const ADMIN_STUDENT_IDS = ['1923050080', '1923050973', '1923050861'];
+    const ADMIN_EMAILS = ['hai.trinh@dntu.edu.vn', 'son.bui@dntu.edu.vn', 'nhat.nguyen@dntu.edu.vn'];
+
+    function isUserAdmin(user) {
+      if (!user) return false;
+      return user.role === 'admin' ||
+             ADMIN_STUDENT_IDS.includes(user.studentId) ||
+             ADMIN_EMAILS.includes(user.email);
+    }
+
+    // ==========================================
     // KHỞI TẠO CƠ SỞ DỮ LIỆU TÀI KHOẢN (ACCOUNTS DB)
     // ==========================================
     const DEFAULT_ACCOUNTS = [
       {
-        id: 'usr_buyer_1923050080',
+        id: 'usr_admin_1923050080',
         name: 'Trịnh Thế Thanh Hải',
         email: 'hai.trinh@dntu.edu.vn',
         password: 'password123',
-        role: 'buyer',
+        role: 'admin',
         studentId: '1923050080',
         phone: '0901234567',
         createdAt: '2026-10-21'
+      },
+      {
+        id: 'usr_admin_1923050973',
+        name: 'Bùi Thanh Sơn',
+        email: 'son.bui@dntu.edu.vn',
+        password: 'password123',
+        role: 'admin',
+        studentId: '1923050973',
+        phone: '0912345678',
+        createdAt: '2026-10-22'
+      },
+      {
+        id: 'usr_admin_1923050861',
+        name: 'Nguyễn Vũ Minh Nhật',
+        email: 'nhat.nguyen@dntu.edu.vn',
+        password: 'password123',
+        role: 'admin',
+        studentId: '1923050861',
+        phone: '0987654321',
+        createdAt: '2026-10-23'
       },
       {
         id: 'usr_seller_01',
@@ -517,24 +682,14 @@
         createdAt: '2026-10-21'
       },
       {
-        id: 'usr_buyer_1923050973',
-        name: 'Bùi Thanh Sơn',
-        email: 'son.bui@dntu.edu.vn',
+        id: 'usr_buyer_demo',
+        name: 'Lê Hoàng Nam (Sinh viên mua sách)',
+        email: 'nam.le@dntu.edu.vn',
         password: 'password123',
         role: 'buyer',
-        studentId: '1923050973',
-        phone: '0912345678',
-        createdAt: '2026-10-22'
-      },
-      {
-        id: 'usr_seller_1923050861',
-        name: 'Nguyễn Vũ Minh Nhật',
-        email: 'nhat.nguyen@dntu.edu.vn',
-        password: 'password123',
-        role: 'seller',
-        studentId: '1923050861',
-        phone: '0987654321',
-        createdAt: '2026-10-23'
+        studentId: '1923051111',
+        phone: '0933112233',
+        createdAt: '2026-10-24'
       }
     ];
 
@@ -545,7 +700,14 @@
         return DEFAULT_ACCOUNTS;
       }
       try {
-        return JSON.parse(raw);
+        const parsed = JSON.parse(raw);
+        // Đảm bảo 3 tài khoản của nhóm luôn có role admin
+        parsed.forEach(acc => {
+          if (ADMIN_STUDENT_IDS.includes(acc.studentId) || ADMIN_EMAILS.includes(acc.email)) {
+            acc.role = 'admin';
+          }
+        });
+        return parsed;
       } catch {
         return DEFAULT_ACCOUNTS;
       }
@@ -555,7 +717,122 @@
       localStorage.setItem('campus_accounts', JSON.stringify(accs));
     }
 
-    // MULTI-USER ISOLATION: Giỏ hàng & Yêu thích riêng theo từng User ID
+    // ==========================================
+    // CƠ SỞ DỮ LIỆU SÁCH / DANH MỤC (LISTINGS DB)
+    // ==========================================
+    const DEFAULT_LISTINGS = [
+      {
+        id: 'lst_101',
+        sellerId: 'usr_admin_1923050080',
+        sellerName: 'Trịnh Thế Thanh Hải (Admin)',
+        sellerPhone: '0901234567',
+        title: 'Giáo trình Lập trình Di động React Native SDK 51 & 56',
+        category: 'textbook',
+        price: 65000,
+        originalPrice: 85000,
+        stock: 3,
+        photoUri: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80',
+        photoCompressedSizeKb: 280,
+        photoOriginalSizeKb: 4300,
+        description: 'Sách photo bìa bóng còn mới 95%, có sẵn ghi chú đề thi giữa kỳ và bài Lab thực hành.',
+        condition: 'like_new'
+      },
+      {
+        id: 'lst_102',
+        sellerId: 'usr_admin_1923050861',
+        sellerName: 'Nguyễn Vũ Minh Nhật (Admin)',
+        sellerPhone: '0987654321',
+        title: 'Chuột không dây Logitech Silent M331',
+        category: 'electronics',
+        price: 180000,
+        originalPrice: 240000,
+        stock: 2,
+        photoUri: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&auto=format&fit=crop&q=80',
+        photoCompressedSizeKb: 310,
+        photoOriginalSizeKb: 4800,
+        description: 'Bấm êm không phát tiếng động, rất phù hợp ngồi học thư viện và phòng máy.',
+        condition: 'good'
+      },
+      {
+        id: 'lst_103',
+        sellerId: 'usr_admin_1923050973',
+        sellerName: 'Bùi Thanh Sơn (Admin)',
+        sellerPhone: '0912345678',
+        title: 'Máy tính Casio fx-580VN X chính hãng Bitex',
+        category: 'stationery',
+        price: 320000,
+        originalPrice: 350000,
+        stock: 2,
+        photoUri: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?w=600&auto=format&fit=crop&q=80',
+        photoCompressedSizeKb: 340,
+        photoOriginalSizeKb: 5100,
+        description: 'Đầy đủ nắp đậy, chưa qua sửa chữa, phục vụ tốt môn Toán cao cấp và Xác suất.',
+        condition: 'like_new'
+      },
+      {
+        id: 'lst_104',
+        sellerId: 'usr_seller_01',
+        sellerName: 'Nguyễn Văn Minh (DNTU K17)',
+        sellerPhone: '0909876543',
+        title: 'Quạt kẹp bàn tích điện mini 10.000mAh',
+        category: 'dorm_supplies',
+        price: 110000,
+        originalPrice: 140000,
+        stock: 4,
+        photoUri: 'https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1?w=600&auto=format&fit=crop&q=80',
+        photoCompressedSizeKb: 260,
+        photoOriginalSizeKb: 3900,
+        description: 'Pin trâu dùng liên tục 8 tiếng, 4 cấp độ gió cho phòng KTX mùa nóng.',
+        condition: 'good'
+      },
+      {
+        id: 'lst_105',
+        sellerId: 'usr_admin_1923050080',
+        sellerName: 'Trịnh Thế Thanh Hải (Admin)',
+        sellerPhone: '0901234567',
+        title: 'Giáo trình Cơ sở Dữ liệu & SQL Server 2024',
+        category: 'textbook',
+        price: 50000,
+        originalPrice: 70000,
+        stock: 5,
+        photoUri: 'https://images.unsplash.com/photo-1532012164546-f432f2e3777a?w=600&auto=format&fit=crop&q=80',
+        photoCompressedSizeKb: 250,
+        photoOriginalSizeKb: 3800,
+        description: 'Đầy đủ bài tập thực hành truy vấn SQL kèm bài giải mẫu môn CSDL.',
+        condition: 'good'
+      }
+    ];
+
+    function getStoredListings() {
+      const raw = localStorage.getItem('campus_marketplace_listings');
+      if (!raw) {
+        localStorage.setItem('campus_marketplace_listings', JSON.stringify(DEFAULT_LISTINGS));
+        return DEFAULT_LISTINGS;
+      }
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_LISTINGS;
+      } catch {
+        return DEFAULT_LISTINGS;
+      }
+    }
+
+    function saveStoredListings(listings) {
+      localStorage.setItem('campus_marketplace_listings', JSON.stringify(listings));
+    }
+
+    function resetListingsDatabase() {
+      if (confirm('Khôi phục toàn bộ kho sách về dữ liệu gốc ban đầu?')) {
+        localStorage.setItem('campus_marketplace_listings', JSON.stringify(DEFAULT_LISTINGS));
+        state.listings = [...DEFAULT_LISTINGS];
+        renderScreen();
+        alert('Đã khôi phục kho sách thành công!');
+      }
+    }
+
+    // ==========================================
+    // MULTI-USER ISOLATION: Giỏ hàng, Yêu thích & Đơn hàng
+    // ==========================================
     function getUserCartFromStorage(userId) {
       if (!userId) return [];
       const raw = localStorage.getItem('campus_cart_' + userId);
@@ -578,9 +855,20 @@
       localStorage.setItem('campus_favs_' + userId, JSON.stringify(favs));
     }
 
-    // Seed giỏ hàng ban đầu cho Hải để trải nghiệm ngay
-    if (!localStorage.getItem('campus_cart_usr_buyer_1923050080')) {
-      saveUserCartToStorage('usr_buyer_1923050080', [
+    function getUserOrdersFromStorage(userId) {
+      if (!userId) return [];
+      const raw = localStorage.getItem('campus_orders_' + userId);
+      try { return raw ? JSON.parse(raw) : []; } catch { return []; }
+    }
+
+    function saveUserOrdersToStorage(userId, orders) {
+      if (!userId) return;
+      localStorage.setItem('campus_orders_' + userId, JSON.stringify(orders));
+    }
+
+    // Seed giỏ hàng ban đầu cho Hải
+    if (!localStorage.getItem('campus_cart_usr_admin_1923050080')) {
+      saveUserCartToStorage('usr_admin_1923050080', [
         {
           id: 'lst_101',
           title: 'Giáo trình Lập trình Di động React Native SDK 51 & 56',
@@ -590,100 +878,313 @@
           photoUri: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80'
         }
       ]);
-      saveUserFavsToStorage('usr_buyer_1923050080', ['lst_101', 'lst_103']);
+      saveUserFavsToStorage('usr_admin_1923050080', ['lst_101', 'lst_103']);
     }
 
-    // Khởi tạo State
+    // ==========================================
+    // APP STATE
+    // ==========================================
+    const allAccounts = getStoredAccounts();
+    const initialUser = allAccounts.find(a => a.studentId === '1923050080') || allAccounts[0];
+
     const state = {
       isDark: false,
       isOffline: false,
       lastUpdated: '09:41',
-      currentUser: DEFAULT_ACCOUNTS[0], // Mặc định đăng nhập tài khoản Hải
+      currentUser: initialUser,
       activeTab: 'home',
       activeListingDetail: null,
-      authViewMode: 'sign_in', // 'sign_in' | 'sign_up'
+      authViewMode: 'sign_in',
       searchQuery: '',
       selectedCategory: 'all',
-      favouriteIds: getUserFavsFromStorage(DEFAULT_ACCOUNTS[0].id),
-      cartItems: getUserCartFromStorage(DEFAULT_ACCOUNTS[0].id),
+      favouriteIds: getUserFavsFromStorage(initialUser.id),
+      cartItems: getUserCartFromStorage(initialUser.id),
+      userOrders: getUserOrdersFromStorage(initialUser.id),
       deliveryType: 'campus_pickup', // 'campus_pickup' | 'dorm_delivery'
       showChangePasswordForm: false,
       authError: '',
       authSuccess: '',
       passError: '',
       passSuccess: '',
-      listings: [
-        {
-          id: 'lst_101',
-          sellerId: 'usr_seller_01',
-          sellerName: 'Nguyễn Văn Minh (DNTU K17)',
-          sellerPhone: '0909876543',
-          title: 'Giáo trình Lập trình Di động React Native SDK 51 & 56',
-          category: 'textbook',
-          price: 65000,
-          originalPrice: 85000,
-          stock: 3,
-          photoUri: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80',
-          photoCompressedSizeKb: 280,
-          photoOriginalSizeKb: 4300,
-          description: 'Sách photo bìa bóng còn mới 95%, có sẵn ghi chú đề thi giữa kỳ và bài Lab.',
-          condition: 'like_new'
-        },
-        {
-          id: 'lst_102',
-          sellerId: 'usr_seller_1923050861',
-          sellerName: 'Nguyễn Vũ Minh Nhật (CNTT)',
-          sellerPhone: '0987654321',
-          title: 'Chuột không dây Logitech Silent M331',
-          category: 'electronics',
-          price: 180000,
-          originalPrice: 240000,
-          stock: 1,
-          photoUri: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&auto=format&fit=crop&q=80',
-          photoCompressedSizeKb: 310,
-          photoOriginalSizeKb: 4800,
-          description: 'Bấm êm không phát tiếng động, rất phù hợp ngồi học thư viện và phòng máy.',
-          condition: 'good'
-        },
-        {
-          id: 'lst_103',
-          sellerId: 'usr_seller_01',
-          sellerName: 'Nguyễn Văn Minh (DNTU K17)',
-          sellerPhone: '0909876543',
-          title: 'Máy tính Casio fx-580VN X chính hãng Bitex',
-          category: 'stationery',
-          price: 320000,
-          originalPrice: 350000,
-          stock: 2,
-          photoUri: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?w=600&auto=format&fit=crop&q=80',
-          photoCompressedSizeKb: 340,
-          photoOriginalSizeKb: 5100,
-          description: 'Đầy đủ nắp đậy, chưa qua sửa chữa, phục vụ tốt môn Toán cao cấp và Xác suất.',
-          condition: 'like_new'
-        },
-        {
-          id: 'lst_104',
-          sellerId: 'usr_seller_01',
-          sellerName: 'Nguyễn Văn Minh (DNTU K17)',
-          sellerPhone: '0909876543',
-          title: 'Quạt kẹp bàn tích điện mini 10.000mAh',
-          category: 'dorm_supplies',
-          price: 110000,
-          originalPrice: 140000,
-          stock: 4,
-          photoUri: 'https://images.unsplash.com/photo-1584905066893-7d5c142ba4e1?w=600&auto=format&fit=crop&q=80',
-          photoCompressedSizeKb: 260,
-          photoOriginalSizeKb: 3900,
-          description: 'Pin trâu dùng liên tục 8 tiếng, 4 cấp độ gió cho phòng KTX mùa nóng.',
-          condition: 'good'
-        }
-      ]
+      listings: getStoredListings(),
+      editListingTarget: null
     };
+
+    // ==========================================
+    // QUẢN LÝ KHO SÁCH (DÀNH RIÊNG 3 ADMIN)
+    // ==========================================
+
+    // 1. Thêm số lượng sách vào kho
+    function adminAdjustStock(listingId, delta, event) {
+      if (event) event.stopPropagation();
+      if (!isUserAdmin(state.currentUser)) {
+        alert('Chỉ 3 tài khoản Quản trị viên (Hải, Sơn, Nhật) mới có quyền chỉnh sửa số lượng kho sách!');
+        return;
+      }
+      const item = state.listings.find(l => l.id === listingId);
+      if (!item) return;
+
+      const newStock = Math.max(0, item.stock + delta);
+      item.stock = newStock;
+      saveStoredListings(state.listings);
+      renderScreen();
+      alert(`Đã cập nhật kho: "${item.title}" hiện còn ${item.stock} cuốn (Đã lưu vào CSDL).`);
+    }
+
+    // 2. Mở form sửa sách
+    function adminOpenEditModal(listingId, event) {
+      if (event) event.stopPropagation();
+      if (!isUserAdmin(state.currentUser)) {
+        alert('Chỉ 3 tài khoản Quản trị viên mới có quyền sửa sách!');
+        return;
+      }
+      const item = state.listings.find(l => l.id === listingId);
+      if (!item) return;
+      state.editListingTarget = { ...item };
+
+      const modalContainer = document.getElementById('phoneModalContainer');
+      modalContainer.style.display = 'flex';
+      modalContainer.className = 'modal-backdrop';
+      modalContainer.innerHTML = `
+        <div class="modal-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="font-size:14px; font-weight:800; color:#7c3aed;">✏️ Sửa Thông Tin Sách (Admin)</h3>
+            <button onclick="closeModal()" style="border:none; background:none; font-size:16px; cursor:pointer;">✕</button>
+          </div>
+          <div class="form-group">
+            <label>Tiêu đề sách *</label>
+            <input type="text" id="editTitle" class="form-input" value="${item.title}">
+          </div>
+          <div style="display:flex; gap:6px;">
+            <div class="form-group" style="flex:1;">
+              <label>Giá bán (VNĐ) *</label>
+              <input type="number" id="editPrice" class="form-input" value="${item.price}">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Số lượng kho *</label>
+              <input type="number" id="editStock" class="form-input" value="${item.stock}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Danh mục</label>
+            <select id="editCategory" class="form-input">
+              <option value="textbook" ${item.category === 'textbook' ? 'selected' : ''}>📚 Giáo trình</option>
+              <option value="electronics" ${item.category === 'electronics' ? 'selected' : ''}>💻 Thiết bị</option>
+              <option value="stationery" ${item.category === 'stationery' ? 'selected' : ''}>✏️ Dụng cụ</option>
+              <option value="dorm_supplies" ${item.category === 'dorm_supplies' ? 'selected' : ''}>🛏️ Đồ KTX</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mô tả chi tiết</label>
+            <textarea id="editDesc" class="form-input" style="height:60px;">${item.description}</textarea>
+          </div>
+          <div style="display:flex; gap:6px; margin-top:12px;">
+            <button onclick="closeModal()" style="flex:1; padding:8px; border:1px solid #cbd5e1; border-radius:6px; background:transparent; font-size:11px; cursor:pointer;">Hủy</button>
+            <button onclick="adminSaveEdit('${item.id}')" style="flex:1; padding:8px; border:none; border-radius:6px; background:#7c3aed; color:#fff; font-size:11px; font-weight:700; cursor:pointer;">💾 Lưu vào CSDL</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function adminSaveEdit(listingId) {
+      const item = state.listings.find(l => l.id === listingId);
+      if (!item) return;
+
+      const title = document.getElementById('editTitle')?.value;
+      const price = parseInt(document.getElementById('editPrice')?.value) || item.price;
+      const stock = parseInt(document.getElementById('editStock')?.value) || 0;
+      const category = document.getElementById('editCategory')?.value || item.category;
+      const description = document.getElementById('editDesc')?.value || item.description;
+
+      if (!title) {
+        alert('Vui lòng nhập tiêu đề sách!');
+        return;
+      }
+
+      item.title = title;
+      item.price = price;
+      item.stock = stock;
+      item.category = category;
+      item.description = description;
+
+      saveStoredListings(state.listings);
+      closeModal();
+      renderScreen();
+      alert(`Đã cập nhật sách "${title}" và lưu trữ vĩnh viễn vào CSDL!`);
+    }
+
+    // 3. Xoá sách khỏi CSDL
+    function adminDeleteListing(listingId, event) {
+      if (event) event.stopPropagation();
+      if (!isUserAdmin(state.currentUser)) {
+        alert('Chỉ 3 tài khoản Quản trị viên mới có quyền xoá sách!');
+        return;
+      }
+      const item = state.listings.find(l => l.id === listingId);
+      if (!item) return;
+
+      if (confirm(`Bạn có chắc chắn muốn xoá vĩnh viễn cuốn sách:\n"${item.title}" khỏi CSDL?`)) {
+        state.listings = state.listings.filter(l => l.id !== listingId);
+        // Xoá cả trong giỏ hàng nếu có
+        state.cartItems = state.cartItems.filter(i => i.id !== listingId);
+        saveUserCartToStorage(state.currentUser.id, state.cartItems);
+        saveStoredListings(state.listings);
+        updateCartBadge();
+        renderScreen();
+        alert('Đã xoá sách thành công khỏi CSDL.');
+      }
+    }
+
+    // 4. Thêm sách mới vào CSDL
+    function adminCreateNewListing() {
+      if (!isUserAdmin(state.currentUser)) {
+        alert('Chỉ 3 tài khoản Quản trị viên mới có quyền thêm sách vào CSDL!');
+        return;
+      }
+      const title = document.getElementById('newTitle')?.value;
+      const price = parseInt(document.getElementById('newPrice')?.value) || 50000;
+      const stock = parseInt(document.getElementById('newStock')?.value) || 1;
+      const category = document.getElementById('newCategory')?.value || 'textbook';
+      const desc = document.getElementById('newDesc')?.value || 'Giáo trình sinh viên DNTU.';
+      const photoUri = document.getElementById('newPhotoUri')?.value || 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop&q=80';
+
+      if (!title) {
+        alert('Vui lòng nhập tiêu đề sách!');
+        return;
+      }
+
+      const newListing = {
+        id: 'lst_' + Date.now(),
+        sellerId: state.currentUser.id,
+        sellerName: `${state.currentUser.name} (Admin)`,
+        sellerPhone: state.currentUser.phone || '0901234567',
+        title,
+        price,
+        originalPrice: Math.round(price * 1.3),
+        stock,
+        category,
+        photoUri,
+        photoCompressedSizeKb: 280,
+        photoOriginalSizeKb: 4200,
+        description: desc,
+        condition: 'like_new'
+      };
+
+      state.listings.unshift(newListing);
+      saveStoredListings(state.listings);
+      alert('Đã thêm sách mới và lưu trữ vĩnh viễn vào CSDL (Đã nén ảnh 93%)!');
+      switchTab('home');
+    }
+
+    function closeModal() {
+      const modalContainer = document.getElementById('phoneModalContainer');
+      modalContainer.style.display = 'none';
+      modalContainer.innerHTML = '';
+    }
+
+    // ==========================================
+    // CHỨC NĂNG ĐẶT HÀNG (CHECKOUT & INVENTORY)
+    // ==========================================
+    function processOrderCheckout() {
+      if (!state.currentUser) {
+        alert('Vui lòng đăng nhập để đặt hàng!');
+        return;
+      }
+      if (state.cartItems.length === 0) {
+        alert('Giỏ hàng đang trống!');
+        return;
+      }
+
+      // 1. Kiểm tra tồn kho thực tế trong CSDL
+      for (const item of state.cartItems) {
+        const listing = state.listings.find(l => l.id === item.id);
+        if (!listing) {
+          alert(`Sách "${item.title}" không còn tồn tại trong CSDL!`);
+          return;
+        }
+        if (listing.stock < item.qty) {
+          alert(`Sách "${item.title}" trong kho chỉ còn ${listing.stock} cuốn. Vui lòng giảm bớt số lượng!`);
+          return;
+        }
+      }
+
+      // 2. Tính toán tiền
+      const subtotal = state.cartItems.reduce((s, i) => s + i.price * i.qty, 0);
+      const deliveryFee = state.deliveryType === 'dorm_delivery' ? 15000 : 0;
+      const total = subtotal + deliveryFee;
+      const deliveryName = state.deliveryType === 'dorm_delivery'
+        ? 'Phòng Ký túc xá DNTU (+15.000đ)'
+        : 'Cổng 1 trường DNTU (Miễn phí 0đ)';
+
+      // 3. Trừ số lượng tồn kho trong CSDL
+      state.cartItems.forEach(cartItem => {
+        const listing = state.listings.find(l => l.id === cartItem.id);
+        if (listing) {
+          listing.stock = Math.max(0, listing.stock - cartItem.qty);
+        }
+      });
+      saveStoredListings(state.listings);
+
+      // 4. Tạo đơn hàng và lưu vào CSDL đơn hàng của User
+      const orderId = 'DNTU-ORD-' + Math.floor(100000 + Math.random() * 900000);
+      const orderData = {
+        id: orderId,
+        userId: state.currentUser.id,
+        userName: state.currentUser.name,
+        userPhone: state.currentUser.phone || '0901234567',
+        studentId: state.currentUser.studentId || '1923050080',
+        items: [...state.cartItems],
+        subtotal,
+        deliveryFee,
+        deliveryType: state.deliveryType,
+        deliveryName,
+        total,
+        status: 'Đã xác nhận (Đang chuẩn bị sách)',
+        createdAt: new Date().toLocaleString('vi-VN')
+      };
+
+      const userOrders = getUserOrdersFromStorage(state.currentUser.id);
+      userOrders.unshift(orderData);
+      saveUserOrdersToStorage(state.currentUser.id, userOrders);
+      state.userOrders = userOrders;
+
+      // 5. Làm trống giỏ hàng
+      const boughtItems = [...state.cartItems];
+      state.cartItems = [];
+      saveUserCartToStorage(state.currentUser.id, []);
+      updateCartBadge();
+
+      // 6. Hiển thị Modal Xác Nhận Đặt Hàng Thành Công
+      const modalContainer = document.getElementById('phoneModalContainer');
+      modalContainer.style.display = 'flex';
+      modalContainer.className = 'modal-backdrop';
+      modalContainer.innerHTML = `
+        <div class="modal-box" style="text-align:center;">
+          <div style="font-size:44px; margin-bottom:4px;">🎉</div>
+          <h3 style="font-size:16px; font-weight:800; color:var(--success);">Đặt Hàng Thành Công!</h3>
+          <p style="font-size:11px; color:#64748b; margin-top:2px;">Mã đơn: <strong style="color:var(--primary); font-size:12px;">#${orderId}</strong></p>
+          
+          <div style="text-align:left; background:rgba(0,0,0,0.03); border:1px solid #cbd5e1; border-radius:8px; padding:10px; margin:12px 0; font-size:11px;">
+            <div style="margin-bottom:4px;">• <strong>Người nhận:</strong> ${state.currentUser.name} (${state.currentUser.phone})</div>
+            <div style="margin-bottom:4px;">• <strong>Địa điểm:</strong> ${deliveryName}</div>
+            <div style="margin-bottom:4px;">• <strong>Số lượng:</strong> ${boughtItems.reduce((a,b)=>a+b.qty, 0)} cuốn sách</div>
+            <div style="margin-bottom:4px; font-size:12px; font-weight:800; color:var(--primary);">• <strong>Tổng tiền:</strong> ${total.toLocaleString('vi-VN')} đ</div>
+            <div style="font-size:10px; color:#16a34a; font-weight:700;">🟢 Người bán sẽ liên hệ trong 15-30 phút để giao sách!</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <button onclick="closeModal(); switchTab('profile');" style="padding:10px; background:#7c3aed; color:#fff; border:none; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">📦 Xem Lịch Sử Đơn Hàng</button>
+            <button onclick="closeModal(); switchTab('home');" style="padding:8px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">🛍️ Tiếp Tục Mua Sách</button>
+          </div>
+        </div>
+      `;
+
+      renderScreen();
+    }
 
     // ==========================================
     // LOGIC XÁC THỰC, ĐĂNG NHẬP, ĐĂNG KÝ, ĐỔI MẬT KHẨU
     // ==========================================
-
     function performSignIn(email, password) {
       state.authError = '';
       state.authSuccess = '';
@@ -700,10 +1201,10 @@
         return;
       }
 
-      // Đăng nhập thành công -> Nạp giỏ hàng & yêu thích riêng biệt của tài khoản này!
       state.currentUser = acc;
       state.cartItems = getUserCartFromStorage(acc.id);
       state.favouriteIds = getUserFavsFromStorage(acc.id);
+      state.userOrders = getUserOrdersFromStorage(acc.id);
       state.activeTab = 'home';
       updateHeader();
       renderScreen();
@@ -736,11 +1237,11 @@
       }
 
       const newAcc = {
-        id: 'usr_' + data.role + '_' + Date.now(),
+        id: 'usr_buyer_' + Date.now(),
         name: data.name.trim(),
         email: data.email.trim().toLowerCase(),
         password: data.password,
-        role: data.role,
+        role: 'buyer',
         studentId: data.studentId.trim() || '192305' + Math.floor(1000 + Math.random() * 9000),
         phone: data.phone.trim() || '0901234567',
         createdAt: new Date().toISOString().split('T')[0]
@@ -749,10 +1250,10 @@
       accounts.push(newAcc);
       saveStoredAccounts(accounts);
 
-      // Đăng nhập ngay vào tài khoản mới
       state.currentUser = newAcc;
       state.cartItems = [];
       state.favouriteIds = [];
+      state.userOrders = [];
       saveUserCartToStorage(newAcc.id, []);
       saveUserFavsToStorage(newAcc.id, []);
       state.activeTab = 'home';
@@ -802,6 +1303,7 @@
       state.currentUser = null;
       state.cartItems = [];
       state.favouriteIds = [];
+      state.userOrders = [];
       updateHeader();
       renderScreen();
     }
@@ -815,9 +1317,8 @@
     }
 
     // ==========================================
-    // UI CONTROL FUNCTIONS
+    // UI CONTROLS
     // ==========================================
-
     function toggleThemeMode() {
       state.isDark = !state.isDark;
       const screen = document.getElementById('phoneScreen');
@@ -839,20 +1340,6 @@
       renderScreen();
     }
 
-    function setRole(role) {
-      if (state.currentUser) {
-        state.currentUser.role = role;
-        const accounts = getStoredAccounts();
-        const acc = accounts.find(a => a.id === state.currentUser.id);
-        if (acc) {
-          acc.role = role;
-          saveStoredAccounts(accounts);
-        }
-      }
-      updateHeader();
-      renderScreen();
-    }
-
     function updateHeader() {
       const header = document.getElementById('appHeader');
       const tabBar = document.getElementById('tabBar');
@@ -862,8 +1349,26 @@
       } else {
         header.style.display = 'flex';
         tabBar.style.display = 'flex';
-        document.getElementById('userRoleHeader').textContent =
-          `${state.currentUser.name} (${state.currentUser.role === 'seller' ? 'Chủ Shop' : 'Sinh viên'})`;
+
+        const admin = isUserAdmin(state.currentUser);
+        const roleLabel = admin
+          ? '👑 Quản trị viên (Admin DNTU)'
+          : (state.currentUser.role === 'seller' ? '🏷️ Chủ shop sách' : '🎓 Sinh viên DNTU');
+
+        document.getElementById('userRoleHeader').textContent = `${state.currentUser.name} • ${roleLabel}`;
+
+        const createTabLabel = document.getElementById('createTabLabel');
+        const createTabIcon = document.getElementById('createTabIcon');
+        if (createTabLabel && createTabIcon) {
+          if (admin) {
+            createTabLabel.textContent = 'Kho sách';
+            createTabIcon.textContent = '📦';
+          } else {
+            createTabLabel.textContent = 'Đăng bán';
+            createTabIcon.textContent = '➕';
+          }
+        }
+
         updateCartBadge();
       }
     }
@@ -900,13 +1405,13 @@
       const exist = state.cartItems.find(i => i.id === listing.id);
       if (exist) {
         if (exist.qty >= listing.stock) {
-          alert(`Chỉ còn ${listing.stock} món trong kho của người bán!`);
+          alert(`Chỉ còn ${listing.stock} cuốn trong kho của người bán!`);
           return;
         }
         exist.qty += 1;
       } else {
         if (listing.stock <= 0) {
-          alert('Sản phẩm này đã hết hàng.');
+          alert('Sách này đã hết hàng trong kho.');
           return;
         }
         state.cartItems.push({ ...listing, qty: 1 });
@@ -915,15 +1420,19 @@
         saveUserCartToStorage(state.currentUser.id, state.cartItems);
       }
       updateCartBadge();
-      alert('Đã thêm vào giỏ hàng riêng của ' + (state.currentUser?.name || '') + '!');
+      alert(`Đã thêm vào giỏ hàng của ${state.currentUser?.name}!`);
       renderScreen();
     }
 
     function updateCartQty(id, delta) {
       const item = state.cartItems.find(i => i.id === id);
       if (!item) return;
-      if (item.qty + delta > item.stock) {
-        alert(`Số lượng vượt quá tồn kho (tối đa: ${item.stock})`);
+
+      const listing = state.listings.find(l => l.id === id);
+      const maxStock = listing ? listing.stock : item.stock;
+
+      if (item.qty + delta > maxStock) {
+        alert(`Số lượng vượt quá tồn kho (tối đa: ${maxStock} cuốn)`);
         return;
       }
       item.qty += delta;
@@ -951,7 +1460,8 @@
       const item = state.listings[0];
       const oldP = item.price;
       item.price = Math.max(10000, item.price - 15000);
-      alert(`🔔 [LOCAL NOTIFICATION]\n\nGiảm giá: ${item.title}\nMón đồ trong danh sách yêu thích vừa giảm ${ (oldP - item.price).toLocaleString('vi-VN') } đ!\nGiá mới: ${item.price.toLocaleString('vi-VN')} đ`);
+      saveStoredListings(state.listings);
+      alert(`🔔 [LOCAL NOTIFICATION]\n\nGiảm giá: ${item.title}\nMón đồ trong danh sách yêu thích vừa giảm ${(oldP - item.price).toLocaleString('vi-VN')} đ!\nGiá mới: ${item.price.toLocaleString('vi-VN')} đ`);
       renderScreen();
     }
 
@@ -960,8 +1470,9 @@
     // ==========================================
     function renderScreen() {
       const container = document.getElementById('screenBody');
+      const admin = isUserAdmin(state.currentUser);
 
-      // 0. NẾU CHƯA ĐĂNG NHẬP -> HIỂN THỊ MÀN HÌNH AUTHENTICATION
+      // 0. CHƯA ĐĂNG NHẬP -> AUTHENTICATION SCREEN
       if (!state.currentUser) {
         container.innerHTML = `
           <div style="padding: 10px 0;">
@@ -998,17 +1509,17 @@
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 6px;">
-                  <button onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
-                    🎓 <strong>Trịnh Thế Thanh Hải</strong> (Buyer) • 1923050080
+                  <button onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')" style="padding: 8px; border: 1px solid #7c3aed; border-radius: 6px; background: rgba(124,58,237,0.06); color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    👑 <strong>Trịnh Thế Thanh Hải</strong> (Admin) • 1923050080
                   </button>
-                  <button onclick="quickLoginSeed('minh.seller@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
-                    🏷️ <strong>Nguyễn Văn Minh</strong> (Seller - Chủ shop) • K17
+                  <button onclick="quickLoginSeed('son.bui@dntu.edu.vn')" style="padding: 8px; border: 1px solid #7c3aed; border-radius: 6px; background: rgba(124,58,237,0.06); color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    👑 <strong>Bùi Thanh Sơn</strong> (Admin) • 1923050973
                   </button>
-                  <button onclick="quickLoginSeed('son.bui@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
-                    🎓 <strong>Bùi Thanh Sơn</strong> (Buyer) • 1923050973
+                  <button onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')" style="padding: 8px; border: 1px solid #7c3aed; border-radius: 6px; background: rgba(124,58,237,0.06); color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    👑 <strong>Nguyễn Vũ Minh Nhật</strong> (Admin) • 1923050861
                   </button>
-                  <button onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
-                    🏷️ <strong>Nguyễn Vũ Minh Nhật</strong> (Seller) • 1923050861
+                  <button onclick="quickLoginSeed('nam.le@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    🎓 <strong>Lê Hoàng Nam</strong> (Buyer - Sinh viên mua) • 1923051111
                   </button>
                 </div>
               </div>
@@ -1043,21 +1554,13 @@
                     <input type="password" id="regConfirmPass" class="form-input" placeholder="••••••">
                   </div>
                 </div>
-                <div class="form-group">
-                  <label>Vai trò chính:</label>
-                  <select id="regRole" class="form-input">
-                    <option value="buyer">🛍️ Người mua (Buyer - Sinh viên mua đồ)</option>
-                    <option value="seller">🏷️ Người bán (Seller - Đăng bài nhượng đồ)</option>
-                  </select>
-                </div>
                 <button onclick="performSignUp({
                   name: document.getElementById('regName').value,
                   studentId: document.getElementById('regStudentId').value,
                   phone: document.getElementById('regPhone').value,
                   email: document.getElementById('regEmail').value,
                   password: document.getElementById('regPass').value,
-                  confirmPassword: document.getElementById('regConfirmPass').value,
-                  role: document.getElementById('regRole').value
+                  confirmPassword: document.getElementById('regConfirmPass').value
                 })" style="width: 100%; padding: 12px; background: var(--success); color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 6px;">✨ Tạo Tài Khoản & Vào App</button>
               </div>
             `}
@@ -1066,11 +1569,10 @@
         return;
       }
 
-      // View Detail Screen
+      // 1. CHI TIẾT SÁCH (View Detail Screen)
       if (state.activeListingDetail) {
         const item = state.activeListingDetail;
         const isFav = state.favouriteIds.includes(item.id);
-        const isSeller = state.currentUser.role === 'seller';
         const isOutOfStock = item.stock <= 0;
 
         container.innerHTML = `
@@ -1085,52 +1587,63 @@
             </div>
 
             <div style="padding:12px 0;">
-              <div style="font-size:18px; font-weight:800; color:var(--primary);">${item.price.toLocaleString('vi-VN')} đ</div>
-              <h2 style="font-size:15px; font-weight:700; margin:6px 0;">${item.title}</h2>
-              <div style="display:flex; gap:8px; margin-bottom:12px;">
-                <span class="prod-stock ${isOutOfStock ? 'stock-out' : 'stock-ok'}">${isOutOfStock ? 'Hết hàng' : `Còn ${item.stock} món`}</span>
-                <span style="font-size:10px; background:#f1f5f9; padding:2px 6px; border-radius:4px; color:#475569;">Tình trạng: Mới 99%</span>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:18px; font-weight:800; color:var(--primary);">${item.price.toLocaleString('vi-VN')} đ</div>
+                <span class="prod-stock ${isOutOfStock ? 'stock-out' : 'stock-ok'}">${isOutOfStock ? 'Hết hàng' : `Kho: ${item.stock} cuốn`}</span>
               </div>
+              <h2 style="font-size:15px; font-weight:700; margin:6px 0;">${item.title}</h2>
 
-              <!-- Seller vs Buyer View (Rubric Requirement) -->
-              <div style="padding:10px; border-radius:10px; background:${isSeller ? '#eff6ff' : '#f8fafc'}; border:1px solid #cbd5e1; margin-bottom:12px; color:#0f172a;">
-                <div style="font-size:12px; font-weight:700; color:${isSeller ? '#1d4ed8' : '#0f172a'}; margin-bottom:4px;">
-                  ${isSeller ? '🛠️ Bảng điều khiển Người bán (Seller View)' : '👤 Thông tin người bán (Buyer View)'}
+              <!-- Admin Controls inside detail (nếu là 1 trong 3 Admin) -->
+              ${admin ? `
+                <div style="padding:10px; border-radius:10px; background:rgba(124,58,237,0.08); border:1px solid #7c3aed; margin-bottom:12px;">
+                  <div style="font-size:11px; font-weight:800; color:#7c3aed; margin-bottom:6px;">👑 Bảng Quản Trị Sách (Chỉ 3 Admin thấy)</div>
+                  <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button onclick="adminAdjustStock('${item.id}', 1, event)" style="padding:6px 10px; background:#16a34a; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">+1 Kho</button>
+                    <button onclick="adminAdjustStock('${item.id}', 5, event)" style="padding:6px 10px; background:#16a34a; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">+5 Kho</button>
+                    <button onclick="adminOpenEditModal('${item.id}', event)" style="padding:6px 10px; background:#0284c7; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">✏️ Sửa sách</button>
+                    <button onclick="adminDeleteListing('${item.id}', event)" style="padding:6px 10px; background:#dc2626; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">🗑️ Xoá khỏi CSDL</button>
+                  </div>
                 </div>
-                ${isSeller ? `
-                  <p style="font-size:11px; color:#475569; margin-bottom:8px;">Bạn có thể điều chỉnh giá để kích hoạt Local Notification tới người mua:</p>
-                  <button onclick="simulatePriceDrop()" style="width:100%; padding:8px; background:var(--primary); color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">🔔 Giảm giá 15.000đ (Bắn thông báo)</button>
-                ` : `
-                  <p style="font-size:11px; color:#475569;">• Người bán: <strong>${item.sellerName}</strong></p>
-                  <p style="font-size:11px; color:#475569;">• Số điện thoại: <strong>${item.sellerPhone}</strong></p>
-                  <p style="font-size:11px; color:#475569;">• Địa điểm: Cổng 1 DNTU hoặc KTX</p>
-                `}
+              ` : ''}
+
+              <!-- Seller & Contact Info -->
+              <div style="padding:10px; border-radius:10px; background:#f8fafc; border:1px solid #cbd5e1; margin-bottom:12px; color:#0f172a;">
+                <p style="font-size:11px; color:#475569;">• Người bán: <strong>${item.sellerName}</strong></p>
+                <p style="font-size:11px; color:#475569;">• Số điện thoại: <strong>${item.sellerPhone || '0901234567'}</strong></p>
+                <p style="font-size:11px; color:#475569;">• Địa điểm nhận: Cổng 1 DNTU hoặc Ký túc xá</p>
               </div>
 
               <div style="font-size:12px; font-weight:700; margin-bottom:4px;">Mô tả chi tiết:</div>
               <p style="font-size:11px; color:#64748b; line-height:1.5;">${item.description}</p>
 
-              ${!isSeller ? `
-                <button onclick="addToCart(state.activeListingDetail, event)" style="width:100%; padding:12px; background:var(--primary); color:#fff; border:none; border-radius:10px; font-size:13px; font-weight:700; margin-top:16px; cursor:pointer;" ${isOutOfStock ? 'disabled' : ''}>
-                  ${isOutOfStock ? 'Sản phẩm đã hết hàng' : '🛒 Thêm vào giỏ hàng'}
-                </button>
-              ` : ''}
+              <button onclick="addToCart(state.activeListingDetail, event)" style="width:100%; padding:12px; background:var(--primary); color:#fff; border:none; border-radius:10px; font-size:13px; font-weight:700; margin-top:16px; cursor:pointer;" ${isOutOfStock ? 'disabled' : ''}>
+                ${isOutOfStock ? 'Sách đã hết hàng' : '🛒 Thêm vào giỏ hàng'}
+              </button>
             </div>
           </div>
         `;
         return;
       }
 
-      // 1. Home Tab
+      // 2. HOME TAB (CHỢ SÁCH & QUẢN TRỊ KHO)
       if (state.activeTab === 'home') {
         const filtered = state.listings.filter(item => {
-          const mQ = item.title.toLowerCase().includes(state.searchQuery.toLowerCase());
+          const mQ = item.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+                     item.description.toLowerCase().includes(state.searchQuery.toLowerCase());
           const mC = state.selectedCategory === 'all' || item.category === state.selectedCategory;
           return mQ && mC;
         });
 
         container.innerHTML = `
           <div>
+            <!-- Banner Thông Báo Quyền Quản Trị (Nếu là 1 trong 3 Admin) -->
+            ${admin ? `
+              <div style="background:rgba(124,58,237,0.1); border:1px solid #7c3aed; border-radius:8px; padding:6px 10px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:10px; font-weight:700; color:#7c3aed;">👑 Chế độ Admin: Bạn có quyền Thêm/Sửa/Xóa & Thêm số lượng kho</span>
+                <button onclick="switchTab('create')" style="background:#7c3aed; color:#fff; border:none; padding:3px 8px; border-radius:4px; font-size:9px; font-weight:800; cursor:pointer;">+ Nhập sách mới</button>
+              </div>
+            ` : ''}
+
             <!-- Search Input -->
             <input type="text" placeholder="🔍 Tìm giáo trình, máy tính, quạt KTX..." value="${state.searchQuery}" oninput="state.searchQuery = this.value; renderScreen();" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid #cbd5e1; font-size:12px; margin-bottom:8px; background:inherit; color:inherit;">
 
@@ -1151,19 +1664,37 @@
 
             <!-- Product Cards -->
             ${filtered.map(item => `
-              <div class="prod-card" onclick="viewListing(state.listings.find(l => l.id === '${item.id}'))">
-                <div class="prod-img-wrap">
+              <div class="prod-card">
+                <div class="prod-img-wrap" onclick="viewListing(state.listings.find(l => l.id === '${item.id}'))">
                   <img src="${item.photoUri}" class="prod-img">
                   <button class="fav-btn" onclick="toggleFav('${item.id}', event)">${state.favouriteIds.includes(item.id) ? '❤️' : '🤍'}</button>
                   <div class="compress-pill">⚡ Nén: ${item.photoCompressedSizeKb || 280}KB</div>
                 </div>
                 <div class="prod-content">
-                  <div class="prod-title">${item.title}</div>
+                  <div class="prod-title" onclick="viewListing(state.listings.find(l => l.id === '${item.id}'))">${item.title}</div>
                   <div style="font-size:10px; color:#64748b;">Người bán: ${item.sellerName}</div>
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
                     <span class="prod-price">${item.price.toLocaleString('vi-VN')} đ</span>
-                    <span class="prod-stock ${item.stock <= 0 ? 'stock-out' : 'stock-ok'}">${item.stock <= 0 ? 'Hết hàng' : `Kho: ${item.stock}`}</span>
+                    <span class="prod-stock ${item.stock <= 0 ? 'stock-out' : 'stock-ok'}">${item.stock <= 0 ? 'Hết hàng' : `Kho: ${item.stock} cuốn`}</span>
                   </div>
+
+                  <!-- ADMIN ACTION TOOLBAR: Chỉ 3 Admin mới thấy các nút này -->
+                  ${admin ? `
+                    <div class="admin-card-actions">
+                      <span class="admin-tag">👑 Admin CSDL</span>
+                      <div class="admin-btns">
+                        <button class="btn-admin-mini" style="background:#16a34a; color:#fff;" onclick="adminAdjustStock('${item.id}', 1, event)" title="Thêm 1 cuốn vào kho">+1 Kho</button>
+                        <button class="btn-admin-mini" style="background:#16a34a; color:#fff;" onclick="adminAdjustStock('${item.id}', 5, event)" title="Thêm 5 cuốn vào kho">+5 Kho</button>
+                        <button class="btn-admin-mini" style="background:#0284c7; color:#fff;" onclick="adminOpenEditModal('${item.id}', event)" title="Sửa thông tin sách">✏️ Sửa</button>
+                        <button class="btn-admin-mini" style="background:#dc2626; color:#fff;" onclick="adminDeleteListing('${item.id}', event)" title="Xoá sách khỏi CSDL">🗑️ Xoá</button>
+                      </div>
+                    </div>
+                  ` : ''}
+
+                  <!-- Nút Mua nhanh cho người dùng -->
+                  <button onclick="addToCart(state.listings.find(l => l.id === '${item.id}'), event)" style="width:100%; padding:8px; background:var(--primary); color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; margin-top:6px; cursor:pointer;" ${item.stock <= 0 ? 'disabled' : ''}>
+                    ${item.stock <= 0 ? 'Hết hàng' : '🛒 Thêm vào giỏ'}
+                  </button>
                 </div>
               </div>
             `).join('')}
@@ -1172,7 +1703,7 @@
         return;
       }
 
-      // 2. Favourites Tab (Cô lập theo user)
+      // 3. FAVOURITES TAB
       if (state.activeTab === 'fav') {
         const favs = state.listings.filter(i => state.favouriteIds.includes(i.id));
         container.innerHTML = `
@@ -1202,28 +1733,63 @@
         return;
       }
 
-      // 3. Create Listing Tab
+      // 4. TAB ĐĂNG BÁN / QUẢN LÝ KHO SÁCH (DÀNH CHO ADMIN)
       if (state.activeTab === 'create') {
         container.innerHTML = `
           <div>
-            <h2 style="font-size:15px; font-weight:800; margin-bottom:8px;">Đăng bán sản phẩm mới</h2>
+            <h2 style="font-size:15px; font-weight:800; margin-bottom:4px;">${admin ? '📦 Quản Trị & Nhập Sách Mới (Admin)' : 'Đăng bán sách sinh viên'}</h2>
+            <p style="font-size:11px; color:#64748b; margin-bottom:8px;">${admin ? 'Chỉ 3 tài khoản Admin được phép nhập sách trực tiếp vào CSDL trường DNTU.' : 'Sinh viên nhượng sách và đồ dùng cá nhân.'}</p>
+
             <div style="padding:10px; border-radius:10px; background:#e0f2fe; color:#0369a1; font-size:11px; margin-bottom:10px;">
-              ⚡ <strong>Bằng chứng nén ảnh Wi-Fi:</strong><br>
-              Ảnh camera gốc: <strong>4.2 MB</strong> ➔ Sau khi nén: <strong>280 KB</strong> (Tiết kiệm 93% băng thông).
+              ⚡ <strong>Tối ưu hóa nén ảnh Wi-Fi:</strong><br>
+              Ảnh camera gốc: <strong>4.2 MB</strong> ➔ Tự động nén còn: <strong>280 KB</strong> (Tiết kiệm 93% băng thông).
             </div>
+
             <div style="display:flex; flex-direction:column; gap:8px;">
-              <input type="text" id="newTitle" placeholder="Tiêu đề (VD: Giáo trình Mạng máy tính...)" class="form-input">
-              <input type="number" id="newPrice" placeholder="Giá bán (VND) - VD: 45000" class="form-input">
-              <input type="number" id="newStock" placeholder="Số lượng tồn kho (VD: 2)" class="form-input">
-              <textarea id="newDesc" placeholder="Mô tả tình trạng sách, địa điểm giao..." class="form-input" style="height:60px;"></textarea>
-              <button onclick="createNewItem()" style="padding:10px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">🚀 Đăng bán ngay</button>
+              <div class="form-group">
+                <label>Tiêu đề sách / đồ dùng *</label>
+                <input type="text" id="newTitle" placeholder="VD: Giáo trình Mạng máy tính Cisco..." class="form-input">
+              </div>
+              <div style="display:flex; gap:6px;">
+                <div class="form-group" style="flex:1;">
+                  <label>Giá bán (VNĐ) *</label>
+                  <input type="number" id="newPrice" placeholder="VD: 55000" class="form-input">
+                </div>
+                <div class="form-group" style="flex:1;">
+                  <label>Số lượng kho *</label>
+                  <input type="number" id="newStock" placeholder="VD: 5" class="form-input">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Danh mục</label>
+                <select id="newCategory" class="form-input">
+                  <option value="textbook">📚 Giáo trình</option>
+                  <option value="electronics">💻 Thiết bị</option>
+                  <option value="stationery">✏️ Dụng cụ</option>
+                  <option value="dorm_supplies">🛏️ Đồ KTX</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>URL Hình ảnh sách</label>
+                <input type="text" id="newPhotoUri" placeholder="Link ảnh hoặc để mặc định" value="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&auto=format&fit=crop&q=80" class="form-input">
+              </div>
+              <div class="form-group">
+                <label>Mô tả chi tiết</label>
+                <textarea id="newDesc" placeholder="Mô tả tình trạng sách, bài tập, ghi chú..." class="form-input" style="height:60px;"></textarea>
+              </div>
+
+              ${admin ? `
+                <button onclick="adminCreateNewListing()" style="padding:10px; background:#7c3aed; color:#fff; border:none; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">👑 Lưu Sách Vào CSDL (Admin)</button>
+              ` : `
+                <button onclick="alert('Chức năng thêm sách đã được phân quyền cho 3 Quản trị viên (Hải, Sơn, Nhật). Vui lòng đăng nhập tài khoản Admin để thêm sách!');" style="padding:10px; background:#94a3b8; color:#fff; border:none; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">🚀 Đăng bán (Yêu cầu quyền Admin)</button>
+              `}
             </div>
           </div>
         `;
         return;
       }
 
-      // 4. Cart Tab (Cô lập theo user)
+      // 5. CART TAB (GIỎ HÀNG & ĐẶT HÀNG)
       if (state.activeTab === 'cart') {
         const subtotal = state.cartItems.reduce((s, i) => s + i.price * i.qty, 0);
         const deliveryFee = state.deliveryType === 'dorm_delivery' ? 15000 : 0;
@@ -1240,8 +1806,8 @@
               <div style="text-align:center; padding:40px 10px;">
                 <div style="font-size:40px;">🛒</div>
                 <div style="font-size:13px; font-weight:700; margin-top:8px;">Giỏ hàng của bạn đang trống</div>
-                <p style="font-size:11px; color:#64748b; margin-top:4px;">Khi bạn thêm sản phẩm, giỏ hàng sẽ được lưu riêng cho tài khoản ${state.currentUser.email}.</p>
-                <button onclick="switchTab('home')" style="margin-top:12px; padding:8px 16px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">Mua sắm ngay</button>
+                <p style="font-size:11px; color:#64748b; margin-top:4px;">Khi bạn thêm sách, giỏ hàng sẽ được lưu riêng cho tài khoản ${state.currentUser.email}.</p>
+                <button onclick="switchTab('home')" style="margin-top:12px; padding:8px 16px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer;">Duyệt sách ngay</button>
               </div>
             ` : `
               ${state.cartItems.map(item => `
@@ -1250,12 +1816,12 @@
                   <div style="flex:1;">
                     <div style="font-size:11px; font-weight:700;">${item.title}</div>
                     <div style="font-size:12px; font-weight:800; color:var(--primary);">${item.price.toLocaleString('vi-VN')} đ</div>
-                    <div style="font-size:9px; color:#d97706;">Kho tối đa: ${item.stock}</div>
+                    <div style="font-size:9px; color:#d97706;">Kho còn: ${item.stock} cuốn</div>
                   </div>
                   <div style="display:flex; align-items:center; gap:4px;">
-                    <button onclick="updateCartQty('${item.id}', -1)" style="padding:2px 6px; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer;">-</button>
-                    <span style="font-size:11px; font-weight:700; min-width:14px; text-align:center;">${item.qty}</span>
-                    <button onclick="updateCartQty('${item.id}', 1)" style="padding:2px 6px; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer;">+</button>
+                    <button onclick="updateCartQty('${item.id}', -1)" style="padding:2px 8px; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer; font-weight:bold;">-</button>
+                    <span style="font-size:11px; font-weight:700; min-width:16px; text-align:center;">${item.qty}</span>
+                    <button onclick="updateCartQty('${item.id}', 1)" style="padding:2px 8px; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer; font-weight:bold;">+</button>
                   </div>
                 </div>
               `).join('')}
@@ -1288,7 +1854,7 @@
                   <span>Tổng thanh toán:</span>
                   <span>${total.toLocaleString('vi-VN')} đ</span>
                 </div>
-                <button onclick="alert('Đặt hàng thành công với tổng tiền ' + ${total}.toLocaleString('vi-VN') + ' đ!'); state.cartItems = []; saveUserCartToStorage(state.currentUser.id, []); updateCartBadge(); switchTab('home');" style="width:100%; padding:10px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">Xác nhận đặt hàng</button>
+                <button onclick="processOrderCheckout()" style="width:100%; padding:11px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">🚀 Xác nhận đặt hàng</button>
               </div>
             `}
           </div>
@@ -1296,16 +1862,18 @@
         return;
       }
 
-      // 5. Profile Tab (Bao gồm Đổi mật khẩu & Cô lập dữ liệu)
+      // 6. PROFILE TAB (BẢO MẬT, ĐƠN HÀNG & THÔNG TIN ADMIN)
       if (state.activeTab === 'profile') {
+        const userOrders = getUserOrdersFromStorage(state.currentUser.id);
+
         container.innerHTML = `
           <div>
             <div style="text-align:center; padding:10px 0;">
-              <div style="font-size:40px;">${state.currentUser.role === 'seller' ? '🏷️' : '🎓'}</div>
+              <div style="font-size:40px;">${admin ? '👑' : (state.currentUser.role === 'seller' ? '🏷️' : '🎓')}</div>
               <h2 style="font-size:15px; font-weight:800; margin-top:4px;">${state.currentUser.name}</h2>
               <p style="font-size:11px; color:#64748b;">${state.currentUser.email}</p>
-              <div style="display:inline-block; font-size:10px; padding:2px 8px; border-radius:10px; background:#e0f2fe; color:#0369a1; font-weight:700; margin-top:6px;">
-                Vai trò: ${state.currentUser.role === 'seller' ? 'Chủ shop (Seller)' : 'Sinh viên (Buyer)'}
+              <div style="display:inline-block; font-size:10px; padding:2px 8px; border-radius:10px; background:${admin ? '#ede9fe' : '#e0f2fe'}; color:${admin ? '#7c3aed' : '#0369a1'}; font-weight:800; margin-top:6px;">
+                ${admin ? '👑 Ban Quản Trị CSDL (Admin)' : (state.currentUser.role === 'seller' ? 'Chủ Shop (Seller)' : 'Sinh viên (Buyer)')}
               </div>
             </div>
 
@@ -1334,7 +1902,28 @@
                   <div style="font-size:14px; font-weight:800; color:var(--error);">${state.favouriteIds.length}</div>
                   <div style="font-size:9px; color:#64748b;">Món yêu thích</div>
                 </div>
+                <div style="flex:1; padding:6px; border-radius:6px; background:rgba(0,0,0,0.03); border:1px solid #cbd5e1; text-align:center;">
+                  <div style="font-size:14px; font-weight:800; color:var(--success);">${userOrders.length}</div>
+                  <div style="font-size:9px; color:#64748b;">Đơn đã đặt</div>
+                </div>
               </div>
+            </div>
+
+            <!-- LỊCH SỬ ĐƠN HÀNG CỦA TÀI KHOẢN -->
+            <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
+              <div style="font-size:11px; font-weight:700; margin-bottom:6px;">📦 Lịch sử đơn hàng của bạn (${userOrders.length}):</div>
+              ${userOrders.length === 0 ? `
+                <p style="font-size:10px; color:#64748b;">Chưa có đơn hàng nào được đặt từ tài khoản này.</p>
+              ` : userOrders.map(ord => `
+                <div style="border:1px dashed #cbd5e1; border-radius:6px; padding:6px; margin-bottom:6px; font-size:10px;">
+                  <div style="display:flex; justify-content:space-between; font-weight:700;">
+                    <span style="color:var(--primary);">#${ord.id}</span>
+                    <span style="color:#16a34a;">${ord.status}</span>
+                  </div>
+                  <div style="color:#64748b; margin-top:2px;">${ord.createdAt} • ${ord.deliveryName}</div>
+                  <div style="font-weight:700; color:inherit; margin-top:2px;">Tổng: ${ord.total.toLocaleString('vi-VN')} đ (${ord.items.length} món)</div>
+                </div>
+              `).join('')}
             </div>
 
             <!-- Password Change Section -->
@@ -1372,21 +1961,12 @@
               ` : ''}
             </div>
 
-            <!-- Role Switcher -->
-            <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
-              <div style="font-size:11px; font-weight:700; margin-bottom:4px;">Chuyển đổi vai trò trải nghiệm:</div>
-              <div style="display:flex; gap:6px;">
-                <button onclick="setRole('buyer')" style="flex:1; padding:6px; border-radius:6px; border:1px solid #cbd5e1; background:${state.currentUser.role === 'buyer' ? 'var(--primary)' : 'transparent'}; color:${state.currentUser.role === 'buyer' ? '#fff' : '#475569'}; font-size:10px; font-weight:700; cursor:pointer;">🛍️ Người mua</button>
-                <button onclick="setRole('seller')" style="flex:1; padding:6px; border-radius:6px; border:1px solid #cbd5e1; background:${state.currentUser.role === 'seller' ? 'var(--primary)' : 'transparent'}; color:${state.currentUser.role === 'seller' ? '#fff' : '#475569'}; font-size:10px; font-weight:700; cursor:pointer;">🏷️ Người bán</button>
-              </div>
-            </div>
-
             <!-- Team Members -->
             <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
-              <div style="font-size:11px; font-weight:700; margin-bottom:4px;">👥 Thành viên nhóm 23DTH1:</div>
-              <p style="font-size:10px; color:#475569;">• <strong>1923050080</strong> - Trịnh Thế Thanh Hải (Nhóm trưởng)</p>
-              <p style="font-size:10px; color:#475569;">• <strong>1923050973</strong> - Bùi Thanh Sơn</p>
-              <p style="font-size:10px; color:#475569;">• <strong>1923050861</strong> - Nguyễn Vũ Minh Nhật</p>
+              <div style="font-size:11px; font-weight:700; margin-bottom:4px;">👥 3 Quản trị viên nhóm 23DTH1:</div>
+              <p style="font-size:10px; color:#475569;">• <strong>1923050080</strong> - Trịnh Thế Thanh Hải (Nhóm trưởng - Admin)</p>
+              <p style="font-size:10px; color:#475569;">• <strong>1923050973</strong> - Bùi Thanh Sơn (Admin)</p>
+              <p style="font-size:10px; color:#475569;">• <strong>1923050861</strong> - Nguyễn Vũ Minh Nhật (Admin)</p>
             </div>
 
             <button onclick="performSignOut()" style="width:100%; padding:10px; background:#fee2e2; color:#dc2626; border:1px solid #fecaca; border-radius:8px; font-weight:700; font-size:11px; margin-top:14px; cursor:pointer;">🚪 Đăng xuất (Lưu dữ liệu riêng & về trang đăng nhập)</button>
@@ -1394,37 +1974,6 @@
         `;
         return;
       }
-    }
-
-    function createNewItem() {
-      const title = document.getElementById('newTitle')?.value;
-      const price = parseInt(document.getElementById('newPrice')?.value) || 50000;
-      const stock = parseInt(document.getElementById('newStock')?.value) || 1;
-      const desc = document.getElementById('newDesc')?.value || 'Sản phẩm sinh viên DNTU nhượng lại.';
-
-      if (!title) {
-        alert('Vui lòng nhập tiêu đề!');
-        return;
-      }
-
-      state.listings.unshift({
-        id: 'lst_' + Date.now(),
-        sellerId: state.currentUser.id,
-        sellerName: state.currentUser.name,
-        sellerPhone: state.currentUser.phone || '0901234567',
-        title,
-        price,
-        stock,
-        category: 'textbook',
-        photoUri: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop&q=80',
-        photoCompressedSizeKb: 280,
-        photoOriginalSizeKb: 4200,
-        description: desc,
-        condition: 'like_new'
-      });
-
-      alert('Đăng bán thành công (Đã nén ảnh 93%)!');
-      switchTab('home');
     }
 
     // Init

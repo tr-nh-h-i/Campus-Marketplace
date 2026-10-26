@@ -6,6 +6,9 @@ import {
   getUserCart,
   saveUserFavourites,
   getUserFavourites,
+  getUserOrders,
+  saveUserOrder,
+  isUserAdmin,
   SEED_ACCOUNTS,
 } from '../services/authStorage';
 import { CartItem, Listing } from '../types/marketplace';
@@ -122,5 +125,31 @@ describe('Test 4: Xác thực Tài khoản & Cô lập Dữ liệu Người dùn
     expect(loadedCartB.length).toBe(1);
     expect(loadedCartB[0].listingId).toBe('lst_103');
     expect(loadedFavsB).toEqual(['lst_103']);
+  });
+
+  test('5. Phân quyền Quản trị viên (3 thành viên nhóm) và lưu trữ đơn hàng độc lập', async () => {
+    // 3 thành viên nhóm là Admin
+    expect(isUserAdmin(SEED_ACCOUNTS[0])).toBe(true); // Hải
+    expect(isUserAdmin(SEED_ACCOUNTS[1])).toBe(true); // Sơn
+    expect(isUserAdmin(SEED_ACCOUNTS[2])).toBe(true); // Nhật
+
+    // Người dùng thông thường không có quyền Admin
+    expect(isUserAdmin(SEED_ACCOUNTS[3])).toBe(false); // Minh
+    expect(isUserAdmin(SEED_ACCOUNTS[4])).toBe(false); // Nam (Buyer)
+
+    // Kiểm tra lưu và đọc đơn hàng riêng của User
+    const testOrder = {
+      id: 'DNTU-ORD-999888',
+      userId: SEED_ACCOUNTS[0].id,
+      userName: SEED_ACCOUNTS[0].name,
+      items: [{ listingId: 'lst_101', quantity: 1, title: 'Sách Di động', price: 65000 }],
+      total: 65000,
+      status: 'Đã xác nhận',
+      createdAt: '2026-10-26 12:00:00',
+    };
+    await saveUserOrder(SEED_ACCOUNTS[0].id, testOrder);
+    const orders = await getUserOrders(SEED_ACCOUNTS[0].id);
+    expect(orders.length).toBeGreaterThan(0);
+    expect(orders[0].id).toBe('DNTU-ORD-999888');
   });
 });
