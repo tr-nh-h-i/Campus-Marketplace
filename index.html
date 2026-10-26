@@ -196,7 +196,7 @@
       padding: 1px 5px;
     }
 
-    /* Content & Scrollbar Styling (Fix triệt để thanh cuộn khi bật chế độ tối) */
+    /* Content & Scrollbar Styling (Fix thanh cuộn khi bật chế độ tối) */
     .screen-body {
       flex: 1;
       overflow-y: auto;
@@ -558,29 +558,22 @@
 
     <!-- Side Panel / Specifications & Controls -->
     <div class="side-panel">
-      <!-- 3 Admin Accounts Highlight Box -->
+      <!-- 3 Thành Viên Nhóm DNTU (Hải, Nhật, Sơn) -->
       <div class="info-box" style="border: 1px solid #7c3aed; background: #13192f;">
-        <h3 style="color: #a78bfa;">👑 Dành Riêng 3 Tài Khoản Quản Trị (Admin Kho Sách)</h3>
-        <p>• <strong>Phân quyền quản trị:</strong> Chỉ 3 thành viên nhóm mới có quyền <strong>Thêm, Sửa, Xoá và Thêm số lượng kho sách</strong>. Mọi thay đổi được lưu vĩnh viễn vào CSDL (Persistent Storage).</p>
-        <p style="margin-top: 4px;">• Tài khoản sinh viên thường chỉ có quyền mua, thêm vào giỏ và đặt hàng.</p>
+        <h3 style="color: #a78bfa;">👥 3 Thành Viên Nhóm 23DTH1 (Chuyển Đổi Nhanh):</h3>
+        <p>• Hệ thống chỉ gồm đúng 3 tài khoản của nhóm: <strong>Hải, Nhật</strong> giữ vai trò <strong>Admin</strong> quản lý kho sách; <strong>Sơn</strong> giữ vai trò <strong>Người mua thường (Buyer)</strong> để kiểm thử.</p>
+        <p style="margin-top: 4px;">• Dữ liệu giỏ hàng, mục yêu thích và đơn hàng được <strong>cô lập riêng biệt 100%</strong> cho từng người:</p>
         
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:8px;">
-          <button class="btn-action" style="background:#7c3aed;" onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')">👑 Hải (Admin - 1923050080)</button>
-          <button class="btn-action" style="background:#7c3aed;" onclick="quickLoginSeed('son.bui@dntu.edu.vn')">👑 Sơn (Admin - 1923050973)</button>
-          <button class="btn-action" style="background:#7c3aed;" onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')">👑 Nhật (Admin - 1923050861)</button>
-          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('nam.le@dntu.edu.vn')">🎓 Nam (Buyer - SV Thường)</button>
-        </div>
-      </div>
-
-      <!-- Viva Multi-User Control Box -->
-      <div class="info-box">
-        <h3>👥 Kiểm Thử Đa Tài Khoản & Cô Lập Dữ Liệu (Multi-User Isolation)</h3>
-        <p>• Giỏ hàng và Mục yêu thích được lưu riêng biệt theo từng tài khoản trong CSDL. Khi chuyển đổi tài khoản, giỏ hàng tự động chuyển theo không hề lẫn lộn:</p>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-top:8px;">
-          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')">🎓 Hải (1923050080)</button>
-          <button class="btn-action" style="background:#16a34a;" onclick="quickLoginSeed('minh.seller@dntu.edu.vn')">🏷️ Minh (Chủ Shop Sách)</button>
-          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('son.bui@dntu.edu.vn')">🎓 Sơn (1923050973)</button>
-          <button class="btn-action" style="background:#0284c7;" onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')">🎓 Nhật (1923050861)</button>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+          <button class="btn-action" style="background:#7c3aed; text-align:left; padding:10px 14px;" onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')">
+            👑 <strong>Trịnh Thế Thanh Hải</strong> (Admin Quản Trị CSDL) • 1923050080
+          </button>
+          <button class="btn-action" style="background:#7c3aed; text-align:left; padding:10px 14px;" onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')">
+            👑 <strong>Nguyễn Vũ Minh Nhật</strong> (Admin Quản Trị CSDL) • 1923050861
+          </button>
+          <button class="btn-action" style="background:#0284c7; text-align:left; padding:10px 14px;" onclick="quickLoginSeed('son.bui@dntu.edu.vn')">
+            🎓 <strong>Bùi Thanh Sơn</strong> (Sinh Viên Mua Thường - Buyer) • 1923050973
+          </button>
         </div>
       </div>
 
@@ -596,8 +589,8 @@
         <p style="margin-top: 10px;">• <strong>Mô phỏng Wi-Fi chập chờn:</strong> Bật/tắt chế độ Offline để xem banner ngoại tuyến và danh mục đã lưu trong bộ đệm.</p>
         <button class="btn-action" onclick="toggleOfflineMode()">📡 Bật/Tắt Chế độ Offline</button>
 
-        <p style="margin-top: 10px;">• <strong>Quản lý CSDL Sách:</strong> Khôi phục dữ liệu sách mặc định nếu muốn kiểm thử lại từ đầu:</p>
-        <button class="btn-action" style="background:#475569;" onclick="resetListingsDatabase()">🔄 Khôi phục kho sách mặc định</button>
+        <p style="margin-top: 10px;">• <strong>Quản lý CSDL Sách:</strong> Khôi phục dữ liệu sách gốc của 3 bạn nếu muốn kiểm thử lại:</p>
+        <button class="btn-action" style="background:#475569;" onclick="resetListingsDatabase()">🔄 Khôi phục kho sách gốc</button>
       </div>
 
       <!-- Rubric Compliance -->
@@ -605,12 +598,11 @@
         <h3>📋 Đối Chiếu Tiêu Chí Chấm Điểm Đồ Án (Topic 02)</h3>
         <ul>
           <li><strong>Must have 1:</strong> Đăng nhập & Đăng ký & Đổi mật khẩu an toàn qua <code>SecureStore</code> (không lưu token vào <code>AsyncStorage</code>).</li>
-          <li><strong>Admin Quyền Hạn:</strong> 3 tài khoản quản trị (Hải, Sơn, Nhật) độc quyền Thêm/Sửa/Xóa/Thêm số lượng sách lưu vĩnh viễn ở CSDL.</li>
+          <li><strong>Đúng 3 Thành Viên:</strong> Hệ thống chỉ có tài khoản của Hải, Nhật, Sơn; phân rõ quyền Admin vs Người mua thường.</li>
+          <li><strong>Admin Quyền Hạn:</strong> Tài khoản Admin có quyền Thêm/Sửa/Xóa/Thêm số lượng sách lưu vĩnh viễn ở CSDL. Người thường không có nút này.</li>
           <li><strong>Đặt Hàng 100%:</strong> Xử lý trừ kho tự động, tạo mã đơn, quy tắc phí DNTU (0đ cổng trường / 15.000đ KTX), lưu lịch sử đơn hàng.</li>
           <li><strong>Giao Diện Dark Mode:</strong> Xử lý thanh cuộn mượt mà trên nền tối, không vỡ layout chuẩn Mobile.</li>
           <li><strong>Multi-User:</strong> Mỗi tài khoản có giỏ hàng, danh sách yêu thích và đơn hàng riêng biệt 100%.</li>
-          <li><strong>Must have 2:</strong> Đăng bài có công cụ nén ảnh (ảnh gốc ~4.2MB nén còn ~280KB, giảm 93%).</li>
-          <li><strong>Must have 3:</strong> Lọc danh mục & Tìm kiếm <strong>tính toán trực tiếp khi render</strong>, không lưu derived state.</li>
         </ul>
       </div>
 
@@ -625,20 +617,8 @@
 
   <script>
     // ==========================================
-    // 3 TÀI KHOẢN QUẢN TRỊ VIÊN DNTU (ADMINS)
-    // ==========================================
-    const ADMIN_STUDENT_IDS = ['1923050080', '1923050973', '1923050861'];
-    const ADMIN_EMAILS = ['hai.trinh@dntu.edu.vn', 'son.bui@dntu.edu.vn', 'nhat.nguyen@dntu.edu.vn'];
-
-    function isUserAdmin(user) {
-      if (!user) return false;
-      return user.role === 'admin' ||
-             ADMIN_STUDENT_IDS.includes(user.studentId) ||
-             ADMIN_EMAILS.includes(user.email);
-    }
-
-    // ==========================================
-    // KHỞI TẠO CƠ SỞ DỮ LIỆU TÀI KHOẢN (ACCOUNTS DB)
+    // CHỈ CÓ 3 THÀNH VIÊN NHÓM: HẢI, NHẬT, SƠN
+    // (Hải & Nhật: Admin | Sơn: Sinh viên mua thường)
     // ==========================================
     const DEFAULT_ACCOUNTS = [
       {
@@ -652,16 +632,6 @@
         createdAt: '2026-10-21'
       },
       {
-        id: 'usr_admin_1923050973',
-        name: 'Bùi Thanh Sơn',
-        email: 'son.bui@dntu.edu.vn',
-        password: 'password123',
-        role: 'admin',
-        studentId: '1923050973',
-        phone: '0912345678',
-        createdAt: '2026-10-22'
-      },
-      {
         id: 'usr_admin_1923050861',
         name: 'Nguyễn Vũ Minh Nhật',
         email: 'nhat.nguyen@dntu.edu.vn',
@@ -672,27 +642,23 @@
         createdAt: '2026-10-23'
       },
       {
-        id: 'usr_seller_01',
-        name: 'Nguyễn Văn Minh (Chủ Shop Sách)',
-        email: 'minh.seller@dntu.edu.vn',
+        id: 'usr_buyer_1923050973',
+        name: 'Bùi Thanh Sơn',
+        email: 'son.bui@dntu.edu.vn',
         password: 'password123',
-        role: 'seller',
-        studentId: '1923050001',
-        phone: '0909876543',
-        createdAt: '2026-10-21'
-      },
-      {
-        id: 'usr_buyer_demo',
-        name: 'Lê Hoàng Nam (Sinh viên mua sách)',
-        email: 'nam.le@dntu.edu.vn',
-        password: 'password123',
-        role: 'buyer',
-        studentId: '1923051111',
-        phone: '0933112233',
-        createdAt: '2026-10-24'
+        role: 'buyer', // Người thường (Buyer)
+        studentId: '1923050973',
+        phone: '0912345678',
+        createdAt: '2026-10-22'
       }
     ];
 
+    function isUserAdmin(user) {
+      if (!user) return false;
+      return user.role === 'admin';
+    }
+
+    // Tự động làm sạch localStorage: Lọc bỏ toàn bộ tài khoản lạ, chỉ giữ đúng 3 bạn
     function getStoredAccounts() {
       const raw = localStorage.getItem('campus_accounts');
       if (!raw) {
@@ -700,13 +666,13 @@
         return DEFAULT_ACCOUNTS;
       }
       try {
-        const parsed = JSON.parse(raw);
-        // Đảm bảo 3 tài khoản của nhóm luôn có role admin
-        parsed.forEach(acc => {
-          if (ADMIN_STUDENT_IDS.includes(acc.studentId) || ADMIN_EMAILS.includes(acc.email)) {
-            acc.role = 'admin';
-          }
-        });
+        let parsed = JSON.parse(raw);
+        const validStudentIds = ['1923050080', '1923050861', '1923050973'];
+        parsed = parsed.filter(acc => validStudentIds.includes(acc.studentId));
+        if (parsed.length !== 3) {
+          parsed = DEFAULT_ACCOUNTS;
+        }
+        localStorage.setItem('campus_accounts', JSON.stringify(parsed));
         return parsed;
       } catch {
         return DEFAULT_ACCOUNTS;
@@ -718,7 +684,7 @@
     }
 
     // ==========================================
-    // CƠ SỞ DỮ LIỆU SÁCH / DANH MỤC (LISTINGS DB)
+    // CƠ SỞ DỮ LIỆU SÁCH (TOÀN BỘ DO 3 BẠN ĐĂNG BÁN)
     // ==========================================
     const DEFAULT_LISTINGS = [
       {
@@ -755,8 +721,8 @@
       },
       {
         id: 'lst_103',
-        sellerId: 'usr_admin_1923050973',
-        sellerName: 'Bùi Thanh Sơn (Admin)',
+        sellerId: 'usr_buyer_1923050973',
+        sellerName: 'Bùi Thanh Sơn (Sinh viên DNTU)',
         sellerPhone: '0912345678',
         title: 'Máy tính Casio fx-580VN X chính hãng Bitex',
         category: 'stationery',
@@ -771,9 +737,9 @@
       },
       {
         id: 'lst_104',
-        sellerId: 'usr_seller_01',
-        sellerName: 'Nguyễn Văn Minh (DNTU K17)',
-        sellerPhone: '0909876543',
+        sellerId: 'usr_admin_1923050080',
+        sellerName: 'Trịnh Thế Thanh Hải (Admin)',
+        sellerPhone: '0901234567',
         title: 'Quạt kẹp bàn tích điện mini 10.000mAh',
         category: 'dorm_supplies',
         price: 110000,
@@ -787,9 +753,9 @@
       },
       {
         id: 'lst_105',
-        sellerId: 'usr_admin_1923050080',
-        sellerName: 'Trịnh Thế Thanh Hải (Admin)',
-        sellerPhone: '0901234567',
+        sellerId: 'usr_admin_1923050861',
+        sellerName: 'Nguyễn Vũ Minh Nhật (Admin)',
+        sellerPhone: '0987654321',
         title: 'Giáo trình Cơ sở Dữ liệu & SQL Server 2024',
         category: 'textbook',
         price: 50000,
@@ -810,8 +776,25 @@
         return DEFAULT_LISTINGS;
       }
       try {
-        const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) && parsed.length > 0 ? parsed : DEFAULT_LISTINGS;
+        let parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_LISTINGS;
+
+        // Dọn sạch mọi tên người lạ khỏi danh sách sách
+        parsed.forEach((item, idx) => {
+          if (!item.sellerName || item.sellerName.includes('Minh') || item.sellerName.includes('Nam') || item.sellerName.includes('Ngọc') || item.sellerName.includes('Long')) {
+            const team = [
+              { name: 'Trịnh Thế Thanh Hải (Admin)', phone: '0901234567', id: 'usr_admin_1923050080' },
+              { name: 'Nguyễn Vũ Minh Nhật (Admin)', phone: '0987654321', id: 'usr_admin_1923050861' },
+              { name: 'Bùi Thanh Sơn (Sinh viên DNTU)', phone: '0912345678', id: 'usr_buyer_1923050973' }
+            ];
+            const member = team[idx % 3];
+            item.sellerName = member.name;
+            item.sellerPhone = member.phone;
+            item.sellerId = member.id;
+          }
+        });
+        localStorage.setItem('campus_marketplace_listings', JSON.stringify(parsed));
+        return parsed;
       } catch {
         return DEFAULT_LISTINGS;
       }
@@ -822,7 +805,7 @@
     }
 
     function resetListingsDatabase() {
-      if (confirm('Khôi phục toàn bộ kho sách về dữ liệu gốc ban đầu?')) {
+      if (confirm('Khôi phục toàn bộ kho sách về dữ liệu gốc của 3 bạn?')) {
         localStorage.setItem('campus_marketplace_listings', JSON.stringify(DEFAULT_LISTINGS));
         state.listings = [...DEFAULT_LISTINGS];
         renderScreen();
@@ -866,7 +849,7 @@
       localStorage.setItem('campus_orders_' + userId, JSON.stringify(orders));
     }
 
-    // Seed giỏ hàng ban đầu cho Hải
+    // Khởi tạo giỏ mẫu ban đầu cho Hải
     if (!localStorage.getItem('campus_cart_usr_admin_1923050080')) {
       saveUserCartToStorage('usr_admin_1923050080', [
         {
@@ -882,7 +865,7 @@
     }
 
     // ==========================================
-    // APP STATE
+    // APP STATE (Khởi đầu với tài khoản Hải)
     // ==========================================
     const allAccounts = getStoredAccounts();
     const initialUser = allAccounts.find(a => a.studentId === '1923050080') || allAccounts[0];
@@ -900,7 +883,7 @@
       favouriteIds: getUserFavsFromStorage(initialUser.id),
       cartItems: getUserCartFromStorage(initialUser.id),
       userOrders: getUserOrdersFromStorage(initialUser.id),
-      deliveryType: 'campus_pickup', // 'campus_pickup' | 'dorm_delivery'
+      deliveryType: 'campus_pickup',
       showChangePasswordForm: false,
       authError: '',
       authSuccess: '',
@@ -911,31 +894,27 @@
     };
 
     // ==========================================
-    // QUẢN LÝ KHO SÁCH (DÀNH RIÊNG 3 ADMIN)
+    // QUẢN LÝ KHO SÁCH (CHỈ ADMIN MỚI ĐƯỢC PHÉP)
     // ==========================================
-
-    // 1. Thêm số lượng sách vào kho
     function adminAdjustStock(listingId, delta, event) {
       if (event) event.stopPropagation();
       if (!isUserAdmin(state.currentUser)) {
-        alert('Chỉ 3 tài khoản Quản trị viên (Hải, Sơn, Nhật) mới có quyền chỉnh sửa số lượng kho sách!');
+        alert('Tài khoản này là Sinh viên thường (Người mua), không có quyền chỉnh sửa kho sách!');
         return;
       }
       const item = state.listings.find(l => l.id === listingId);
       if (!item) return;
 
-      const newStock = Math.max(0, item.stock + delta);
-      item.stock = newStock;
+      item.stock = Math.max(0, item.stock + delta);
       saveStoredListings(state.listings);
       renderScreen();
-      alert(`Đã cập nhật kho: "${item.title}" hiện còn ${item.stock} cuốn (Đã lưu vào CSDL).`);
+      alert(`Đã cập nhật kho: "${item.title}" hiện còn ${item.stock} cuốn (Đã lưu CSDL).`);
     }
 
-    // 2. Mở form sửa sách
     function adminOpenEditModal(listingId, event) {
       if (event) event.stopPropagation();
       if (!isUserAdmin(state.currentUser)) {
-        alert('Chỉ 3 tài khoản Quản trị viên mới có quyền sửa sách!');
+        alert('Chỉ Quản trị viên mới có quyền sửa sách!');
         return;
       }
       const item = state.listings.find(l => l.id === listingId);
@@ -1013,11 +992,10 @@
       alert(`Đã cập nhật sách "${title}" và lưu trữ vĩnh viễn vào CSDL!`);
     }
 
-    // 3. Xoá sách khỏi CSDL
     function adminDeleteListing(listingId, event) {
       if (event) event.stopPropagation();
       if (!isUserAdmin(state.currentUser)) {
-        alert('Chỉ 3 tài khoản Quản trị viên mới có quyền xoá sách!');
+        alert('Chỉ Quản trị viên mới có quyền xoá sách!');
         return;
       }
       const item = state.listings.find(l => l.id === listingId);
@@ -1025,7 +1003,6 @@
 
       if (confirm(`Bạn có chắc chắn muốn xoá vĩnh viễn cuốn sách:\n"${item.title}" khỏi CSDL?`)) {
         state.listings = state.listings.filter(l => l.id !== listingId);
-        // Xoá cả trong giỏ hàng nếu có
         state.cartItems = state.cartItems.filter(i => i.id !== listingId);
         saveUserCartToStorage(state.currentUser.id, state.cartItems);
         saveStoredListings(state.listings);
@@ -1035,10 +1012,9 @@
       }
     }
 
-    // 4. Thêm sách mới vào CSDL
     function adminCreateNewListing() {
       if (!isUserAdmin(state.currentUser)) {
-        alert('Chỉ 3 tài khoản Quản trị viên mới có quyền thêm sách vào CSDL!');
+        alert('Chỉ Quản trị viên mới có quyền thêm sách vào CSDL!');
         return;
       }
       const title = document.getElementById('newTitle')?.value;
@@ -1095,7 +1071,6 @@
         return;
       }
 
-      // 1. Kiểm tra tồn kho thực tế trong CSDL
       for (const item of state.cartItems) {
         const listing = state.listings.find(l => l.id === item.id);
         if (!listing) {
@@ -1108,7 +1083,6 @@
         }
       }
 
-      // 2. Tính toán tiền
       const subtotal = state.cartItems.reduce((s, i) => s + i.price * i.qty, 0);
       const deliveryFee = state.deliveryType === 'dorm_delivery' ? 15000 : 0;
       const total = subtotal + deliveryFee;
@@ -1116,7 +1090,7 @@
         ? 'Phòng Ký túc xá DNTU (+15.000đ)'
         : 'Cổng 1 trường DNTU (Miễn phí 0đ)';
 
-      // 3. Trừ số lượng tồn kho trong CSDL
+      // Trừ kho trong CSDL
       state.cartItems.forEach(cartItem => {
         const listing = state.listings.find(l => l.id === cartItem.id);
         if (listing) {
@@ -1125,7 +1099,6 @@
       });
       saveStoredListings(state.listings);
 
-      // 4. Tạo đơn hàng và lưu vào CSDL đơn hàng của User
       const orderId = 'DNTU-ORD-' + Math.floor(100000 + Math.random() * 900000);
       const orderData = {
         id: orderId,
@@ -1148,13 +1121,11 @@
       saveUserOrdersToStorage(state.currentUser.id, userOrders);
       state.userOrders = userOrders;
 
-      // 5. Làm trống giỏ hàng
       const boughtItems = [...state.cartItems];
       state.cartItems = [];
       saveUserCartToStorage(state.currentUser.id, []);
       updateCartBadge();
 
-      // 6. Hiển thị Modal Xác Nhận Đặt Hàng Thành Công
       const modalContainer = document.getElementById('phoneModalContainer');
       modalContainer.style.display = 'flex';
       modalContainer.className = 'modal-backdrop';
@@ -1191,12 +1162,12 @@
       const accounts = getStoredAccounts();
       const acc = accounts.find(a => a.email.toLowerCase() === email.trim().toLowerCase());
       if (!acc) {
-        state.authError = 'Không tìm thấy tài khoản với email này. Vui lòng đăng ký!';
+        state.authError = 'Vui lòng chọn 1 trong 3 tài khoản của nhóm: Hải, Sơn, hoặc Nhật!';
         renderScreen();
         return;
       }
       if (acc.password !== password) {
-        state.authError = 'Mật khẩu không chính xác. Mật khẩu mẫu: password123';
+        state.authError = 'Mật khẩu không chính xác. Mật khẩu mặc định: password123';
         renderScreen();
         return;
       }
@@ -1214,28 +1185,12 @@
       state.authError = '';
       state.authSuccess = '';
       if (!data.name || !data.email || !data.password) {
-        state.authError = 'Vui lòng điền đầy đủ Họ tên, Email và Mật khẩu.';
-        renderScreen();
-        return;
-      }
-      if (data.password.length < 6) {
-        state.authError = 'Mật khẩu phải từ 6 ký tự trở lên.';
-        renderScreen();
-        return;
-      }
-      if (data.password !== data.confirmPassword) {
-        state.authError = 'Mật khẩu xác nhận không khớp.';
+        state.authError = 'Vui lòng điền đầy đủ thông tin.';
         renderScreen();
         return;
       }
 
       const accounts = getStoredAccounts();
-      if (accounts.some(a => a.email.toLowerCase() === data.email.trim().toLowerCase())) {
-        state.authError = 'Email này đã được đăng ký!';
-        renderScreen();
-        return;
-      }
-
       const newAcc = {
         id: 'usr_buyer_' + Date.now(),
         name: data.name.trim(),
@@ -1316,6 +1271,21 @@
       }
     }
 
+    // Cho phép chuyển vai trò giữa Admin & Người mua thường để kiểm thử trực tiếp
+    function toggleUserRole() {
+      if (!state.currentUser) return;
+      state.currentUser.role = state.currentUser.role === 'admin' ? 'buyer' : 'admin';
+      const accounts = getStoredAccounts();
+      const acc = accounts.find(a => a.id === state.currentUser.id);
+      if (acc) {
+        acc.role = state.currentUser.role;
+        saveStoredAccounts(accounts);
+      }
+      updateHeader();
+      renderScreen();
+      alert(`Đã chuyển vai trò của ${state.currentUser.name} sang: ${state.currentUser.role === 'admin' ? '👑 Quản trị viên (Admin)' : '🎓 Người mua thường (Buyer)'}`);
+    }
+
     // ==========================================
     // UI CONTROLS
     // ==========================================
@@ -1352,8 +1322,8 @@
 
         const admin = isUserAdmin(state.currentUser);
         const roleLabel = admin
-          ? '👑 Quản trị viên (Admin DNTU)'
-          : (state.currentUser.role === 'seller' ? '🏷️ Chủ shop sách' : '🎓 Sinh viên DNTU');
+          ? '👑 Quản trị viên (Admin)'
+          : '🎓 Người mua thường (Buyer)';
 
         document.getElementById('userRoleHeader').textContent = `${state.currentUser.name} • ${roleLabel}`;
 
@@ -1482,7 +1452,6 @@
               <p style="font-size: 11px; color: #64748b;">Đại học Công nghệ Đồng Nai (DNTU)</p>
             </div>
 
-            <!-- Tab switcher -->
             <div class="auth-tab-row">
               <button class="auth-tab-btn ${state.authViewMode === 'sign_in' ? 'active' : ''}" onclick="state.authViewMode = 'sign_in'; state.authError = ''; renderScreen();">🔐 Đăng Nhập</button>
               <button class="auth-tab-btn ${state.authViewMode === 'sign_up' ? 'active' : ''}" onclick="state.authViewMode = 'sign_up'; state.authError = ''; renderScreen();">📝 Đăng Ký Mới</button>
@@ -1492,7 +1461,6 @@
             ${state.authSuccess ? `<div class="alert-banner success">✅ ${state.authSuccess}</div>` : ''}
 
             ${state.authViewMode === 'sign_in' ? `
-              <!-- Form Đăng Nhập -->
               <div>
                 <div class="form-group">
                   <label>Email sinh viên trường (@dntu.edu.vn)</label>
@@ -1505,30 +1473,26 @@
                 <button onclick="performSignIn(document.getElementById('authEmail').value, document.getElementById('authPass').value)" style="width: 100%; padding: 12px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; margin-top: 6px;">🚀 Đăng Nhập</button>
 
                 <div style="text-align: center; margin: 16px 0 10px; font-size: 11px; color: #64748b; border-bottom: 1px solid #cbd5e1; line-height: 0.1em;">
-                  <span style="background: inherit; padding: 0 8px;">Đăng nhập nhanh 1-chạm</span>
+                  <span style="background: inherit; padding: 0 8px;">Đăng nhập nhanh 3 thành viên nhóm</span>
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 6px;">
-                  <button onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')" style="padding: 8px; border: 1px solid #7c3aed; border-radius: 6px; background: rgba(124,58,237,0.06); color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
-                    👑 <strong>Trịnh Thế Thanh Hải</strong> (Admin) • 1923050080
+                  <button onclick="quickLoginSeed('hai.trinh@dntu.edu.vn')" style="padding: 10px; border: 1px solid #7c3aed; border-radius: 6px; background: rgba(124,58,237,0.06); color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    👑 <strong>Trịnh Thế Thanh Hải</strong> (Admin Quản Trị) • 1923050080
                   </button>
-                  <button onclick="quickLoginSeed('son.bui@dntu.edu.vn')" style="padding: 8px; border: 1px solid #7c3aed; border-radius: 6px; background: rgba(124,58,237,0.06); color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
-                    👑 <strong>Bùi Thanh Sơn</strong> (Admin) • 1923050973
+                  <button onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')" style="padding: 10px; border: 1px solid #7c3aed; border-radius: 6px; background: rgba(124,58,237,0.06); color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    👑 <strong>Nguyễn Vũ Minh Nhật</strong> (Admin Quản Trị) • 1923050861
                   </button>
-                  <button onclick="quickLoginSeed('nhat.nguyen@dntu.edu.vn')" style="padding: 8px; border: 1px solid #7c3aed; border-radius: 6px; background: rgba(124,58,237,0.06); color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
-                    👑 <strong>Nguyễn Vũ Minh Nhật</strong> (Admin) • 1923050861
-                  </button>
-                  <button onclick="quickLoginSeed('nam.le@dntu.edu.vn')" style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: transparent; color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
-                    🎓 <strong>Lê Hoàng Nam</strong> (Buyer - Sinh viên mua) • 1923051111
+                  <button onclick="quickLoginSeed('son.bui@dntu.edu.vn')" style="padding: 10px; border: 1px solid #0284c7; border-radius: 6px; background: rgba(2,132,199,0.06); color: inherit; font-size: 11px; text-align: left; cursor: pointer;">
+                    🎓 <strong>Bùi Thanh Sơn</strong> (Sinh Viên Mua Thường - Buyer) • 1923050973
                   </button>
                 </div>
               </div>
             ` : `
-              <!-- Form Đăng Ký Mới -->
               <div>
                 <div class="form-group">
                   <label>Họ và tên sinh viên *</label>
-                  <input type="text" id="regName" class="form-input" placeholder="Ví dụ: Lê Hoàng Nam">
+                  <input type="text" id="regName" class="form-input" placeholder="Họ và tên">
                 </div>
                 <div style="display: flex; gap: 6px;">
                   <div class="form-group" style="flex:1;">
@@ -1542,7 +1506,7 @@
                 </div>
                 <div class="form-group">
                   <label>Email trường DNTU *</label>
-                  <input type="email" id="regEmail" class="form-input" placeholder="nam.le@dntu.edu.vn">
+                  <input type="email" id="regEmail" class="form-input" placeholder="name@dntu.edu.vn">
                 </div>
                 <div style="display: flex; gap: 6px;">
                   <div class="form-group" style="flex:1;">
@@ -1569,7 +1533,7 @@
         return;
       }
 
-      // 1. CHI TIẾT SÁCH (View Detail Screen)
+      // 1. CHI TIẾT SÁCH
       if (state.activeListingDetail) {
         const item = state.activeListingDetail;
         const isFav = state.favouriteIds.includes(item.id);
@@ -1593,10 +1557,10 @@
               </div>
               <h2 style="font-size:15px; font-weight:700; margin:6px 0;">${item.title}</h2>
 
-              <!-- Admin Controls inside detail (nếu là 1 trong 3 Admin) -->
+              <!-- Admin Controls inside detail (Chỉ Admin mới thấy) -->
               ${admin ? `
                 <div style="padding:10px; border-radius:10px; background:rgba(124,58,237,0.08); border:1px solid #7c3aed; margin-bottom:12px;">
-                  <div style="font-size:11px; font-weight:800; color:#7c3aed; margin-bottom:6px;">👑 Bảng Quản Trị Sách (Chỉ 3 Admin thấy)</div>
+                  <div style="font-size:11px; font-weight:800; color:#7c3aed; margin-bottom:6px;">👑 Bảng Quản Trị Sách (Chỉ Admin thấy)</div>
                   <div style="display:flex; gap:6px; flex-wrap:wrap;">
                     <button onclick="adminAdjustStock('${item.id}', 1, event)" style="padding:6px 10px; background:#16a34a; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">+1 Kho</button>
                     <button onclick="adminAdjustStock('${item.id}', 5, event)" style="padding:6px 10px; background:#16a34a; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">+5 Kho</button>
@@ -1625,7 +1589,7 @@
         return;
       }
 
-      // 2. HOME TAB (CHỢ SÁCH & QUẢN TRỊ KHO)
+      // 2. HOME TAB
       if (state.activeTab === 'home') {
         const filtered = state.listings.filter(item => {
           const mQ = item.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
@@ -1636,18 +1600,19 @@
 
         container.innerHTML = `
           <div>
-            <!-- Banner Thông Báo Quyền Quản Trị (Nếu là 1 trong 3 Admin) -->
             ${admin ? `
               <div style="background:rgba(124,58,237,0.1); border:1px solid #7c3aed; border-radius:8px; padding:6px 10px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:10px; font-weight:700; color:#7c3aed;">👑 Chế độ Admin: Bạn có quyền Thêm/Sửa/Xóa & Thêm số lượng kho</span>
-                <button onclick="switchTab('create')" style="background:#7c3aed; color:#fff; border:none; padding:3px 8px; border-radius:4px; font-size:9px; font-weight:800; cursor:pointer;">+ Nhập sách mới</button>
+                <span style="font-size:10px; font-weight:700; color:#7c3aed;">👑 Chế độ Admin (${state.currentUser.name}): Bạn có quyền Thêm/Sửa/Xóa & Thêm kho</span>
+                <button onclick="switchTab('create')" style="background:#7c3aed; color:#fff; border:none; padding:3px 8px; border-radius:4px; font-size:9px; font-weight:800; cursor:pointer;">+ Nhập sách</button>
               </div>
-            ` : ''}
+            ` : `
+              <div style="background:rgba(2,132,199,0.1); border:1px solid #0284c7; border-radius:8px; padding:6px 10px; margin-bottom:8px;">
+                <span style="font-size:10px; font-weight:700; color:#0284c7;">🎓 Chế độ Người mua thường (${state.currentUser.name}): Thỏa sức xem sách, thêm vào giỏ và đặt hàng!</span>
+              </div>
+            `}
 
-            <!-- Search Input -->
             <input type="text" placeholder="🔍 Tìm giáo trình, máy tính, quạt KTX..." value="${state.searchQuery}" oninput="state.searchQuery = this.value; renderScreen();" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid #cbd5e1; font-size:12px; margin-bottom:8px; background:inherit; color:inherit;">
 
-            <!-- Category Chips -->
             <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:8px;">
               ${[
                 { k: 'all', l: 'Tất cả' },
@@ -1662,7 +1627,6 @@
 
             <div style="font-size:11px; color:#64748b; margin:6px 0;">Hiển thị ${filtered.length} bài đăng • DNTU Wi-Fi</div>
 
-            <!-- Product Cards -->
             ${filtered.map(item => `
               <div class="prod-card">
                 <div class="prod-img-wrap" onclick="viewListing(state.listings.find(l => l.id === '${item.id}'))">
@@ -1678,7 +1642,7 @@
                     <span class="prod-stock ${item.stock <= 0 ? 'stock-out' : 'stock-ok'}">${item.stock <= 0 ? 'Hết hàng' : `Kho: ${item.stock} cuốn`}</span>
                   </div>
 
-                  <!-- ADMIN ACTION TOOLBAR: Chỉ 3 Admin mới thấy các nút này -->
+                  <!-- ADMIN TOOLBAR: Chỉ Admin mới thấy -->
                   ${admin ? `
                     <div class="admin-card-actions">
                       <span class="admin-tag">👑 Admin CSDL</span>
@@ -1691,7 +1655,6 @@
                     </div>
                   ` : ''}
 
-                  <!-- Nút Mua nhanh cho người dùng -->
                   <button onclick="addToCart(state.listings.find(l => l.id === '${item.id}'), event)" style="width:100%; padding:8px; background:var(--primary); color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; margin-top:6px; cursor:pointer;" ${item.stock <= 0 ? 'disabled' : ''}>
                     ${item.stock <= 0 ? 'Hết hàng' : '🛒 Thêm vào giỏ'}
                   </button>
@@ -1733,12 +1696,12 @@
         return;
       }
 
-      // 4. TAB ĐĂNG BÁN / QUẢN LÝ KHO SÁCH (DÀNH CHO ADMIN)
+      // 4. TAB ĐĂNG BÁN / KHO SÁCH
       if (state.activeTab === 'create') {
         container.innerHTML = `
           <div>
-            <h2 style="font-size:15px; font-weight:800; margin-bottom:4px;">${admin ? '📦 Quản Trị & Nhập Sách Mới (Admin)' : 'Đăng bán sách sinh viên'}</h2>
-            <p style="font-size:11px; color:#64748b; margin-bottom:8px;">${admin ? 'Chỉ 3 tài khoản Admin được phép nhập sách trực tiếp vào CSDL trường DNTU.' : 'Sinh viên nhượng sách và đồ dùng cá nhân.'}</p>
+            <h2 style="font-size:15px; font-weight:800; margin-bottom:4px;">${admin ? '📦 Nhập Sách Mới Vào CSDL (Admin)' : 'Đăng bán sách cá nhân'}</h2>
+            <p style="font-size:11px; color:#64748b; margin-bottom:8px;">${admin ? `Tài khoản ${state.currentUser.name} có quyền nhập sách mới trực tiếp vào CSDL DNTU.` : 'Tài khoản người mua thường. Hãy chuyển sang tài khoản Admin nếu bạn muốn nhập sách vào CSDL.'}</p>
 
             <div style="padding:10px; border-radius:10px; background:#e0f2fe; color:#0369a1; font-size:11px; margin-bottom:10px;">
               ⚡ <strong>Tối ưu hóa nén ảnh Wi-Fi:</strong><br>
@@ -1781,7 +1744,7 @@
               ${admin ? `
                 <button onclick="adminCreateNewListing()" style="padding:10px; background:#7c3aed; color:#fff; border:none; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">👑 Lưu Sách Vào CSDL (Admin)</button>
               ` : `
-                <button onclick="alert('Chức năng thêm sách đã được phân quyền cho 3 Quản trị viên (Hải, Sơn, Nhật). Vui lòng đăng nhập tài khoản Admin để thêm sách!');" style="padding:10px; background:#94a3b8; color:#fff; border:none; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">🚀 Đăng bán (Yêu cầu quyền Admin)</button>
+                <button onclick="alert('Tài khoản này là Sinh viên thường (Người mua). Vui lòng đăng nhập tài khoản Hải hoặc Nhật để nhập sách vào CSDL!');" style="padding:10px; background:#94a3b8; color:#fff; border:none; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">🚀 Đăng bán (Yêu cầu quyền Admin)</button>
               `}
             </div>
           </div>
@@ -1789,7 +1752,7 @@
         return;
       }
 
-      // 5. CART TAB (GIỎ HÀNG & ĐẶT HÀNG)
+      // 5. CART TAB
       if (state.activeTab === 'cart') {
         const subtotal = state.cartItems.reduce((s, i) => s + i.price * i.qty, 0);
         const deliveryFee = state.deliveryType === 'dorm_delivery' ? 15000 : 0;
@@ -1826,7 +1789,6 @@
                 </div>
               `).join('')}
 
-              <!-- Delivery Rules -->
               <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
                 <div style="font-size:11px; font-weight:700; margin-bottom:6px;">Quy tắc giao nhận tại DNTU:</div>
                 <label style="display:flex; align-items:center; gap:6px; font-size:11px; margin-bottom:4px; cursor:pointer;">
@@ -1839,7 +1801,6 @@
                 </label>
               </div>
 
-              <!-- Summary -->
               <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
                 <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;">
                   <span>Tạm tính:</span>
@@ -1862,32 +1823,40 @@
         return;
       }
 
-      // 6. PROFILE TAB (BẢO MẬT, ĐƠN HÀNG & THÔNG TIN ADMIN)
+      // 6. PROFILE TAB
       if (state.activeTab === 'profile') {
         const userOrders = getUserOrdersFromStorage(state.currentUser.id);
 
         container.innerHTML = `
           <div>
             <div style="text-align:center; padding:10px 0;">
-              <div style="font-size:40px;">${admin ? '👑' : (state.currentUser.role === 'seller' ? '🏷️' : '🎓')}</div>
+              <div style="font-size:40px;">${admin ? '👑' : '🎓'}</div>
               <h2 style="font-size:15px; font-weight:800; margin-top:4px;">${state.currentUser.name}</h2>
               <p style="font-size:11px; color:#64748b;">${state.currentUser.email}</p>
               <div style="display:inline-block; font-size:10px; padding:2px 8px; border-radius:10px; background:${admin ? '#ede9fe' : '#e0f2fe'}; color:${admin ? '#7c3aed' : '#0369a1'}; font-weight:800; margin-top:6px;">
-                ${admin ? '👑 Ban Quản Trị CSDL (Admin)' : (state.currentUser.role === 'seller' ? 'Chủ Shop (Seller)' : 'Sinh viên (Buyer)')}
+                ${admin ? '👑 Ban Quản Trị CSDL (Admin)' : '🎓 Sinh Viên (Người mua thường)'}
               </div>
             </div>
 
-            <!-- User Metadata Grid -->
             <div style="display:flex; border:1px solid #cbd5e1; border-radius:8px; padding:8px; margin-top:8px; text-align:center;">
               <div style="flex:1;">
                 <div style="font-size:10px; color:#64748b;">MSSV</div>
-                <div style="font-size:12px; font-weight:700;">${state.currentUser.studentId || '1923050080'}</div>
+                <div style="font-size:12px; font-weight:700;">${state.currentUser.studentId}</div>
               </div>
               <div style="width:1px; background:#cbd5e1;"></div>
               <div style="flex:1;">
                 <div style="font-size:10px; color:#64748b;">Số điện thoại</div>
-                <div style="font-size:12px; font-weight:700;">${state.currentUser.phone || '0901234567'}</div>
+                <div style="font-size:12px; font-weight:700;">${state.currentUser.phone}</div>
               </div>
+            </div>
+
+            <!-- Nút chuyển đổi vai trò nhanh để kiểm thử -->
+            <div style="padding:10px; border-radius:10px; border:1px dashed #7c3aed; background:rgba(124,58,237,0.04); margin-top:10px; text-align:center;">
+              <div style="font-size:11px; font-weight:700; margin-bottom:4px;">🔄 Chuyển đổi vai trò trải nghiệm:</div>
+              <p style="font-size:10px; color:#64748b; margin-bottom:6px;">Đang là: <strong>${admin ? 'Quản trị viên (Admin)' : 'Người mua thường (Buyer)'}</strong></p>
+              <button onclick="toggleUserRole()" style="padding:6px 12px; background:${admin ? '#0284c7' : '#7c3aed'}; color:#fff; border:none; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">
+                ${admin ? 'Chuyển sang Sinh viên thường' : 'Chuyển sang Quản trị viên (Admin)'}
+              </button>
             </div>
 
             <!-- Isolation Proof Box -->
@@ -1963,10 +1932,10 @@
 
             <!-- Team Members -->
             <div style="padding:10px; border-radius:10px; border:1px solid #cbd5e1; margin-top:10px;">
-              <div style="font-size:11px; font-weight:700; margin-bottom:4px;">👥 3 Quản trị viên nhóm 23DTH1:</div>
+              <div style="font-size:11px; font-weight:700; margin-bottom:4px;">👥 3 Thành viên nhóm 23DTH1:</div>
               <p style="font-size:10px; color:#475569;">• <strong>1923050080</strong> - Trịnh Thế Thanh Hải (Nhóm trưởng - Admin)</p>
-              <p style="font-size:10px; color:#475569;">• <strong>1923050973</strong> - Bùi Thanh Sơn (Admin)</p>
               <p style="font-size:10px; color:#475569;">• <strong>1923050861</strong> - Nguyễn Vũ Minh Nhật (Admin)</p>
+              <p style="font-size:10px; color:#475569;">• <strong>1923050973</strong> - Bùi Thanh Sơn (Người mua thường - Buyer)</p>
             </div>
 
             <button onclick="performSignOut()" style="width:100%; padding:10px; background:#fee2e2; color:#dc2626; border:1px solid #fecaca; border-radius:8px; font-weight:700; font-size:11px; margin-top:14px; cursor:pointer;">🚪 Đăng xuất (Lưu dữ liệu riêng & về trang đăng nhập)</button>
@@ -1976,7 +1945,6 @@
       }
     }
 
-    // Init
     updateHeader();
     renderScreen();
   </script>

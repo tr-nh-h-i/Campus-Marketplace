@@ -127,15 +127,16 @@ describe('Test 4: Xác thực Tài khoản & Cô lập Dữ liệu Người dùn
     expect(loadedFavsB).toEqual(['lst_103']);
   });
 
-  test('5. Phân quyền Quản trị viên (3 thành viên nhóm) và lưu trữ đơn hàng độc lập', async () => {
-    // 3 thành viên nhóm là Admin
-    expect(isUserAdmin(SEED_ACCOUNTS[0])).toBe(true); // Hải
-    expect(isUserAdmin(SEED_ACCOUNTS[1])).toBe(true); // Sơn
-    expect(isUserAdmin(SEED_ACCOUNTS[2])).toBe(true); // Nhật
+  test('5. Đúng 3 thành viên nhóm: Hải & Nhật là Admin, Sơn là Người mua thường', async () => {
+    expect(SEED_ACCOUNTS.length).toBe(3);
 
-    // Người dùng thông thường không có quyền Admin
-    expect(isUserAdmin(SEED_ACCOUNTS[3])).toBe(false); // Minh
-    expect(isUserAdmin(SEED_ACCOUNTS[4])).toBe(false); // Nam (Buyer)
+    // Hải & Nhật là Admin
+    expect(isUserAdmin(SEED_ACCOUNTS[0])).toBe(true); // Trịnh Thế Thanh Hải
+    expect(isUserAdmin(SEED_ACCOUNTS[1])).toBe(true); // Nguyễn Vũ Minh Nhật
+
+    // 1 người làm người thường: Bùi Thanh Sơn (Buyer)
+    expect(isUserAdmin(SEED_ACCOUNTS[2])).toBe(false); // Bùi Thanh Sơn
+    expect(SEED_ACCOUNTS[2].role).toBe('buyer');
 
     // Kiểm tra lưu và đọc đơn hàng riêng của User
     const testOrder = {

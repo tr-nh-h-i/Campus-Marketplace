@@ -25,7 +25,7 @@ Write-Host " [1] Ngay 22/10: feat: xay dung phan quyen va chuyen doi vai tro Buy
 Write-Host " [2] Ngay 23/10: security: cau hinh bao mat luu tru JWT token bang SecureStore"
 Write-Host " [3] Ngay 24/10: feat: toi uu bo chon atomic va bo loc gio hang Zustand"
 Write-Host " [4] Ngay 25/10: feat: tich hop thanh dieu huong bottom tabs va huy hieu gio hang"
-Write-Host " [5] Ngay 26/10: feat: hoan thien dat hang, phan quyen admin kho sach va fix thanh cuon toi"
+Write-Host " [5] Ngay 26/10: feat: chuan hoa chi 3 thanh vien Son Hai Nhat va phan quyen admin"
 Write-Host " [6] Ngay 27/10: docs: cap nhat tai lieu du an va checklist nop bai Canvas"
 Write-Host " [7] Tu go noi dung commit Tieng Viet tuy y"
 Write-Host " [0] Thoat"
@@ -40,7 +40,7 @@ switch ($choice) {
     "2" { $msg = Get-UnescapedText "security: c\u1ea5u h\u00ecnh b\u1ea3o m\u1eadt l\u01b0u tr\u1eef JWT token b\u1eb1ng SecureStore" }
     "3" { $msg = Get-UnescapedText "feat: t\u1ed1i \u01b0u b\u1ed9 ch\u1ecdn atomic v\u00e0 b\u1ed9 l\u1ecdc gi\u1ecf h\u00e0ng Zustand" }
     "4" { $msg = Get-UnescapedText "feat: t\u00edch h\u1ee3p thanh \u0111i\u1ec1u h\u01b0\u1edbng bottom tabs v\u00e0 huy hi\u1ec7u gi\u1ecf h\u00e0ng" }
-    "5" { $msg = Get-UnescapedText "feat: ho\u00e0n thi\u1ec7n \u0111\u1eb7t h\u00e0ng, ph\u00e2n quy\u1ec1n admin kho s\u00e1ch v\u00e0 x\u1eed l\u00fd thanh cu\u1ed9n ch\u1ebf \u0111\u1ed9 t\u1ed1i" }
+    "5" { $msg = Get-UnescapedText "feat: chu\u1ea9n h\u00f3a \u0111\u00fang 3 th\u00e0nh vi\u00ean S\u01a1n H\u1ea3i Nh\u1eadt, ph\u00e2n quy\u1ec1n admin v\u00e0 ng\u01b0\u1eddi mua th\u01b0\u1eddng" }
     "6" { $msg = Get-UnescapedText "docs: c\u1eadp nh\u1eadt t\u00e0i li\u1ec7u d\u1ef1 \u00e1n v\u00e0 checklist n\u1ed9p b\u00e0i Canvas" }
     "7" {
         $msg = Read-Host "Nhap noi dung commit (Tieng Viet)"

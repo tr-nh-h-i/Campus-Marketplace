@@ -25,17 +25,6 @@ export const SEED_ACCOUNTS: StoredAccount[] = [
     createdAt: '2026-10-21T08:00:00.000Z',
   },
   {
-    id: 'usr_admin_1923050973',
-    name: 'Bùi Thanh Sơn',
-    email: 'son.bui@dntu.edu.vn',
-    password: 'password123',
-    role: 'admin',
-    isAdmin: true,
-    studentId: '1923050973',
-    phone: '0912345678',
-    createdAt: '2026-10-22T10:15:00.000Z',
-  },
-  {
     id: 'usr_admin_1923050861',
     name: 'Nguyễn Vũ Minh Nhật',
     email: 'nhat.nguyen@dntu.edu.vn',
@@ -47,26 +36,15 @@ export const SEED_ACCOUNTS: StoredAccount[] = [
     createdAt: '2026-10-23T14:20:00.000Z',
   },
   {
-    id: 'usr_seller_01',
-    name: 'Nguyễn Văn Minh (Chủ Shop Sách)',
-    email: 'minh.seller@dntu.edu.vn',
+    id: 'usr_buyer_1923050973',
+    name: 'Bùi Thanh Sơn',
+    email: 'son.bui@dntu.edu.vn',
     password: 'password123',
-    role: 'seller',
+    role: 'buyer', // 1 người làm người mua thường!
     isAdmin: false,
-    studentId: '1923050001',
-    phone: '0909876543',
-    createdAt: '2026-10-21T09:30:00.000Z',
-  },
-  {
-    id: 'usr_buyer_demo',
-    name: 'Lê Hoàng Nam (Sinh viên mua sách)',
-    email: 'nam.le@dntu.edu.vn',
-    password: 'password123',
-    role: 'buyer',
-    isAdmin: false,
-    studentId: '1923051111',
-    phone: '0933112233',
-    createdAt: '2026-10-24T08:00:00.000Z',
+    studentId: '1923050973',
+    phone: '0912345678',
+    createdAt: '2026-10-22T10:15:00.000Z',
   },
 ];
 
@@ -92,11 +70,15 @@ export async function getAllAccounts(): Promise<StoredAccount[]> {
     }
 
     const parsed: StoredAccount[] = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length === 0) {
+    const validStudentIds = ['1923050080', '1923050861', '1923050973'];
+    const filtered = Array.isArray(parsed)
+      ? parsed.filter((acc) => validStudentIds.includes(acc.studentId || ''))
+      : [];
+    if (filtered.length !== 3) {
       await saveAllAccounts(SEED_ACCOUNTS);
       return SEED_ACCOUNTS;
     }
-    return parsed;
+    return filtered;
   } catch (error) {
     console.warn('[AccountsDB] Lỗi nạp tài khoản:', error);
     return SEED_ACCOUNTS;
@@ -391,12 +373,7 @@ const USER_ORDERS_KEY_PREFIX = 'campus_marketplace_orders_user_';
 
 export function isUserAdmin(user: User | StoredAccount | null | undefined): boolean {
   if (!user) return false;
-  return (
-    user.role === 'admin' ||
-    user.isAdmin === true ||
-    (user.studentId ? ADMIN_STUDENT_IDS.includes(user.studentId) : false) ||
-    (user.email ? ADMIN_EMAILS.includes(user.email) : false)
-  );
+  return user.role === 'admin' || user.isAdmin === true;
 }
 
 export async function getUserOrders(userId: string): Promise<any[]> {
