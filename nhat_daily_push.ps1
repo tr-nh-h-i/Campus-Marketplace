@@ -3,6 +3,29 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 
 Set-Location $PSScriptRoot
 
+# Kiem tra Git
+if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+    if (Test-Path "$env:LOCALAPPDATA\Programs\MinGit\cmd\git.exe") {
+        $env:PATH = "$env:LOCALAPPDATA\Programs\MinGit\cmd;$env:PATH"
+    } else {
+        Write-Host "[LOI] Khong tim thay Git tren he thong!" -ForegroundColor Red
+        exit 1
+    }
+}
+
+# Kiem tra .git
+if (-not (Test-Path ".git")) {
+    Write-Host "[THONG BAO] Chua co thu muc Git cuc bo, dang tu dong khoi tao..." -ForegroundColor Yellow
+    git init
+    git remote add origin https://github.com/tr-nh-h-i/Campus-Marketplace.git 2>$null
+    git remote set-url origin https://github.com/tr-nh-h-i/Campus-Marketplace.git
+    git fetch origin main
+    git branch -M main
+    git reset origin/main
+    Write-Host "[OK] Da ket noi kho Git cuc bo voi origin/main!" -ForegroundColor Green
+    Write-Host ""
+}
+
 function Get-UnescapedText([string]$text) {
     return [System.Text.RegularExpressions.Regex]::Unescape($text)
 }
@@ -15,6 +38,7 @@ Write-Host "========================================================" -Foregroun
 Write-Host ""
 
 git config user.name "Nguyen Vu Minh Nhat"
+git config user.email "1923050861@dntu.edu.vn"
 git remote set-url origin https://github.com/tr-nh-h-i/Campus-Marketplace.git 2>$null
 
 Write-Host "========================================================" -ForegroundColor Yellow
@@ -73,8 +97,28 @@ Write-Host ""
 Write-Host "[3/3] Dang day len GitHub (git push origin main)..." -ForegroundColor Green
 git push origin main
 
-Write-Host ""
-Write-Host "========================================================" -ForegroundColor Cyan
-Write-Host " HOAN TAT! Commit da duoc day len GitHub thanh cong." -ForegroundColor Green
-Write-Host " Kiem tra tai: https://github.com/tr-nh-h-i/Campus-Marketplace/commits/main" -ForegroundColor Cyan
-Write-Host "========================================================" -ForegroundColor Cyan
+if ($LASTEXITCODE -eq 0) {
+    Write-Host ""
+    Write-Host "========================================================" -ForegroundColor Cyan
+    Write-Host " HOAN TAT! Commit da duoc day len GitHub thanh cong." -ForegroundColor Green
+    Write-Host " Kiem tra tai: https://github.com/tr-nh-h-i/Campus-Marketplace/commits/main" -ForegroundColor Cyan
+    Write-Host "========================================================" -ForegroundColor Cyan
+} else {
+    Write-Host ""
+    Write-Host "========================================================" -ForegroundColor Yellow
+    Write-Host " [!] CHUA DAY LEN DUOC GITHUB!" -ForegroundColor Red
+    Write-Host "========================================================" -ForegroundColor Yellow
+    Write-Host " Ly do: Git can xac thuc quyen push (Dang nhap GitHub hoac Token)." -ForegroundColor Yellow
+    Write-Host ""
+    $token = Read-Host " Dan GitHub Personal Access Token (PAT) vao day (hoac Enter de bo qua)"
+    if (-not [string]::IsNullOrWhiteSpace($token)) {
+        git remote set-url origin "https://$($token)@github.com/tr-nh-h-i/Campus-Marketplace.git"
+        git push origin main
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host " [OK] Day commit len GitHub thanh cong voi Token!" -ForegroundColor Green
+        } else {
+            Write-Host " [X] Token khong hop le hoac khong co quyen Write vao repo nay!" -ForegroundColor Red
+        }
+        git remote set-url origin https://github.com/tr-nh-h-i/Campus-Marketplace.git
+    }
+}
